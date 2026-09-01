@@ -102,6 +102,11 @@ export function ProjectsSection() {
                       <span className="project-collage__tag">
                         {project.details.type}
                       </span>
+                      {project.inProgress ? (
+                        <span className="project-collage__tag project-collage__tag--wip">
+                          In progress
+                        </span>
+                      ) : null}
                       {project.confidential ? (
                         <span className="project-collage__tag project-collage__tag--nda">
                           <Icon icon="mdi:lock-outline" aria-hidden="true" />
@@ -181,6 +186,15 @@ export function ProjectsSection() {
                     <div className="col-lg-6 pt-4 pt-lg-0">
                       <h4 id="project-modal-title">{active.details.title}</h4>
 
+                      {active.inProgress ? (
+                        <p className="project-modal__wip">
+                          <Icon icon="mdi:progress-wrench" aria-hidden="true" />
+                          <span>
+                            This project is in active development — the outcomes
+                            below are what it is being built to deliver.
+                          </span>
+                        </p>
+                      ) : null}
                       {active.confidential ? (
                         <p className="project-modal__nda">
                           <Icon icon="mdi:lock-outline" aria-hidden="true" />
@@ -204,7 +218,9 @@ export function ProjectsSection() {
                         <p>{active.details.decisions}</p>
                       </div>
                       <div className="project-modal__block">
-                        <h6>Impact</h6>
+                        <h6>
+                          {active.inProgress ? "Intended impact" : "Impact"}
+                        </h6>
                         <ul className="project-modal__impact">
                           {active.details.impact.map((item) => (
                             <li key={item}>

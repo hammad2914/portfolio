@@ -99,6 +99,8 @@ export type ProjectItem = {
   collageSize: ProjectCollageSize;
   /** Client work under NDA — no public source. */
   confidential?: boolean;
+  /** Set while the project is still being built, so impact reads as expected, not delivered. */
+  inProgress?: boolean;
   /** Public source, when it exists. */
   links?: ProjectLink[];
   details: ProjectDetails;
@@ -148,9 +150,9 @@ export const projects = {
         challenge:
           "An ERP spanning 8 interconnected modules where every invoice and purchase order was keyed in by hand from supplier PDFs — each client sending a different layout. Data entry was the bottleneck, and the grids were large enough that naive rendering locked up the browser.",
         approach:
-          "Led full-stack development across 8 modules with complex admin panels and permission flows. Built an AI bulk PDF extraction pipeline on Azure Document Intelligence with custom models trained for 8–12 client document formats, and AG Grid interfaces handling 50,000+ row datasets with live WebSocket synchronization.",
+          "Led full-stack development across 8 modules with complex admin panels and permission flows. Built an AI bulk PDF extraction pipeline on OpenAI handling 8–12 different client document formats, and AG Grid interfaces over 50,000+ row datasets with live WebSocket synchronization.",
         decisions:
-          "Azure Document Intelligence over a general-purpose LLM because these are fixed-layout business documents where per-field confidence scores and custom-model training matter more than open-ended reasoning — and a confidence score is what lets you route only uncertain fields to a human. AG Grid's server-side row model over a custom table: at 50k rows the work is virtualization, and that's a solved problem not worth rebuilding. WebSockets because 8 modules share state — a purchase order updated in one module has to be correct everywhere without a refresh.",
+          "TODO(hammad): why OpenAI over a document-specific extraction service, and how you handle varying layouts / low-confidence fields. AG Grid's server-side row model over a custom table: at 50k rows the work is virtualization, and that's a solved problem not worth rebuilding. WebSockets because 8 modules share state — a purchase order updated in one module has to be correct everywhere without a refresh.",
         impact: [
           "Document processing time reduced by 70%",
           "Manual data entry for invoices and purchase orders eliminated",
@@ -158,7 +160,7 @@ export const projects = {
         ],
         type: "AI-Powered ERP",
         technologies:
-          "React.js, NestJS, PostgreSQL, WebSockets, Azure Document Intelligence, AG Grid",
+          "React.js, NestJS, PostgreSQL, WebSockets, OpenAI, AG Grid",
         platform: "Web",
       },
     },
@@ -192,17 +194,18 @@ export const projects = {
       subTitle: "EU Packaging Regulation SaaS",
       collageSize: "medium",
       confidential: true,
+      inProgress: true,
       details: {
         title: "PPWR – EU Packaging Compliance SaaS",
         challenge:
           "The EU Packaging and Packaging Waste Regulation requires manufacturers to evidence compliance across their packaging portfolio. Clients were tracking this in spreadsheets — no audit trail, no role separation, and no way to prove what was reported when.",
         approach:
-          "Developed a multi-client SaaS compliance platform with a multi-role admin structure and several compliance modules, on a .NET Core backend with SQL Server and a React frontend.",
+          "Building a multi-client SaaS compliance platform with a multi-role admin structure and several compliance modules, on a .NET Core backend with SQL Server and a React frontend. Currently in active development.",
         decisions:
-          "Multi-tenant with hard role separation because compliance data is commercially sensitive and a reviewer must not see another client's portfolio. .NET Core and SQL Server were the client's existing stack — matching their infrastructure meant they could run and audit it themselves rather than depending on us for hosting, which for a compliance system is a requirement rather than a preference.",
+          "TODO(hammad): why .NET Core/SQL Server here rather than the Node stack you use elsewhere, and how tenant separation is enforced.",
         impact: [
           "Multi-client compliance tracking with per-role access control",
-          "Spreadsheet-based reporting replaced with an auditable system of record",
+          "Replacing spreadsheet-based reporting with an auditable system of record",
         ],
         type: "Compliance SaaS",
         technologies: "React.js, .NET Core, .NET Web API, SQL Server",
@@ -247,46 +250,22 @@ export const projects = {
       thumbUrl: "/images/car-rental.png",
       modalImages: ["/images/car-rental.png", "/images/car-rental2.png"],
       title: "MiCar",
-      subTitle: "Car Rental App",
+      subTitle: "Car Rental App — UI",
       collageSize: "portrait",
       details: {
-        title: "MiCar – Car Rental App",
+        title: "MiCar – Car Rental App (UI)",
         challenge:
-          "A car rental operation running bookings by phone, with no reliable way to know whether a vehicle was actually free for a given window.",
+          "A car rental concept that needed a complete mobile interface designed and built out — browse, booking flow, and account screens — before any backend work was scoped.",
         approach:
-          "Built a cross-platform React Native app for iOS and Android with real-time availability checks, booking history, push notifications, secure payments, and an admin dashboard for fleet management and booking approvals.",
+          "Built the full cross-platform mobile UI in React Native — vehicle browsing, booking flow, and account screens, laid out for both iOS and Android. Front-end only: this project has no backend, and the screens run against mocked data.",
         decisions:
-          "React Native over two native codebases because the app is largely forms, lists, and API calls — the shared-code saving is real and there's little platform-specific surface to lose. Availability is resolved server-side at request time rather than cached on the device, since a stale 'available' is a double-booking.",
+          "TODO(hammad): why React Native for this, and anything notable about the screen/component structure.",
         impact: [
-          "Single codebase shipping to both iOS and Android",
-          "Phone-based booking replaced with real-time self-service reservations",
+          "Complete booking-flow UI covering both iOS and Android from one codebase",
         ],
-        type: "Mobile Application",
-        technologies: "React Native, TypeScript, Node.js, REST APIs",
+        type: "Mobile UI",
+        technologies: "React Native, TypeScript",
         platform: "Android & iOS",
-      },
-    },
-    {
-      thumbUrl: "/images/prog.png",
-      title: "Excel Genie",
-      subTitle: "Shared ERP Reporting Engine",
-      collageSize: "small",
-      confidential: true,
-      details: {
-        title: "Excel Genie – Reporting Engine",
-        challenge:
-          "Every ERP module had grown its own Excel export — same logic, ten slightly different implementations, each with its own bugs around formatting, large result sets, and column configuration.",
-        approach:
-          "Built a single full-stack reporting engine, configuration-driven so a module declares its columns and filters rather than writing export code, and adopted it across 10+ ERP modules.",
-        decisions:
-          "Configuration over a shared base class: modules that inherit still write code and still drift, whereas a declarative config has one execution path to fix. Generation runs server-side so exports don't depend on the client having enough memory for the result set.",
-        impact: [
-          "Reused across 10+ ERP modules, eliminating duplicate reporting code",
-          "Saved hundreds of developer hours across the product line",
-        ],
-        type: "Internal Platform / Developer Tooling",
-        technologies: "React.js, NestJS, PostgreSQL",
-        platform: "Web",
       },
     },
     {
@@ -376,7 +355,7 @@ export const services = {
       imgUrl: "/images/service-04.jpg",
       title: "AI Integration & Automation",
       subTitle:
-        "Integrate Azure Document Intelligence and Gemini AI into production systems — bulk PDF extraction pipelines, custom-trained document models, and reporting that removes manual data entry.",
+        "Integrate OpenAI and Gemini into production systems — bulk PDF extraction pipelines and automated reporting that removes manual data entry.",
       icon: "bi:cpu",
     },
   ],
@@ -433,8 +412,8 @@ export const skills = {
         { name: "PostgreSQL", icon: "logos:postgresql" },
         { name: "SQL Server", icon: "devicon:microsoftsqlserver" },
         { name: "MongoDB", icon: "logos:mongodb-icon" },
-        { name: "Azure Document Intelligence", icon: "logos:microsoft-azure" },
-        { name: "Gemini AI", icon: "simple-icons:googlegemini" },
+        { name: "OpenAI", icon: "simple-icons:openai" },
+        { name: "Gemini", icon: "simple-icons:googlegemini" },
         { name: "Bulk PDF Extraction", icon: "mdi:file-pdf-box" },
         { name: "Automation Pipelines", icon: "mdi:robot-outline" },
       ],
