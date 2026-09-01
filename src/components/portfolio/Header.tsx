@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { Link } from "react-scroll";
-import { socialLinks } from "@/data/jenna";
 import { BrandLogo } from "./BrandLogo";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -12,6 +11,7 @@ const nav = [
   { to: "project", label: "Projects" },
   { to: "services", label: "Services" },
   { to: "skills", label: "Skills" },
+  { to: "education", label: "Education" },
   { to: "contactus", label: "Contact" },
 ];
 
@@ -89,15 +89,3 @@ export function Header() {
     </div>
   );
 }
-
-export function Footer() {
-  return (
-    <footer className="footer">
-      <div className="container">
-        <p className="m-0 text-center">© 2026 copyright all right reserved</p>
-      </div>
-    </footer>
-  );
-}
-
-export { socialLinks };

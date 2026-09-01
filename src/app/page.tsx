@@ -1,5 +1,5 @@
-import { JennaPortfolio } from "@/components/jenna/JennaPortfolio";
+import { Portfolio } from "@/components/portfolio/Portfolio";
 
 export default function HomePage() {
-  return <JennaPortfolio />;
+  return <Portfolio />;
 }

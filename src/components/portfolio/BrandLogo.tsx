@@ -6,7 +6,7 @@ export function BrandLogo() {
   return (
     <Image
       src="/images/favicon.png"
-      alt="Home"
+      alt="Hammad Ali — home"
       width={48}
       height={48}
       priority

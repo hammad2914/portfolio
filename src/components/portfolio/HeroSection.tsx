@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Icon } from "@iconify/react";
 import { Link } from "react-scroll";
 import { TypeAnimation } from "react-type-animation";
-import { hero, socialLinks } from "@/data/jenna";
+import { hero, socialLinks } from "@/data/content";
 import { SocialIcons } from "./Shared";
 
 export function HeroSection() {
@@ -17,10 +17,18 @@ export function HeroSection() {
               <h6 data-aos="fade-up" data-aos-duration="1200">
                 <span>{hero.name}</span>
               </h6>
-              <h1 data-aos="fade-up" data-aos-duration="1200" data-aos-delay="100">
+              <h1
+                data-aos="fade-up"
+                data-aos-duration="1200"
+                data-aos-delay="100"
+              >
                 {hero.heading}
               </h1>
-              <h2 data-aos="fade-up" data-aos-duration="1200" data-aos-delay="200">
+              <h2
+                data-aos="fade-up"
+                data-aos-duration="1200"
+                data-aos-delay="200"
+              >
                 <TypeAnimation
                   sequence={hero.typingText as (string | number)[]}
                   speed={50}
@@ -65,7 +73,7 @@ export function HeroSection() {
             <div className="hs-banner">
               <Image
                 src={hero.imgUrl}
-                alt="Hero"
+                alt="Illustration of a developer writing code"
                 width={600}
                 height={500}
                 priority

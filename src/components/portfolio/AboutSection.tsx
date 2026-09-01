@@ -4,16 +4,19 @@ import Image from "next/image";
 import parse from "html-react-parser";
 import { Icon } from "@iconify/react";
 import { Link } from "react-scroll";
-import { about } from "@/data/jenna";
+import { about } from "@/data/content";
 
 export function AboutSection() {
   return (
     <section className="about-section section" id="about">
       <div className="container">
+        {/* Decorative SVG shapes — no optimization to do, so next/image adds
+            nothing here. Marked aria-hidden via empty alt. */}
+        {/* eslint-disable @next/next/no-img-element */}
         <div className="effect-1">
           <img
             src="/images/effect-1.svg"
-            alt="Shape"
+            alt=""
             data-aos="zoom-in"
             data-aos-duration="1200"
             data-aos-delay="500"
@@ -22,12 +25,13 @@ export function AboutSection() {
         <div className="effect-2">
           <img
             src="/images/effect-2.svg"
-            alt="Shape"
+            alt=""
             data-aos="zoom-in"
             data-aos-duration="1200"
             data-aos-delay="400"
           />
         </div>
+        {/* eslint-enable @next/next/no-img-element */}
         <div className="row align-items-center justify-content-center gy-5">
           <div
             className="col-lg-6 col-xl-5"
@@ -38,7 +42,7 @@ export function AboutSection() {
             <div className="about-banner text-center">
               <Image
                 src={about.imgSrc}
-                alt="Profile"
+                alt="Hammad Ali, Full Stack Software Engineer"
                 width={480}
                 height={600}
                 className="img-fluid about-profile-img"
@@ -61,7 +65,7 @@ export function AboutSection() {
                 ) : null}
                 {about.title ? <h2>{parse(about.title)}</h2> : null}
               </div>
-              <p>{about.description}</p>
+              <p>{parse(about.description)}</p>
               <div className="review-box">
                 {about.funfacts.map((fact) => (
                   <div className="r-box" key={fact.title}>

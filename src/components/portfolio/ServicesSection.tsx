@@ -1,9 +1,8 @@
 "use client";
 
 import { Icon } from "@iconify/react";
-import { services } from "@/data/jenna";
+import { services } from "@/data/content";
 import { SectionHeading } from "./SectionHeading";
-import { StarRating } from "./Shared";
 
 export function ServicesSection() {
   return (
@@ -29,9 +28,6 @@ export function ServicesSection() {
                   </div>
                   <h5>{service.title}</h5>
                   <p className="services-desc">{service.subTitle}</p>
-                  <div className="rating-wrap">
-                    <StarRating ratings={service.ratings} />
-                  </div>
                 </div>
               </div>
             </div>

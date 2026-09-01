@@ -1,7 +1,7 @@
 "use client";
 
 import parse from "html-react-parser";
-import { experience } from "@/data/jenna";
+import { experience } from "@/data/content";
 import { SectionHeading } from "./SectionHeading";
 
 export function ExperienceSection() {

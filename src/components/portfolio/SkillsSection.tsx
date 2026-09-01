@@ -1,7 +1,7 @@
 "use client";
 
 import { Icon } from "@iconify/react";
-import { skills, type SkillItem } from "@/data/jenna";
+import { skills, type SkillItem } from "@/data/content";
 import { useTheme } from "./ThemeProvider";
 import { SectionHeading } from "./SectionHeading";
 
