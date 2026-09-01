@@ -102,6 +102,15 @@ export function ProjectsSection() {
                       <span className="project-collage__tag">
                         {project.details.type}
                       </span>
+                      {project.liveUrl ? (
+                        <span className="project-collage__tag project-collage__tag--live">
+                          <span
+                            className="project-collage__live-dot"
+                            aria-hidden="true"
+                          />
+                          Live
+                        </span>
+                      ) : null}
                       {project.inProgress ? (
                         <span className="project-collage__tag project-collage__tag--wip">
                           In progress
@@ -252,9 +261,20 @@ export function ProjectsSection() {
                         </ul>
                       </div>
 
-                      {active.links?.length ? (
+                      {active.liveUrl || active.links?.length ? (
                         <div className="project-modal__links">
-                          {active.links.map((link) => (
+                          {active.liveUrl ? (
+                            <a
+                              className="px-btn px-btn--sm"
+                              href={active.liveUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <Icon icon="mdi:open-in-new" aria-hidden="true" />
+                              <span>Visit live site</span>
+                            </a>
+                          ) : null}
+                          {active.links?.map((link) => (
                             <a
                               key={link.url}
                               className="px-btn px-btn--sm"

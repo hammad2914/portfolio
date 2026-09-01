@@ -478,3 +478,27 @@ html[data-theme="light"] .notfound__text {
   font-size: 1rem;
   color: #d97706;
 }
+
+/* Live product marker — a working URL is stronger proof than a repo */
+.project-collage__tag--live {
+  background: rgba(22, 163, 74, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+}
+
+.project-collage__live-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+  animation: live-pulse 2s infinite;
+}
+
+@keyframes live-pulse {
+  70% {
+    box-shadow: 0 0 0 0.35rem rgba(255, 255, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+}

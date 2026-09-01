@@ -105,8 +105,227 @@ export type ProjectItem = {
   inProgress?: boolean;
   /** Public source, when it exists. */
   links?: ProjectLink[];
+  /** Live product URL — a working SaaS beats a repo as proof. */
+  liveUrl?: string;
   details: ProjectDetails;
 };
+
+const allProjects: ProjectItem[] = [
+  {
+    thumbUrl: "/images/qa-app.png",
+    title: "Integra",
+    subTitle: "Quality Inspection Platform",
+    collageSize: "featured",
+    confidential: true,
+    details: {
+      title: "Integra – Quality Inspection Platform",
+      challenge:
+        "QA teams ran inspections on paper. Reports were typed up after the fact, multi-stage sign-offs moved by email, and nobody had visibility into defect trends until the monthly review — by which point the escapes had already shipped.",
+      approach:
+        "Built 7 end-to-end inspection workflows with multi-stage approval chains, real-time WebSocket status updates, automated PDF report generation, and live KPI dashboards covering defect trends and team productivity.",
+      decisions:
+        "Approvals are modelled as an explicit state machine rather than a boolean flag per stage — inspections routinely bounce backwards on rejection, and a flag-based design can't represent that without ambiguity. Reports are generated server-side so the PDF is identical regardless of the inspector's device, which matters when the document is the audit record. WebSockets over polling because a supervisor watching the approval queue needs the state change immediately, not up to 30 seconds later.",
+      impact: [
+        "Inspection reports generated in seconds instead of being typed up manually",
+        "Real-time visibility into defect trends and inspector productivity",
+        "Measurable reduction in quality escapes reaching customers",
+      ],
+      type: "Enterprise Web Platform",
+      technologies: "React.js, Node.js, WebSockets, PDF Generation, PostgreSQL",
+      platform: "Web",
+    },
+  },
+  {
+    thumbUrl: "/images/cortex-demo.png",
+    title: "Cortex",
+    subTitle: "AI-Powered ERP System",
+    collageSize: "featured",
+    confidential: true,
+    details: {
+      title: "Cortex – AI-Powered ERP System",
+      challenge:
+        "An ERP spanning 8 interconnected modules where every invoice and purchase order was keyed in by hand from supplier PDFs — each client sending a different layout. Data entry was the bottleneck, and the grids were large enough that naive rendering locked up the browser.",
+      approach:
+        "Led full-stack development across 8 modules with complex admin panels and permission flows. Built an AI bulk PDF extraction pipeline on OpenAI handling 8–12 different client document formats, and AG Grid interfaces over 50,000+ row datasets with live WebSocket synchronization.",
+      decisions:
+        "TODO(hammad): why OpenAI over a document-specific extraction service, and how you handle varying layouts / low-confidence fields. AG Grid's server-side row model over a custom table: at 50k rows the work is virtualization, and that's a solved problem not worth rebuilding. WebSockets because 8 modules share state — a purchase order updated in one module has to be correct everywhere without a refresh.",
+      impact: [
+        "Document processing time reduced by 70%",
+        "Manual data entry for invoices and purchase orders eliminated",
+        "Zero UI lag on 50,000+ row grids with live data consistency",
+      ],
+      type: "AI-Powered ERP",
+      technologies: "React.js, NestJS, PostgreSQL, WebSockets, OpenAI, AG Grid",
+      platform: "Web",
+    },
+  },
+  {
+    thumbUrl: "/images/munshi.png",
+    title: "Munshi",
+    subTitle: "WhatsApp AI Assistant",
+    collageSize: "featured",
+    confidential: true,
+    privacyNote: "Unreleased product — the source stays private until launch.",
+    inProgress: true,
+    details: {
+      title: "Munshi – WhatsApp AI Assistant",
+      challenge:
+        "Pakistani small businesses answer the same WhatsApp questions all day — hours, prices, availability, booking — in a mix of Urdu, Roman Urdu and English. Messages missed after hours are lost sales, and no owner can staff a reply desk around the clock.",
+      approach:
+        "Building a WhatsApp assistant that answers from the business's own uploaded knowledge base, books appointments, takes orders, captures leads, runs follow-ups, collects reviews, and hands the hard ones to a human. Next.js dashboard over a NestJS API, PostgreSQL with pgvector for retrieval, Gemini for language, and PDF/DOCX ingestion to build the knowledge base.",
+      decisions:
+        'Every action is assigned to exactly one layer: Gemini for understanding language, pgvector for retrieval, regex for safety-critical detection, and plain code for business logic and scheduled work. Gemini never answers from its own training data — it only composes over the chunks the server returns, so the database stays the single source of truth. Escalation detection (complaint, refund, "manager bulao") is regex rather than a model, because it has to fire instantly and must never silently fail. Retrieval scoring below 0.70 similarity falls back to a human handoff instead of guessing.',
+      impact: [
+        "Replies in the customer's own language — Urdu, Roman Urdu or English",
+        "Grounded answers only: never from model training data",
+        "Complaints and refund requests escalate to a human immediately",
+      ],
+      type: "AI SaaS Product",
+      technologies:
+        "Next.js, NestJS, Prisma, PostgreSQL + pgvector, Gemini, WhatsApp API",
+      platform: "Web + WhatsApp",
+    },
+  },
+  {
+    thumbUrl: "/images/lia.png",
+    title: "Law in Action",
+    subTitle: "Trade & Regulatory Compliance SaaS",
+    collageSize: "featured",
+    confidential: true,
+    details: {
+      title: "Law in Action – Trade & Regulatory Compliance SaaS",
+      challenge:
+        "Companies trading into the EU have to track regulations that change constantly, work across German and English, and map products to the correct HS tariff codes. That work was living in spreadsheets and PDF attachments, with no shared history of what changed when.",
+      approach:
+        "Multi-tenant compliance platform: regulation tracking with attached source documents, HS code classification across the full UN Comtrade dataset, German/English translation with import and export, auto-generated weekly newsletter PDFs on a cron, and an external API with per-organization keys and token metering.",
+      decisions:
+        "Translation sits behind a provider abstraction over DeepL, Azure, Google and MyMemory with automatic fallback, so one provider's quota or outage doesn't stall compliance work. The ~10,300-entry UN Comtrade HS classification is fetched once at startup and held in memory rather than queried per request — it's a reference set that changes rarely, so the round trip buys nothing. External API access is keyed per organization with token usage metered, so integrations can be rate-limited and billed independently of the app itself.",
+      impact: [
+        "Regulation tracking and HS classification in one auditable system of record",
+        "Weekly compliance newsletters generated and delivered automatically",
+        "TODO(hammad): organizations using it, or any client-facing outcome you can share",
+      ],
+      type: "Compliance SaaS",
+      technologies:
+        "React, Express, Prisma, PostgreSQL, DeepL/Azure Translate, React PDF",
+      platform: "Web",
+    },
+  },
+  {
+    thumbUrl: "/images/vp.png",
+    title: "Oculas Vendor Portal",
+    subTitle: "B2B Supply Chain Management",
+    collageSize: "medium",
+    confidential: true,
+    details: {
+      title: "OCULAS – Vendor Portal",
+      challenge:
+        "Suppliers submitted invoices and delivery documents as PDFs by email. Someone on the finance side re-keyed each one, reconciled it by hand, and filed it — roughly 10,000 documents a year, with transcription errors surfacing weeks later as payment disputes.",
+      approach:
+        "Built a vendor portal where suppliers upload documents directly, with automated PDF extraction, validation, and invoice/debit note generation on top of a centralized document management system.",
+      decisions:
+        "Extraction results go through a validation step before they're committed rather than being written straight to the ledger — automation that silently writes wrong financial records is worse than manual entry. Vendors upload to the portal instead of emailing, which turns an unstructured inbox into an auditable pipeline with a status each document can actually be in.",
+      impact: [
+        "Manual effort cut by 70% and processing time by 50%",
+        "10,000+ documents per year handled through automated workflows",
+        "Data accuracy improved by 60%",
+      ],
+      type: "Enterprise Web Platform",
+      technologies: "Next.js, Node.js, PostgreSQL, PDF Automation",
+      platform: "Web",
+    },
+  },
+  {
+    thumbUrl: "/images/qc-app.png",
+    title: "PPWR Compliance",
+    subTitle: "EU Packaging Regulation SaaS",
+    collageSize: "medium",
+    confidential: true,
+    inProgress: true,
+    details: {
+      title: "PPWR – EU Packaging Compliance SaaS",
+      challenge:
+        "The EU Packaging and Packaging Waste Regulation requires manufacturers to evidence compliance across their packaging portfolio. Clients were tracking this in spreadsheets — no audit trail, no role separation, and no way to prove what was reported when.",
+      approach:
+        "Building a multi-client SaaS compliance platform with a multi-role admin structure and several compliance modules, on a .NET Core backend with SQL Server and a React frontend. Currently in active development.",
+      decisions:
+        "TODO(hammad): why .NET Core/SQL Server here rather than the Node stack you use elsewhere, and how tenant separation is enforced.",
+      impact: [
+        "Multi-client compliance tracking with per-role access control",
+        "Replacing spreadsheet-based reporting with an auditable system of record",
+      ],
+      type: "Compliance SaaS",
+      technologies: "React.js, .NET Core, .NET Web API, SQL Server",
+      platform: "Web",
+    },
+  },
+  {
+    thumbUrl: "/images/car-rental.png",
+    modalImages: ["/images/car-rental.png", "/images/car-rental2.png"],
+    title: "MiCar",
+    subTitle: "Car Rental App — UI",
+    collageSize: "portrait",
+    details: {
+      title: "MiCar – Car Rental App (UI)",
+      challenge:
+        "A car rental concept that needed a complete mobile interface designed and built out — browse, booking flow, and account screens — before any backend work was scoped.",
+      approach:
+        "Built the full cross-platform mobile UI in React Native — vehicle browsing, booking flow, and account screens, laid out for both iOS and Android. Front-end only: this project has no backend, and the screens run against mocked data.",
+      decisions:
+        "TODO(hammad): why React Native for this, and anything notable about the screen/component structure.",
+      impact: [
+        "Complete booking-flow UI covering both iOS and Android from one codebase",
+      ],
+      type: "Mobile UI",
+      technologies: "React Native, TypeScript",
+      platform: "Android & iOS",
+    },
+  },
+  {
+    thumbUrl: "/images/hotel-booking.png",
+    title: "Seasons Heritage",
+    subTitle: "Hotel Website",
+    collageSize: "small",
+    links: [
+      {
+        label: "Source",
+        url: "https://github.com/hammad2914/Seasons-Heritage",
+      },
+    ],
+    details: {
+      title: "Seasons Heritage – Hotel Website",
+      challenge:
+        "TODO(hammad): what did the client need? Was this a brochure site, or does it capture enquiries/bookings?",
+      approach:
+        "Built the Seasons Heritage website with React and Tailwind CSS. TODO(hammad): confirm the actual scope — which pages, any forms, any backend.",
+      decisions: "TODO(hammad): anything notable about how you built it.",
+      impact: ["TODO(hammad): what did this achieve for the client?"],
+      type: "Client Website",
+      technologies: "React, Tailwind CSS",
+      platform: "Web",
+    },
+  },
+  {
+    thumbUrl: "/images/gioia.png",
+    title: "Gioia Bakers",
+    subTitle: "Bakery Website",
+    collageSize: "small",
+    links: [
+      { label: "Source", url: "https://github.com/hammad2914/Gioia-bakers" },
+    ],
+    details: {
+      title: "Gioia Bakers – Bakery Website",
+      challenge: "TODO(hammad): what did the bakery need this site to do?",
+      approach:
+        "Built the Gioia Bakers website with Next.js, TypeScript and Tailwind CSS. TODO(hammad): confirm whether it has a real product catalogue / ordering, or is presentational.",
+      decisions: "TODO(hammad): anything notable about how you built it.",
+      impact: ["TODO(hammad): what did this achieve for the client?"],
+      type: "Client Website",
+      technologies: "Next.js, TypeScript, Tailwind CSS",
+      platform: "Web",
+    },
+  },
+];
 
 export const projects = {
   sectionHeading: {
@@ -115,225 +334,7 @@ export const projects = {
   },
   /** Shown under the section heading to pre-empt "where's the code?". */
   note: "Most of these are proprietary client systems, so the source isn't public. Each case study covers the problem, the architecture, and why I made the calls I did — and I'm happy to walk through the code on a call.",
-  allProjects: [
-    {
-      thumbUrl: "/images/qa-app.png",
-      title: "Integra",
-      subTitle: "Quality Inspection Platform",
-      collageSize: "featured",
-      confidential: true,
-      details: {
-        title: "Integra – Quality Inspection Platform",
-        challenge:
-          "QA teams ran inspections on paper. Reports were typed up after the fact, multi-stage sign-offs moved by email, and nobody had visibility into defect trends until the monthly review — by which point the escapes had already shipped.",
-        approach:
-          "Built 7 end-to-end inspection workflows with multi-stage approval chains, real-time WebSocket status updates, automated PDF report generation, and live KPI dashboards covering defect trends and team productivity.",
-        decisions:
-          "Approvals are modelled as an explicit state machine rather than a boolean flag per stage — inspections routinely bounce backwards on rejection, and a flag-based design can't represent that without ambiguity. Reports are generated server-side so the PDF is identical regardless of the inspector's device, which matters when the document is the audit record. WebSockets over polling because a supervisor watching the approval queue needs the state change immediately, not up to 30 seconds later.",
-        impact: [
-          "Inspection reports generated in seconds instead of being typed up manually",
-          "Real-time visibility into defect trends and inspector productivity",
-          "Measurable reduction in quality escapes reaching customers",
-        ],
-        type: "Enterprise Web Platform",
-        technologies:
-          "React.js, Node.js, WebSockets, PDF Generation, PostgreSQL",
-        platform: "Web",
-      },
-    },
-    {
-      thumbUrl: "/images/cortex-demo.png",
-      title: "Cortex",
-      subTitle: "AI-Powered ERP System",
-      collageSize: "featured",
-      confidential: true,
-      details: {
-        title: "Cortex – AI-Powered ERP System",
-        challenge:
-          "An ERP spanning 8 interconnected modules where every invoice and purchase order was keyed in by hand from supplier PDFs — each client sending a different layout. Data entry was the bottleneck, and the grids were large enough that naive rendering locked up the browser.",
-        approach:
-          "Led full-stack development across 8 modules with complex admin panels and permission flows. Built an AI bulk PDF extraction pipeline on OpenAI handling 8–12 different client document formats, and AG Grid interfaces over 50,000+ row datasets with live WebSocket synchronization.",
-        decisions:
-          "TODO(hammad): why OpenAI over a document-specific extraction service, and how you handle varying layouts / low-confidence fields. AG Grid's server-side row model over a custom table: at 50k rows the work is virtualization, and that's a solved problem not worth rebuilding. WebSockets because 8 modules share state — a purchase order updated in one module has to be correct everywhere without a refresh.",
-        impact: [
-          "Document processing time reduced by 70%",
-          "Manual data entry for invoices and purchase orders eliminated",
-          "Zero UI lag on 50,000+ row grids with live data consistency",
-        ],
-        type: "AI-Powered ERP",
-        technologies:
-          "React.js, NestJS, PostgreSQL, WebSockets, OpenAI, AG Grid",
-        platform: "Web",
-      },
-    },
-    {
-      thumbUrl: "/images/munshi.png",
-      title: "Munshi",
-      subTitle: "WhatsApp AI Assistant",
-      collageSize: "featured",
-      confidential: true,
-      privacyNote:
-        "Unreleased product — the source stays private until launch.",
-      inProgress: true,
-      details: {
-        title: "Munshi – WhatsApp AI Assistant",
-        challenge:
-          "Pakistani small businesses answer the same WhatsApp questions all day — hours, prices, availability, booking — in a mix of Urdu, Roman Urdu and English. Messages missed after hours are lost sales, and no owner can staff a reply desk around the clock.",
-        approach:
-          "Building a WhatsApp assistant that answers from the business's own uploaded knowledge base, books appointments, takes orders, captures leads, runs follow-ups, collects reviews, and hands the hard ones to a human. Next.js dashboard over a NestJS API, PostgreSQL with pgvector for retrieval, Gemini for language, and PDF/DOCX ingestion to build the knowledge base.",
-        decisions:
-          'Every action is assigned to exactly one layer: Gemini for understanding language, pgvector for retrieval, regex for safety-critical detection, and plain code for business logic and scheduled work. Gemini never answers from its own training data — it only composes over the chunks the server returns, so the database stays the single source of truth. Escalation detection (complaint, refund, "manager bulao") is regex rather than a model, because it has to fire instantly and must never silently fail. Retrieval scoring below 0.70 similarity falls back to a human handoff instead of guessing.',
-        impact: [
-          "Replies in the customer's own language — Urdu, Roman Urdu or English",
-          "Grounded answers only: never from model training data",
-          "Complaints and refund requests escalate to a human immediately",
-        ],
-        type: "AI SaaS Product",
-        technologies:
-          "Next.js, NestJS, Prisma, PostgreSQL + pgvector, Gemini, WhatsApp API",
-        platform: "Web + WhatsApp",
-      },
-    },
-    {
-      thumbUrl: "/images/lia.png",
-      title: "Law in Action",
-      subTitle: "Trade & Regulatory Compliance SaaS",
-      collageSize: "featured",
-      confidential: true,
-      details: {
-        title: "Law in Action – Trade & Regulatory Compliance SaaS",
-        challenge:
-          "Companies trading into the EU have to track regulations that change constantly, work across German and English, and map products to the correct HS tariff codes. That work was living in spreadsheets and PDF attachments, with no shared history of what changed when.",
-        approach:
-          "Multi-tenant compliance platform: regulation tracking with attached source documents, HS code classification across the full UN Comtrade dataset, German/English translation with import and export, auto-generated weekly newsletter PDFs on a cron, and an external API with per-organization keys and token metering.",
-        decisions:
-          "Translation sits behind a provider abstraction over DeepL, Azure, Google and MyMemory with automatic fallback, so one provider's quota or outage doesn't stall compliance work. The ~10,300-entry UN Comtrade HS classification is fetched once at startup and held in memory rather than queried per request — it's a reference set that changes rarely, so the round trip buys nothing. External API access is keyed per organization with token usage metered, so integrations can be rate-limited and billed independently of the app itself.",
-        impact: [
-          "Regulation tracking and HS classification in one auditable system of record",
-          "Weekly compliance newsletters generated and delivered automatically",
-          "TODO(hammad): organizations using it, or any client-facing outcome you can share",
-        ],
-        type: "Compliance SaaS",
-        technologies:
-          "React, Express, Prisma, PostgreSQL, DeepL/Azure Translate, React PDF",
-        platform: "Web",
-      },
-    },
-    {
-      thumbUrl: "/images/vp.png",
-      title: "Oculas Vendor Portal",
-      subTitle: "B2B Supply Chain Management",
-      collageSize: "medium",
-      confidential: true,
-      details: {
-        title: "OCULAS – Vendor Portal",
-        challenge:
-          "Suppliers submitted invoices and delivery documents as PDFs by email. Someone on the finance side re-keyed each one, reconciled it by hand, and filed it — roughly 10,000 documents a year, with transcription errors surfacing weeks later as payment disputes.",
-        approach:
-          "Built a vendor portal where suppliers upload documents directly, with automated PDF extraction, validation, and invoice/debit note generation on top of a centralized document management system.",
-        decisions:
-          "Extraction results go through a validation step before they're committed rather than being written straight to the ledger — automation that silently writes wrong financial records is worse than manual entry. Vendors upload to the portal instead of emailing, which turns an unstructured inbox into an auditable pipeline with a status each document can actually be in.",
-        impact: [
-          "Manual effort cut by 70% and processing time by 50%",
-          "10,000+ documents per year handled through automated workflows",
-          "Data accuracy improved by 60%",
-        ],
-        type: "Enterprise Web Platform",
-        technologies: "Next.js, Node.js, PostgreSQL, PDF Automation",
-        platform: "Web",
-      },
-    },
-    {
-      thumbUrl: "/images/qc-app.png",
-      title: "PPWR Compliance",
-      subTitle: "EU Packaging Regulation SaaS",
-      collageSize: "medium",
-      confidential: true,
-      inProgress: true,
-      details: {
-        title: "PPWR – EU Packaging Compliance SaaS",
-        challenge:
-          "The EU Packaging and Packaging Waste Regulation requires manufacturers to evidence compliance across their packaging portfolio. Clients were tracking this in spreadsheets — no audit trail, no role separation, and no way to prove what was reported when.",
-        approach:
-          "Building a multi-client SaaS compliance platform with a multi-role admin structure and several compliance modules, on a .NET Core backend with SQL Server and a React frontend. Currently in active development.",
-        decisions:
-          "TODO(hammad): why .NET Core/SQL Server here rather than the Node stack you use elsewhere, and how tenant separation is enforced.",
-        impact: [
-          "Multi-client compliance tracking with per-role access control",
-          "Replacing spreadsheet-based reporting with an auditable system of record",
-        ],
-        type: "Compliance SaaS",
-        technologies: "React.js, .NET Core, .NET Web API, SQL Server",
-        platform: "Web",
-      },
-    },
-    {
-      thumbUrl: "/images/car-rental.png",
-      modalImages: ["/images/car-rental.png", "/images/car-rental2.png"],
-      title: "MiCar",
-      subTitle: "Car Rental App — UI",
-      collageSize: "portrait",
-      details: {
-        title: "MiCar – Car Rental App (UI)",
-        challenge:
-          "A car rental concept that needed a complete mobile interface designed and built out — browse, booking flow, and account screens — before any backend work was scoped.",
-        approach:
-          "Built the full cross-platform mobile UI in React Native — vehicle browsing, booking flow, and account screens, laid out for both iOS and Android. Front-end only: this project has no backend, and the screens run against mocked data.",
-        decisions:
-          "TODO(hammad): why React Native for this, and anything notable about the screen/component structure.",
-        impact: [
-          "Complete booking-flow UI covering both iOS and Android from one codebase",
-        ],
-        type: "Mobile UI",
-        technologies: "React Native, TypeScript",
-        platform: "Android & iOS",
-      },
-    },
-    {
-      thumbUrl: "/images/hotel-booking.png",
-      title: "Seasons Heritage",
-      subTitle: "Hotel Website",
-      collageSize: "small",
-      links: [
-        {
-          label: "Source",
-          url: "https://github.com/hammad2914/Seasons-Heritage",
-        },
-      ],
-      details: {
-        title: "Seasons Heritage – Hotel Website",
-        challenge:
-          "TODO(hammad): what did the client need? Was this a brochure site, or does it capture enquiries/bookings?",
-        approach:
-          "Built the Seasons Heritage website with React and Tailwind CSS. TODO(hammad): confirm the actual scope — which pages, any forms, any backend.",
-        decisions: "TODO(hammad): anything notable about how you built it.",
-        impact: ["TODO(hammad): what did this achieve for the client?"],
-        type: "Client Website",
-        technologies: "React, Tailwind CSS",
-        platform: "Web",
-      },
-    },
-    {
-      thumbUrl: "/images/gioia.png",
-      title: "Gioia Bakers",
-      subTitle: "Bakery Website",
-      collageSize: "small",
-      links: [
-        { label: "Source", url: "https://github.com/hammad2914/Gioia-bakers" },
-      ],
-      details: {
-        title: "Gioia Bakers – Bakery Website",
-        challenge: "TODO(hammad): what did the bakery need this site to do?",
-        approach:
-          "Built the Gioia Bakers website with Next.js, TypeScript and Tailwind CSS. TODO(hammad): confirm whether it has a real product catalogue / ordering, or is presentational.",
-        decisions: "TODO(hammad): anything notable about how you built it.",
-        impact: ["TODO(hammad): what did this achieve for the client?"],
-        type: "Client Website",
-        technologies: "Next.js, TypeScript, Tailwind CSS",
-        platform: "Web",
-      },
-    },
-  ] satisfies ProjectItem[],
+  allProjects,
 };
 
 export const services = {
