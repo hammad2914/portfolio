@@ -160,6 +160,33 @@ const allProjects: ProjectItem[] = [
     },
   },
   {
+    thumbUrl: "/images/okulium.png",
+    title: "Okulium",
+    subTitle: "School Management SaaS",
+    collageSize: "featured",
+    confidential: true,
+    privacyNote:
+      "Commercial SaaS — the source is private, but the product is live.",
+    // liveUrl: "TODO(hammad): paste the Vercel URL here and the card gets a Live badge",
+    details: {
+      title: "Okulium – School Management SaaS",
+      challenge:
+        "Pakistani schools run attendance registers, exam results, and fee ledgers on paper and spreadsheets. Multi-branch school groups have the same problem multiplied — no shared view across branches, and no reliable record of who changed a mark or an attendance entry after the fact.",
+      approach:
+        "Multi-tenant school platform covering attendance, exams and results, fees and payments, students, parents, staff, timetabling, announcements and reporting. Built as a Turborepo monorepo: a NestJS API, a React PWA dashboard, a separate landing site, and shared type and UI packages. A four-person team project.",
+      decisions:
+        "Data is scoped at branch level under a school group, so a group administrator sees across branches while branch staff stay contained to theirs. Attendance changes are written to a separate edit-history table rather than overwriting the record — attendance is an administrative record parents query, so who changed what and when has to survive. Result disputes are modelled as their own workflow rather than an ad-hoc correction, because a challenged grade needs a reviewable trail. The dashboard ships as a PWA so staff can use it as an installed app on the low-end Android hardware that is common in schools. TODO(hammad): confirm this reasoning and add anything I've missed.",
+      impact: [
+        "Live product in use by schools",
+        "Paper attendance registers and spreadsheet fee ledgers replaced with an auditable system",
+        "TODO(hammad): schools or branches on it, students managed, or any number you can share",
+      ],
+      type: "Multi-Tenant SaaS",
+      technologies: "React, Vite, NestJS, Prisma, PostgreSQL, Turborepo, PWA",
+      platform: "Web (installable PWA)",
+    },
+  },
+  {
     thumbUrl: "/images/munshi.png",
     title: "Munshi",
     subTitle: "WhatsApp AI Assistant",
