@@ -97,8 +97,10 @@ export type ProjectItem = {
   title: string;
   subTitle: string;
   collageSize: ProjectCollageSize;
-  /** Client work under NDA — no public source. */
+  /** No public source. Defaults to the client-NDA wording. */
   confidential?: boolean;
+  /** Overrides the default NDA wording when the reason isn't a client NDA. */
+  privacyNote?: string;
   /** Set while the project is still being built, so impact reads as expected, not delivered. */
   inProgress?: boolean;
   /** Public source, when it exists. */
@@ -170,19 +172,21 @@ export const projects = {
       subTitle: "WhatsApp AI Assistant",
       collageSize: "featured",
       confidential: true,
+      privacyNote:
+        "Unreleased product — the source stays private until launch.",
       inProgress: true,
       details: {
         title: "Munshi – WhatsApp AI Assistant",
         challenge:
           "Pakistani small businesses answer the same WhatsApp questions all day — hours, prices, availability, booking — in a mix of Urdu, Roman Urdu and English. Messages missed after hours are lost sales, and no owner can staff a reply desk around the clock.",
         approach:
-          "A WhatsApp assistant that answers from the business's own uploaded knowledge base, books appointments, takes orders, captures leads, runs follow-ups, collects reviews, and hands the hard ones to a human. Next.js dashboard over a NestJS API, PostgreSQL with pgvector for retrieval, Gemini for language, and PDF/DOCX ingestion to build the knowledge base.",
+          "Building a WhatsApp assistant that answers from the business's own uploaded knowledge base, books appointments, takes orders, captures leads, runs follow-ups, collects reviews, and hands the hard ones to a human. Next.js dashboard over a NestJS API, PostgreSQL with pgvector for retrieval, Gemini for language, and PDF/DOCX ingestion to build the knowledge base.",
         decisions:
           'Every action is assigned to exactly one layer: Gemini for understanding language, pgvector for retrieval, regex for safety-critical detection, and plain code for business logic and scheduled work. Gemini never answers from its own training data — it only composes over the chunks the server returns, so the database stays the single source of truth. Escalation detection (complaint, refund, "manager bulao") is regex rather than a model, because it has to fire instantly and must never silently fail. Retrieval scoring below 0.70 similarity falls back to a human handoff instead of guessing.',
         impact: [
-          "Answers in the customer's own language — Urdu, Roman Urdu or English",
-          "Grounded replies only: no answering from model training data",
-          "TODO(hammad): businesses live on it, messages handled, or any usage numbers you can share",
+          "Replies in the customer's own language — Urdu, Roman Urdu or English",
+          "Grounded answers only: never from model training data",
+          "Complaints and refund requests escalate to a human immediately",
         ],
         type: "AI SaaS Product",
         technologies:

@@ -110,7 +110,7 @@ export function ProjectsSection() {
                       {project.confidential ? (
                         <span className="project-collage__tag project-collage__tag--nda">
                           <Icon icon="mdi:lock-outline" aria-hidden="true" />
-                          NDA
+                          {project.privacyNote ? "Private" : "NDA"}
                         </span>
                       ) : null}
                       {project.links?.length ? (
@@ -199,7 +199,8 @@ export function ProjectsSection() {
                         <p className="project-modal__nda">
                           <Icon icon="mdi:lock-outline" aria-hidden="true" />
                           <span>
-                            Proprietary client system — source is not public.
+                            {active.privacyNote ??
+                              "Proprietary client system — source is not public."}{" "}
                             Happy to walk through the architecture on a call.
                           </span>
                         </p>
