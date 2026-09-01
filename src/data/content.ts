@@ -213,40 +213,6 @@ export const projects = {
       },
     },
     {
-      thumbUrl: "/images/taskify.png",
-      title: "Taskify",
-      subTitle: "Multi-Tenant SaaS Platform",
-      collageSize: "medium",
-      links: [
-        {
-          label: "Frontend",
-          url: "https://github.com/hammad2914/Taskify-Frontend",
-        },
-        {
-          label: "Backend",
-          url: "https://github.com/hammad2914/Taskify-Backend",
-        },
-      ],
-      details: {
-        title: "Taskify – Multi-Tenant SaaS Project Management",
-        challenge:
-          "A multi-tenant project management tool where the hard requirement is that no tenant can ever see another's data — plus deadlines that stay honest, since a task system where people quietly move dates is just a to-do list.",
-        approach:
-          "Built the full stack: JWT authentication with refresh-token rotation and HttpOnly cookies, 3-tier RBAC, a real-time task system on Socket.io with 5-state workflow logic and immutable deadline enforcement, plus Gemini AI for automated report generation.",
-        decisions:
-          "Tenant scoping is enforced at the data-access layer rather than in each route handler — a per-route check is one forgotten line away from a cross-tenant leak. Refresh-token rotation with HttpOnly cookies over storing tokens in localStorage, which is readable by any injected script. Deadlines are immutable once set because the entire accountability value of the system collapses if they aren't.",
-        impact: [
-          "Zero cross-tenant data leakage under 3-tier RBAC",
-          "Sub-3-second AI-generated project reports",
-          "Real-time task state sync across all connected clients",
-        ],
-        type: "Multi-Tenant SaaS",
-        technologies:
-          "React.js, Express.js, Socket.io, JWT, PostgreSQL, Gemini AI",
-        platform: "Web",
-      },
-    },
-    {
       thumbUrl: "/images/car-rental.png",
       modalImages: ["/images/car-rental.png", "/images/car-rental2.png"],
       title: "MiCar",
@@ -271,7 +237,7 @@ export const projects = {
     {
       thumbUrl: "/images/hotel-booking.png",
       title: "Seasons Heritage",
-      subTitle: "Hotel Booking Platform",
+      subTitle: "Hotel Website",
       collageSize: "small",
       links: [
         {
@@ -280,44 +246,35 @@ export const projects = {
         },
       ],
       details: {
-        title: "Seasons Heritage – Hotel Booking Platform",
+        title: "Seasons Heritage – Hotel Website",
         challenge:
-          "A heritage property needed direct bookings rather than paying commission on every reservation through third-party travel platforms.",
+          "TODO(hammad): what did the client need? Was this a brochure site, or does it capture enquiries/bookings?",
         approach:
-          "Built a full-stack booking platform with a responsive booking flow, real-time room availability, and a REST API backend handling reservations and inventory.",
-        decisions:
-          "Availability is computed from the reservation table rather than stored as a counter — a counter drifts the moment a booking fails halfway through, and for inventory the derived value is the one you can trust.",
-        impact: [
-          "Direct booking flow removing third-party commission",
-          "Real-time room availability across the booking journey",
-        ],
-        type: "Web Application",
-        technologies: "React, Node.js, Tailwind CSS, REST APIs",
+          "Built the Seasons Heritage website with React and Tailwind CSS. TODO(hammad): confirm the actual scope — which pages, any forms, any backend.",
+        decisions: "TODO(hammad): anything notable about how you built it.",
+        impact: ["TODO(hammad): what did this achieve for the client?"],
+        type: "Client Website",
+        technologies: "React, Tailwind CSS",
         platform: "Web",
       },
     },
     {
       thumbUrl: "/images/gioia.png",
       title: "Gioia Bakers",
-      subTitle: "E-commerce Bakery Website",
+      subTitle: "Bakery Website",
       collageSize: "small",
       links: [
         { label: "Source", url: "https://github.com/hammad2914/Gioia-bakers" },
       ],
       details: {
-        title: "Gioia Bakers – E-commerce Bakery Website",
-        challenge:
-          "A bakery taking custom cake orders through social media DMs, with no product catalogue and no structured way to capture order details.",
+        title: "Gioia Bakers – Bakery Website",
+        challenge: "TODO(hammad): what did the bakery need this site to do?",
         approach:
-          "Built an e-commerce platform on Next.js with server-side rendering, a custom ordering backend, and Tailwind CSS — product catalogue, order customization, and checkout.",
-        decisions:
-          "Server-side rendering because a bakery lives on local search: the product pages have to be crawlable and fast on mobile, which is where the traffic comes from. Order customization is modelled as structured options rather than a free-text note, so the kitchen gets an unambiguous ticket.",
-        impact: [
-          "DM-based ordering replaced with a structured catalogue and checkout",
-          "SEO-friendly, performance-optimized product pages",
-        ],
-        type: "E-commerce Website",
-        technologies: "Next.js, Node.js, TypeScript, Tailwind CSS",
+          "Built the Gioia Bakers website with Next.js, TypeScript and Tailwind CSS. TODO(hammad): confirm whether it has a real product catalogue / ordering, or is presentational.",
+        decisions: "TODO(hammad): anything notable about how you built it.",
+        impact: ["TODO(hammad): what did this achieve for the client?"],
+        type: "Client Website",
+        technologies: "Next.js, TypeScript, Tailwind CSS",
         platform: "Web",
       },
     },
