@@ -165,6 +165,57 @@ export const projects = {
       },
     },
     {
+      thumbUrl: "/images/munshi.png",
+      title: "Munshi",
+      subTitle: "WhatsApp AI Assistant",
+      collageSize: "featured",
+      confidential: true,
+      inProgress: true,
+      details: {
+        title: "Munshi – WhatsApp AI Assistant",
+        challenge:
+          "Pakistani small businesses answer the same WhatsApp questions all day — hours, prices, availability, booking — in a mix of Urdu, Roman Urdu and English. Messages missed after hours are lost sales, and no owner can staff a reply desk around the clock.",
+        approach:
+          "A WhatsApp assistant that answers from the business's own uploaded knowledge base, books appointments, takes orders, captures leads, runs follow-ups, collects reviews, and hands the hard ones to a human. Next.js dashboard over a NestJS API, PostgreSQL with pgvector for retrieval, Gemini for language, and PDF/DOCX ingestion to build the knowledge base.",
+        decisions:
+          'Every action is assigned to exactly one layer: Gemini for understanding language, pgvector for retrieval, regex for safety-critical detection, and plain code for business logic and scheduled work. Gemini never answers from its own training data — it only composes over the chunks the server returns, so the database stays the single source of truth. Escalation detection (complaint, refund, "manager bulao") is regex rather than a model, because it has to fire instantly and must never silently fail. Retrieval scoring below 0.70 similarity falls back to a human handoff instead of guessing.',
+        impact: [
+          "Answers in the customer's own language — Urdu, Roman Urdu or English",
+          "Grounded replies only: no answering from model training data",
+          "TODO(hammad): businesses live on it, messages handled, or any usage numbers you can share",
+        ],
+        type: "AI SaaS Product",
+        technologies:
+          "Next.js, NestJS, Prisma, PostgreSQL + pgvector, Gemini, WhatsApp API",
+        platform: "Web + WhatsApp",
+      },
+    },
+    {
+      thumbUrl: "/images/lia.png",
+      title: "Law in Action",
+      subTitle: "Trade & Regulatory Compliance SaaS",
+      collageSize: "featured",
+      confidential: true,
+      details: {
+        title: "Law in Action – Trade & Regulatory Compliance SaaS",
+        challenge:
+          "Companies trading into the EU have to track regulations that change constantly, work across German and English, and map products to the correct HS tariff codes. That work was living in spreadsheets and PDF attachments, with no shared history of what changed when.",
+        approach:
+          "Multi-tenant compliance platform: regulation tracking with attached source documents, HS code classification across the full UN Comtrade dataset, German/English translation with import and export, auto-generated weekly newsletter PDFs on a cron, and an external API with per-organization keys and token metering.",
+        decisions:
+          "Translation sits behind a provider abstraction over DeepL, Azure, Google and MyMemory with automatic fallback, so one provider's quota or outage doesn't stall compliance work. The ~10,300-entry UN Comtrade HS classification is fetched once at startup and held in memory rather than queried per request — it's a reference set that changes rarely, so the round trip buys nothing. External API access is keyed per organization with token usage metered, so integrations can be rate-limited and billed independently of the app itself.",
+        impact: [
+          "Regulation tracking and HS classification in one auditable system of record",
+          "Weekly compliance newsletters generated and delivered automatically",
+          "TODO(hammad): organizations using it, or any client-facing outcome you can share",
+        ],
+        type: "Compliance SaaS",
+        technologies:
+          "React, Express, Prisma, PostgreSQL, DeepL/Azure Translate, React PDF",
+        platform: "Web",
+      },
+    },
+    {
       thumbUrl: "/images/vp.png",
       title: "Oculas Vendor Portal",
       subTitle: "B2B Supply Chain Management",
