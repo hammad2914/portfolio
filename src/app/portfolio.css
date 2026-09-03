@@ -526,114 +526,137 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
   }
 }
 
-/* ================= Hero: code editor =================
-   One restrained window. Dark in both themes — a code editor reads as one. */
-.code-hero {
+/* ================= Hero: code that becomes the app =================
+   A panel that types the code, then flips to the interface that code renders. */
+.c2a {
   width: 100%;
-  max-width: 560px;
+  max-width: 545px;
   margin-inline: auto;
+  perspective: 1600px;
 }
 
-.code-hero__window {
-  overflow: hidden;
+.c2a__stage {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.85s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.c2a__stage.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.c2a__face {
   border-radius: 14px;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   border: 1px solid rgba(255, 255, 255, 0.09);
-  background: #0d1117;
-  box-shadow: 0 26px 60px -22px rgba(2, 8, 16, 0.6);
+  box-shadow: 0 28px 64px -24px rgba(2, 8, 16, 0.62);
 }
 
-html[data-theme="light"] .code-hero__window {
+html[data-theme="light"] .c2a__face {
   border-color: rgba(4, 12, 22, 0.12);
-  box-shadow: 0 22px 48px -20px rgba(4, 12, 22, 0.28);
+  box-shadow: 0 24px 52px -22px rgba(4, 12, 22, 0.26);
 }
 
-.code-hero__chrome {
+.c2a__face--code {
+  background: #0d1117;
+}
+
+/* The back face is stacked on the front and pre-rotated. */
+.c2a__face--app {
+  position: absolute;
+  inset: 0;
+  transform: rotateY(180deg);
+  background: #0f141b;
+  display: flex;
+}
+
+html[data-theme="light"] .c2a__face--app {
+  background: #ffffff;
+}
+
+/* ---- code side ---- */
+.c2a__chrome {
   display: flex;
   align-items: center;
   gap: 0.85rem;
-  height: 2.5rem;
+  height: 2.45rem;
   padding: 0 0.95rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.code-hero__dots {
+.c2a__dots {
   display: inline-flex;
-  gap: 0.42rem;
+  gap: 0.4rem;
   flex-shrink: 0;
 }
 
-.code-hero__dots i {
+.c2a__dots i {
   display: block;
-  width: 0.66rem;
-  height: 0.66rem;
+  width: 0.64rem;
+  height: 0.64rem;
   border-radius: 50%;
 }
 
-.code-hero__file {
-  color: rgba(201, 209, 217, 0.62);
+.c2a__file {
+  color: rgba(201, 209, 217, 0.6);
   font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-  font-size: 0.72rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 0.71rem;
 }
 
-.code-hero__code {
+.c2a__code {
   margin: 0;
-  padding: 1rem 1.1rem 1.2rem;
+  padding: 0.95rem 1rem 1.1rem;
   font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-  font-size: 0.775rem;
-  line-height: 1.6;
+  font-size: 0.755rem;
+  line-height: 1.62;
   color: #c9d1d9;
   overflow-x: auto;
   tab-size: 2;
 }
 
-.code-hero__line {
+.c2a__line {
   display: flex;
-  gap: 0.9rem;
-  min-height: 1.6em;
+  gap: 0.85rem;
+  min-height: 1.62em;
 }
 
-.code-hero__ln {
-  flex: 0 0 1.4rem;
+.c2a__ln {
+  flex: 0 0 1.25rem;
   text-align: right;
   color: rgba(201, 209, 217, 0.22);
   user-select: none;
 }
 
-.code-hero__code code {
+.c2a__code code {
   font: inherit;
   white-space: pre-wrap;
   word-break: break-word;
 }
 
-.code-hero__caret {
+.c2a__caret {
   display: inline-block;
   width: 2px;
   height: 1.05em;
   margin-left: 1px;
   vertical-align: text-bottom;
   background: #0788ff;
-  animation: code-caret 1.05s steps(2, start) infinite;
+  animation: c2a-caret 1.05s steps(2, start) infinite;
 }
 
-@keyframes code-caret {
+@keyframes c2a-caret {
   50% {
     opacity: 0;
   }
 }
 
-/* Token colours — GitHub dark */
 .tok-comment {
   color: #8b949e;
   font-style: italic;
 }
 .tok-string {
   color: #a5d6ff;
-}
-.tok-decorator {
-  color: #ffa657;
 }
 .tok-keyword {
   color: #ff7b72;
@@ -648,36 +671,282 @@ html[data-theme="light"] .code-hero__window {
   color: #d2a8ff;
 }
 
-/* Static role + focus line under the H1 */
-.hs-focus {
-  margin: 0.35rem 0 1.1rem;
-  color: rgba(255, 255, 255, 0.55);
-  font-size: 0.92rem;
-  letter-spacing: 0.02em;
+/* ---- app side ---- */
+.c2a-app {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-size: 0.78rem;
 }
 
-html[data-theme="light"] .hs-focus {
-  color: #5b6470;
+.c2a-app__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  height: 2.45rem;
+  padding: 0 0.9rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+html[data-theme="light"] .c2a-app__bar {
+  border-bottom-color: rgba(4, 12, 22, 0.08);
+  background: #f7f9fc;
+}
+
+.c2a-app__doc {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: rgba(255, 255, 255, 0.86);
+  font-weight: 600;
+  font-size: 0.76rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html[data-theme="light"] .c2a-app__doc {
+  color: #16202c;
+}
+
+.c2a-app__doc svg {
+  color: #0788ff;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+.c2a-app__body {
+  flex: 1;
+  padding: 0.55rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.c2a-app__foot {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.9rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.68rem;
+}
+
+html[data-theme="light"] .c2a-app__foot {
+  border-top-color: rgba(4, 12, 22, 0.08);
+  color: #6b7684;
+}
+
+.c2a-app__foot svg {
+  color: #16a34a;
+  font-size: 0.85rem;
+}
+
+/* rows */
+.c2a-field,
+.c2a-row {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr auto;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.42rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  opacity: 0;
+  animation: c2a-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+html[data-theme="light"] .c2a-field,
+html[data-theme="light"] .c2a-row {
+  border-bottom-color: rgba(4, 12, 22, 0.07);
+}
+
+.is-flipped .c2a-field,
+.is-flipped .c2a-row {
+  animation-play-state: running;
+}
+
+@keyframes c2a-rise {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.c2a-field__label {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+html[data-theme="light"] .c2a-field__label {
+  color: #6b7684;
+}
+
+.c2a-field__value {
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 600;
+}
+
+html[data-theme="light"] .c2a-field__value {
+  color: #16202c;
+}
+
+/* grid variant */
+.c2a-app__body--grid {
+  gap: 0;
+}
+
+.c2a-row {
+  grid-template-columns: 1fr 1fr 0.7fr auto;
+  font-size: 0.73rem;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+html[data-theme="light"] .c2a-row {
+  color: #16202c;
+}
+
+.c2a-row--head {
+  color: rgba(255, 255, 255, 0.38);
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  animation: none;
+  opacity: 1;
+}
+
+html[data-theme="light"] .c2a-row--head {
+  color: #8792a2;
+}
+
+.c2a-num {
+  font-variant-numeric: tabular-nums;
+}
+
+.c2a-row.is-updating {
+  animation:
+    c2a-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    c2a-flash 1.6s ease-out 0.6s;
+}
+
+@keyframes c2a-flash {
+  0% {
+    background: rgba(22, 163, 74, 0.22);
+  }
+  100% {
+    background: transparent;
+  }
+}
+
+/* pills */
+.c2a-pill {
+  justify-self: end;
+  padding: 0.16rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.63rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.c2a-pill--ok {
+  background: rgba(22, 163, 74, 0.16);
+  color: #4ade80;
+}
+
+.c2a-pill--warn {
+  background: rgba(217, 119, 6, 0.18);
+  color: #fbbf24;
+}
+
+.c2a-pill--info {
+  background: rgba(7, 136, 255, 0.16);
+  color: #58a6ff;
+}
+
+.c2a-pill--mute {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+html[data-theme="light"] .c2a-pill--ok {
+  color: #15803d;
+}
+html[data-theme="light"] .c2a-pill--warn {
+  color: #b45309;
+}
+html[data-theme="light"] .c2a-pill--info {
+  color: #0369a1;
+}
+html[data-theme="light"] .c2a-pill--mute {
+  background: rgba(4, 12, 22, 0.06);
+  color: #6b7684;
+}
+
+.c2a-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.66rem;
+}
+
+html[data-theme="light"] .c2a-live {
+  color: #6b7684;
+}
+
+.c2a-live i {
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 50%;
+  background: #16a34a;
+  animation: c2a-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes c2a-pulse {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+.c2a-edited {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #fbbf24;
+  font-size: 0.66rem;
+  font-weight: 600;
 }
 
 @media (max-width: 575px) {
-  .code-hero__code {
-    font-size: 0.68rem;
+  .c2a__code {
+    font-size: 0.66rem;
+  }
+
+  .c2a-app {
+    font-size: 0.72rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .code-hero__caret {
+  .c2a__stage {
+    transition: none;
+  }
+
+  .c2a__caret,
+  .c2a-live i,
+  .c2a-row.is-updating {
     animation: none;
   }
-}
 
-/* The role line is a subtitle, not a second headline. The template sized this
-   H2 for progressively-typed text, so as static copy it rendered at the full
-   70px H1 size and wrapped to three lines. */
-html .home-section .hs-text-box h2 {
-  margin-bottom: 0;
-  color: #0788ff;
-  font-size: clamp(1.45rem, 2.4vw, 2.05rem);
-  line-height: 1.25;
+  .c2a-field,
+  .c2a-row {
+    opacity: 1;
+    animation: none;
+  }
 }

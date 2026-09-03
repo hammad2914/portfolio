@@ -51,6 +51,7 @@ html[data-theme="light"] .home-section .hs-text-box h6 {
 /* Page text on light background */
 html[data-theme="light"] .section-heading h2,
 html[data-theme="light"] .home-section .hs-text-box h1,
+html[data-theme="light"] .home-section .hs-text-box h2,
 html[data-theme="light"] .home-section .hs-text-box p,
 html[data-theme="light"] .about-section .about-text p,
 html[data-theme="light"] .ex-box .ex-right h5,

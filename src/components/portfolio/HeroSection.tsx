@@ -2,8 +2,9 @@
 
 import { Icon } from "@iconify/react";
 import { Link } from "react-scroll";
+import { TypeAnimation } from "react-type-animation";
 import { hero, socialLinks } from "@/data/content";
-import { CodeEditorAnimation } from "./CodeEditorAnimation";
+import { CodeToApp } from "./CodeToApp";
 import { SocialIcons } from "./Shared";
 
 export function HeroSection() {
@@ -28,16 +29,12 @@ export function HeroSection() {
                 data-aos-duration="1200"
                 data-aos-delay="200"
               >
-                {hero.role}
+                <TypeAnimation
+                  sequence={hero.typingText as (string | number)[]}
+                  speed={50}
+                  repeat={Infinity}
+                />
               </h2>
-              <p
-                className="hs-focus"
-                data-aos="fade-up"
-                data-aos-duration="1200"
-                data-aos-delay="250"
-              >
-                {hero.focus}
-              </p>
               <p
                 className="text"
                 data-aos="fade-up"
@@ -74,7 +71,7 @@ export function HeroSection() {
           </div>
           <div className="col-lg-6">
             <div className="hs-banner">
-              <CodeEditorAnimation />
+              <CodeToApp />
             </div>
           </div>
         </div>
