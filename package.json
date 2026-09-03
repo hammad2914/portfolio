@@ -10,7 +10,8 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "placeholder": "node scripts/make-placeholder.cjs"
   },
   "dependencies": {
     "@iconify/react": "^5.2.1",
