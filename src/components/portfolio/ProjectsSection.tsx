@@ -122,7 +122,9 @@ export function ProjectsSection() {
                           {project.privacyNote ? "Private" : "NDA"}
                         </span>
                       ) : null}
-                      {project.links?.length ? (
+                      {project.links?.some((l) =>
+                        l.url.includes("github.com"),
+                      ) ? (
                         <span className="project-collage__tag project-collage__tag--repo">
                           <Icon icon="mdi:github" aria-hidden="true" />
                           Source
@@ -282,7 +284,10 @@ export function ProjectsSection() {
                               target="_blank"
                               rel="noopener noreferrer"
                             >
-                              <Icon icon="mdi:github" aria-hidden="true" />
+                              <Icon
+                                icon={link.icon ?? "mdi:github"}
+                                aria-hidden="true"
+                              />
                               <span>{link.label}</span>
                             </a>
                           ))}
