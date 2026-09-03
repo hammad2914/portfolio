@@ -241,15 +241,15 @@ const allProjects: ProjectItem[] = [
       approach:
         "A centralized regulations platform businesses subscribe to. Members see the regulations that apply to them, the penalties attached, and recommended next steps, with consultation and an AI agent alongside. Regulation tracking with source documents, HS code classification over the full UN Comtrade dataset, German/English translation, weekly newsletters, and a metered external API so businesses can pull the regulation data straight into their own ERPs.",
       decisions:
-        "The newsletter pipeline is AI-drafted but consultant-published: the agent reads sources and writes the letter, then a human consultant reviews it before anything goes out. Regulatory advice is the wrong place for an unreviewed model — a wrong penalty figure is a liability, not a bad answer. Translation sits behind a provider abstraction over DeepL, Azure, Google and MyMemory with automatic fallback, so one provider's quota or outage doesn't stall compliance work. The ~10,300-entry UN Comtrade HS classification is fetched once at startup and held in memory rather than queried per request — it's a reference set that changes rarely, so the round trip buys nothing. External API access is keyed per organization with usage metered, because the data itself is a product businesses license into their own systems, and that has to be rate-limited and billed separately from the app.",
+        "Translation sits behind a provider abstraction over DeepL, Azure, Google and MyMemory with automatic fallback, so one provider's quota or outage doesn't stall compliance work. The ~10,300-entry UN Comtrade HS classification is fetched once at startup and held in memory rather than queried per request — it's a reference set that changes rarely, so the round trip buys nothing. External API access is keyed per organization with usage metered, because the data itself is a product businesses license into their own systems, and that has to be rate-limited and billed separately from the app.",
       impact: [
         "Live subscription platform — businesses sign up and see the regulations that apply to them",
-        "Weekly compliance newsletters drafted by an AI agent and reviewed by consultants before publishing",
+        "Weekly compliance newsletters, AI-drafted and consultant-reviewed before publishing — the AI pipeline was another developer's work",
         "Regulation data licensed through a metered API for businesses to pull into their own ERP systems",
       ],
       type: "Regulatory Intelligence SaaS",
       technologies:
-        "React, Express, Prisma, PostgreSQL, DeepL/Azure Translate, React PDF, AI drafting agent",
+        "React, Express, Prisma, PostgreSQL, DeepL/Azure Translate, React PDF",
       platform: "Web",
     },
   },
@@ -283,6 +283,8 @@ const allProjects: ProjectItem[] = [
     subTitle: "EU Packaging Regulation SaaS",
     collageSize: "medium",
     confidential: true,
+    privacyNote:
+      "In-house product at Interactive Technologies Gateway — the source is not public.",
     inProgress: true,
     details: {
       title: "PPWR – EU Packaging Compliance SaaS",
@@ -291,7 +293,7 @@ const allProjects: ProjectItem[] = [
       approach:
         "Building a multi-client SaaS compliance platform with a multi-role admin structure and several compliance modules, on a .NET Core backend with SQL Server and a React frontend. Currently in active development.",
       decisions:
-        "TODO(hammad): why .NET Core/SQL Server here rather than the Node stack you use elsewhere, and how tenant separation is enforced.",
+        ".NET Core and SQL Server were a client requirement rather than a default — everything else we build runs on Node, so this one matches the environment the client already operates and can audit itself. For a compliance system that is a constraint worth taking, not a preference to argue with.",
       impact: [
         "Multi-client compliance tracking with per-role access control",
         "Replacing spreadsheet-based reporting with an auditable system of record",
