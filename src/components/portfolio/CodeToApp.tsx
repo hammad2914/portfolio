@@ -4,15 +4,16 @@ import { Icon } from "@iconify/react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 /**
- * Hero visual: one panel that walks a journey — the code is written, it
- * builds, and the same panel becomes the running interface that code
- * produces. Decorative — the hero copy carries the message.
+ * Hero visual: a dark code editor that builds and turns into the real, light
+ * web app that code produces — browser bar, sidebar and all. Stack logos orbit
+ * the panel. Decorative — the hero copy carries the message.
  */
 
 type Stage = "writing" | "building" | "running";
 
 type Scene = {
   file: string;
+  url: string;
   appTitle: string;
   appIcon: string;
   lines: string[];
@@ -22,6 +23,7 @@ type Scene = {
 const SCENES: Scene[] = [
   {
     file: "extraction.service.ts",
+    url: "cortex.app/invoices/8842",
     appTitle: "Invoice intake",
     appIcon: "mdi:file-document-check-outline",
     app: "extract",
@@ -39,6 +41,7 @@ const SCENES: Scene[] = [
   },
   {
     file: "useGridSync.ts",
+    url: "cortex.app/purchase-orders",
     appTitle: "Purchase orders",
     appIcon: "mdi:table-large",
     app: "grid",
@@ -57,6 +60,7 @@ const SCENES: Scene[] = [
   },
   {
     file: "attendance.query.ts",
+    url: "okulium.app/attendance/7-B",
     appTitle: "Class 7-B · Today",
     appIcon: "mdi:clipboard-check-outline",
     app: "register",
@@ -72,11 +76,41 @@ const SCENES: Scene[] = [
   },
 ];
 
+/** Logos orbiting the panel. */
+const ORBIT = [
+  { name: "React", icon: "logos:react", x: 0, y: 44, size: 3.1, dur: 5 },
+  {
+    name: "PostgreSQL",
+    icon: "logos:postgresql",
+    x: 95,
+    y: 4,
+    size: 2.9,
+    dur: 6,
+  },
+  {
+    name: "Next.js",
+    icon: "logos:nextjs-icon",
+    x: 47,
+    y: 100,
+    size: 2.7,
+    dur: 5.5,
+  },
+  {
+    name: "TypeScript",
+    icon: "logos:typescript-icon",
+    x: 8,
+    y: 96,
+    size: 2.4,
+    dur: 6.5,
+  },
+  { name: "NestJS", icon: "logos:nestjs", x: 100, y: 72, size: 2.5, dur: 5.2 },
+];
+
 const MAX_LINES = Math.max(...SCENES.map((s) => s.lines.length));
 const TYPE_MS = 15;
-const SETTLE_MS = 550;
-const BUILD_MS = 1400;
-const RUN_MS = 3800;
+const SETTLE_MS = 500;
+const BUILD_MS = 1300;
+const RUN_MS = 4200;
 
 const TOKEN_PATTERN = new RegExp(
   [
@@ -123,7 +157,7 @@ function highlight(line: string, keyPrefix: string) {
   return out;
 }
 
-/* ---------------- the interfaces the code produces ---------------- */
+/* ---------------- the app the code produces ---------------- */
 
 const EXTRACT_FIELDS = [
   { label: "Vendor", value: "Meridian Textiles", score: 0.98 },
@@ -140,44 +174,46 @@ const GRID_ROWS = [
 ];
 
 const REGISTER_ROWS = [
-  { name: "Ayesha K.", state: "present", edited: false },
-  { name: "Bilal R.", state: "present", edited: false },
-  { name: "Fatima S.", state: "absent", edited: true },
-  { name: "Hamza T.", state: "present", edited: false },
+  { name: "Ayesha Khan", state: "present", edited: false },
+  { name: "Bilal Raza", state: "present", edited: false },
+  { name: "Fatima Sheikh", state: "absent", edited: true },
+  { name: "Hamza Tariq", state: "present", edited: false },
 ];
 
-function AppFace({ scene }: { scene: Scene }) {
-  const rowStyle = (i: number) => ({ "--i": i }) as React.CSSProperties;
+const row = (i: number) => ({ "--i": i }) as React.CSSProperties;
 
+function AppBody({ scene }: { scene: Scene }) {
   if (scene.app === "extract") {
     return (
-      <div className="c2a-app__rows">
+      <>
         {EXTRACT_FIELDS.map((f, i) => {
           const low = f.score < 0.7;
           return (
-            <div className="c2a-field" key={f.label} style={rowStyle(i)}>
-              <span className="c2a-field__label">{f.label}</span>
-              <span className="c2a-field__value">{f.value}</span>
-              <span
-                className={`c2a-pill ${low ? "c2a-pill--warn" : "c2a-pill--ok"}`}
-              >
-                {low ? "review" : f.score.toFixed(2)}
+            <div
+              className={`web-row web-row--field${low ? " is-flagged" : ""}`}
+              key={f.label}
+              style={row(i + 1)}
+            >
+              <span className="web-row__label">{f.label}</span>
+              <span className="web-row__value">{f.value}</span>
+              <span className={`web-pill ${low ? "is-warn" : "is-ok"}`}>
+                {low ? "needs review" : f.score.toFixed(2)}
               </span>
             </div>
           );
         })}
-        <div className="c2a-app__foot" style={rowStyle(EXTRACT_FIELDS.length)}>
-          <Icon icon="mdi:shield-check-outline" />3 committed · 1 held for
-          review
+        <div className="web-foot" style={row(EXTRACT_FIELDS.length + 1)}>
+          <Icon icon="mdi:shield-check-outline" />3 fields committed · 1 held
+          for review
         </div>
-      </div>
+      </>
     );
   }
 
   if (scene.app === "grid") {
     return (
-      <div className="c2a-app__rows">
-        <div className="c2a-row c2a-row--head" style={rowStyle(0)}>
+      <>
+        <div className="web-row web-row--head web-row--grid" style={row(1)}>
           <span>PO</span>
           <span>Vendor</span>
           <span>Qty</span>
@@ -185,71 +221,63 @@ function AppFace({ scene }: { scene: Scene }) {
         </div>
         {GRID_ROWS.map((r, i) => (
           <div
-            className={`c2a-row${i === 1 ? " is-updating" : ""}`}
+            className={`web-row web-row--grid${i === 1 ? " is-updating" : ""}`}
             key={r.po}
-            style={rowStyle(i + 1)}
+            style={row(i + 2)}
           >
-            <span>{r.po}</span>
+            <span className="web-row__value">{r.po}</span>
             <span>{r.vendor}</span>
-            <span className="c2a-num">{r.qty.toLocaleString()}</span>
+            <span className="web-num">{r.qty.toLocaleString()}</span>
             <span
-              className={`c2a-pill ${
+              className={`web-pill ${
                 r.status === "Approved"
-                  ? "c2a-pill--ok"
+                  ? "is-ok"
                   : r.status === "In review"
-                    ? "c2a-pill--warn"
-                    : "c2a-pill--mute"
+                    ? "is-warn"
+                    : "is-mute"
               }`}
             >
               {r.status}
             </span>
           </div>
         ))}
-        <div className="c2a-app__foot" style={rowStyle(GRID_ROWS.length + 1)}>
+        <div className="web-foot" style={row(GRID_ROWS.length + 2)}>
           <Icon icon="mdi:lightning-bolt-outline" />
           live over websocket · no refetch
         </div>
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="c2a-app__rows">
+    <>
       {REGISTER_ROWS.map((r, i) => (
-        <div className="c2a-field" key={r.name} style={rowStyle(i)}>
-          <span className="c2a-field__label">{r.name}</span>
-          <span className="c2a-field__value">
+        <div className="web-row web-row--field" key={r.name} style={row(i + 1)}>
+          <span className="web-row__value">{r.name}</span>
+          <span className="web-row__label">
             {r.edited ? (
-              <span className="c2a-edited">
+              <span className="web-edited">
                 <Icon icon="mdi:history" />
                 edited 09:14
               </span>
             ) : null}
           </span>
           <span
-            className={`c2a-pill ${
-              r.state === "present" ? "c2a-pill--ok" : "c2a-pill--warn"
-            }`}
+            className={`web-pill ${r.state === "present" ? "is-ok" : "is-warn"}`}
           >
             {r.state}
           </span>
         </div>
       ))}
-      <div className="c2a-app__foot" style={rowStyle(REGISTER_ROWS.length)}>
+      <div className="web-foot" style={row(REGISTER_ROWS.length + 1)}>
         <Icon icon="mdi:history" />
         every correction keeps its trail
       </div>
-    </div>
+    </>
   );
 }
 
 /* ---------------- the panel ---------------- */
-
-const STAGE_LABEL: Record<Stage, string> = {
-  writing: "writing",
-  building: "building",
-  running: "live",
-};
 
 export function CodeToApp() {
   const [index, setIndex] = useState(0);
@@ -278,7 +306,6 @@ export function CodeToApp() {
     clearTimers();
     setStage("writing");
 
-    // Reduced motion: hold each stage, no typing and no transitions.
     if (!animate) {
       setTyped(fullText.length);
       timers.current.push(
@@ -306,7 +333,6 @@ export function CodeToApp() {
         setTyped(chars);
       }
       if (chars >= fullText.length) {
-        // written -> builds -> the same panel becomes the running app
         timers.current.push(
           setTimeout(() => setStage("building"), SETTLE_MS),
           setTimeout(() => setStage("running"), SETTLE_MS + BUILD_MS),
@@ -329,10 +355,27 @@ export function CodeToApp() {
 
   const visible = fullText.slice(0, typed).split("\n");
   const done = typed >= fullText.length;
-  const running = stage === "running";
 
   return (
     <div className={`c2a is-${stage}`} aria-hidden="true">
+      {ORBIT.map((o, i) => (
+        <span
+          className="c2a__orbit"
+          key={o.name}
+          style={
+            {
+              "--x": o.x,
+              "--y": o.y,
+              "--size": `${o.size}rem`,
+              animationDuration: `${o.dur}s`,
+              animationDelay: `${i * 0.6}s`,
+            } as React.CSSProperties
+          }
+        >
+          <Icon icon={o.icon} />
+        </span>
+      ))}
+
       <div className="c2a__panel">
         <div className="c2a__chrome">
           <span className="c2a__dots">
@@ -341,48 +384,79 @@ export function CodeToApp() {
             <i style={{ background: "#28c840" }} />
           </span>
 
-          <span className="c2a__titles">
-            <span className="c2a__title c2a__title--file">{scene.file}</span>
-            <span className="c2a__title c2a__title--app">
-              <Icon icon={scene.appIcon} />
-              {scene.appTitle}
+          <span className="c2a__slot">
+            <span className="c2a__file">{scene.file}</span>
+            <span className="c2a__url">
+              <Icon icon="mdi:lock" />
+              {scene.url}
             </span>
           </span>
 
-          <span className={`c2a__stage-tag is-${stage}`}>
-            {running ? <i className="c2a__live-dot" /> : null}
-            {STAGE_LABEL[stage]}
+          <span className="c2a__tag">
+            {stage === "running" ? <i className="c2a__dot" /> : null}
+            {stage === "running" ? "live" : stage}
           </span>
         </div>
 
-        {/* the build sweep that carries code across into interface */}
         <span className="c2a__progress" />
 
         <div className="c2a__body">
+          {/* the editor */}
           <pre className="c2a__code">
             {Array.from({ length: MAX_LINES }, (_, i) => {
               const text = visible[i];
-              const isCaretLine = !done && i === visible.length - 1;
+              const caret = !done && i === visible.length - 1;
               return (
-                <span
-                  className="c2a__line"
-                  key={i}
-                  style={{ "--i": i } as React.CSSProperties}
-                >
+                <span className="c2a__line" key={i} style={row(i)}>
                   <span className="c2a__ln">
                     {text !== undefined ? i + 1 : ""}
                   </span>
                   <code>
                     {text !== undefined ? highlight(text, `${index}-${i}`) : ""}
-                    {isCaretLine ? <span className="c2a__caret" /> : null}
+                    {caret ? <span className="c2a__caret" /> : null}
                   </code>
                 </span>
               );
             })}
           </pre>
 
-          <div className="c2a__app">
-            <AppFace scene={scene} />
+          {/* the running web app */}
+          <div className="c2a__web">
+            <aside className="web-side">
+              <span className="web-side__mark" style={row(0)} />
+              <span className="web-side__item is-active" style={row(1)}>
+                <Icon icon="mdi:view-grid-outline" />
+              </span>
+              <span className="web-side__item" style={row(2)}>
+                <Icon icon="mdi:file-document-outline" />
+              </span>
+              <span className="web-side__item" style={row(3)}>
+                <Icon icon="mdi:chart-line" />
+              </span>
+              <span className="web-side__item" style={row(4)}>
+                <Icon icon="mdi:cog-outline" />
+              </span>
+            </aside>
+
+            <div className="web-main">
+              <header className="web-head" style={row(0)}>
+                <span className="web-head__title">
+                  <Icon icon={scene.appIcon} />
+                  {scene.appTitle}
+                </span>
+                <span className="web-head__tools">
+                  <span className="web-search">
+                    <Icon icon="mdi:magnify" />
+                    Search
+                  </span>
+                  <span className="web-avatar">HA</span>
+                </span>
+              </header>
+
+              <div className="web-rows">
+                <AppBody scene={scene} />
+              </div>
+            </div>
           </div>
         </div>
       </div>
