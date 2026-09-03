@@ -228,25 +228,28 @@ const allProjects: ProjectItem[] = [
   {
     thumbUrl: "/images/lia.png",
     title: "Law in Action",
-    subTitle: "Trade & Regulatory Compliance SaaS",
+    subTitle: "Global Regulations Platform",
     collageSize: "featured",
     confidential: true,
+    privacyNote:
+      "Client product — the source is private, but the platform is public.",
+    liveUrl: "https://lawintoaction.com",
     details: {
-      title: "Law in Action – Trade & Regulatory Compliance SaaS",
+      title: "Law in Action – Global Regulations Platform",
       challenge:
-        "Companies trading into the EU have to track regulations that change constantly, work across German and English, and map products to the correct HS tariff codes. That work was living in spreadsheets and PDF attachments, with no shared history of what changed when.",
+        "A business has no single place to find out which regulations actually apply to it, what the penalties are, and what to do next. That knowledge is scattered across government sites, trade bodies and consultants, in several languages, and it changes constantly — so most companies find out they are non-compliant late and expensively.",
       approach:
-        "Multi-tenant compliance platform: regulation tracking with attached source documents, HS code classification across the full UN Comtrade dataset, German/English translation with import and export, auto-generated weekly newsletter PDFs on a cron, and an external API with per-organization keys and token metering.",
+        "A centralized regulations platform businesses subscribe to. Members see the regulations that apply to them, the penalties attached, and recommended next steps, with consultation and an AI agent alongside. Regulation tracking with source documents, HS code classification over the full UN Comtrade dataset, German/English translation, weekly newsletters, and a metered external API so businesses can pull the regulation data straight into their own ERPs.",
       decisions:
-        "Translation sits behind a provider abstraction over DeepL, Azure, Google and MyMemory with automatic fallback, so one provider's quota or outage doesn't stall compliance work. The ~10,300-entry UN Comtrade HS classification is fetched once at startup and held in memory rather than queried per request — it's a reference set that changes rarely, so the round trip buys nothing. External API access is keyed per organization with token usage metered, so integrations can be rate-limited and billed independently of the app itself.",
+        "The newsletter pipeline is AI-drafted but consultant-published: the agent reads sources and writes the letter, then a human consultant reviews it before anything goes out. Regulatory advice is the wrong place for an unreviewed model — a wrong penalty figure is a liability, not a bad answer. Translation sits behind a provider abstraction over DeepL, Azure, Google and MyMemory with automatic fallback, so one provider's quota or outage doesn't stall compliance work. The ~10,300-entry UN Comtrade HS classification is fetched once at startup and held in memory rather than queried per request — it's a reference set that changes rarely, so the round trip buys nothing. External API access is keyed per organization with usage metered, because the data itself is a product businesses license into their own systems, and that has to be rate-limited and billed separately from the app.",
       impact: [
-        "Regulation tracking and HS classification in one auditable system of record",
-        "Weekly compliance newsletters generated and delivered automatically",
-        "TODO(hammad): organizations using it, or any client-facing outcome you can share",
+        "Live subscription platform — businesses sign up and see the regulations that apply to them",
+        "Weekly compliance newsletters drafted by an AI agent and reviewed by consultants before publishing",
+        "Regulation data licensed through a metered API for businesses to pull into their own ERP systems",
       ],
-      type: "Compliance SaaS",
+      type: "Regulatory Intelligence SaaS",
       technologies:
-        "React, Express, Prisma, PostgreSQL, DeepL/Azure Translate, React PDF",
+        "React, Express, Prisma, PostgreSQL, DeepL/Azure Translate, React PDF, AI drafting agent",
       platform: "Web",
     },
   },
