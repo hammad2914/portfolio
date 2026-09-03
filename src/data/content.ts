@@ -327,50 +327,6 @@ const allProjects: ProjectItem[] = [
       platform: "Android & iOS",
     },
   },
-  {
-    thumbUrl: "/images/hotel-booking.png",
-    title: "Seasons Heritage",
-    subTitle: "Hotel Website",
-    collageSize: "small",
-    links: [
-      {
-        label: "Source",
-        url: "https://github.com/hammad2914/Seasons-Heritage",
-      },
-    ],
-    details: {
-      title: "Seasons Heritage – Hotel Website",
-      challenge:
-        "TODO(hammad): what did the client need? Was this a brochure site, or does it capture enquiries/bookings?",
-      approach:
-        "Built the Seasons Heritage website with React and Tailwind CSS. TODO(hammad): confirm the actual scope — which pages, any forms, any backend.",
-      decisions: "TODO(hammad): anything notable about how you built it.",
-      impact: ["TODO(hammad): what did this achieve for the client?"],
-      type: "Client Website",
-      technologies: "React, Tailwind CSS",
-      platform: "Web",
-    },
-  },
-  {
-    thumbUrl: "/images/gioia.png",
-    title: "Gioia Bakers",
-    subTitle: "Bakery Website",
-    collageSize: "small",
-    links: [
-      { label: "Source", url: "https://github.com/hammad2914/Gioia-bakers" },
-    ],
-    details: {
-      title: "Gioia Bakers – Bakery Website",
-      challenge: "TODO(hammad): what did the bakery need this site to do?",
-      approach:
-        "Built the Gioia Bakers website with Next.js, TypeScript and Tailwind CSS. TODO(hammad): confirm whether it has a real product catalogue / ordering, or is presentational.",
-      decisions: "TODO(hammad): anything notable about how you built it.",
-      impact: ["TODO(hammad): what did this achieve for the client?"],
-      type: "Client Website",
-      technologies: "Next.js, TypeScript, Tailwind CSS",
-      platform: "Web",
-    },
-  },
 ];
 
 export const projects = {
