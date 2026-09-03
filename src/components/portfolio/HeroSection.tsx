@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { Icon } from "@iconify/react";
 import { Link } from "react-scroll";
 import { TypeAnimation } from "react-type-animation";
 import { hero, socialLinks } from "@/data/content";
+import { CodeEditorAnimation } from "./CodeEditorAnimation";
 import { SocialIcons } from "./Shared";
 
 export function HeroSection() {
@@ -71,14 +71,7 @@ export function HeroSection() {
           </div>
           <div className="col-lg-6">
             <div className="hs-banner">
-              <Image
-                src={hero.imgUrl}
-                alt="Illustration of a developer writing code"
-                width={600}
-                height={500}
-                priority
-                className="img-fluid"
-              />
+              <CodeEditorAnimation />
             </div>
           </div>
         </div>

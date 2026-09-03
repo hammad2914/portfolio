@@ -17,7 +17,6 @@ export const site = {
 };
 
 export const hero = {
-  imgUrl: "/images/Code typing-bro.png",
   name: "Hammad Ali",
   heading: "Hi, I'm Hammad",
   typingText: [

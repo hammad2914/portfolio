@@ -502,3 +502,233 @@ html[data-theme="light"] .notfound__text {
     box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
   }
 }
+
+/* ---- Hero: animated code editor ----
+   Deliberately dark in both themes — a code editor reads as one. */
+.code-hero {
+  position: relative;
+  width: 100%;
+  max-width: 620px;
+  margin-inline: auto;
+}
+
+.code-hero__window {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #0d1117;
+  box-shadow:
+    0 30px 70px rgba(4, 12, 22, 0.45),
+    0 2px 0 rgba(255, 255, 255, 0.04) inset;
+}
+
+html[data-theme="light"] .code-hero__window {
+  border-color: rgba(4, 12, 22, 0.14);
+  box-shadow: 0 24px 56px rgba(4, 12, 22, 0.22);
+}
+
+.code-hero__bar {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.7rem 0.95rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  background: #161b22;
+}
+
+.code-hero__dots {
+  display: inline-flex;
+  gap: 0.4rem;
+}
+
+.code-hero__dot {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  display: block;
+}
+
+.code-hero__dot--red {
+  background: #ff5f57;
+}
+.code-hero__dot--amber {
+  background: #febc2e;
+}
+.code-hero__dot--green {
+  background: #28c840;
+}
+
+.code-hero__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #c9d1d9;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 0.76rem;
+  letter-spacing: 0.01em;
+}
+
+.code-hero__tab svg {
+  font-size: 0.95rem;
+}
+
+.code-hero__code {
+  margin: 0;
+  padding: 1.1rem 1.15rem 1.35rem;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: #c9d1d9;
+  white-space: pre;
+  overflow-x: auto;
+  tab-size: 2;
+}
+
+.code-hero__line {
+  display: flex;
+  gap: 0.9rem;
+  min-height: 1.55em;
+}
+
+.code-hero__ln {
+  flex: 0 0 1.6rem;
+  text-align: right;
+
+  color: #4b5563;
+  user-select: none;
+}
+
+.code-hero__code code {
+  font: inherit;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.code-hero__caret {
+  display: inline-block;
+  width: 0.5rem;
+  height: 1em;
+  margin-left: 1px;
+  vertical-align: text-bottom;
+  background: #0788ff;
+  animation: code-caret 1s steps(2, start) infinite;
+}
+
+@keyframes code-caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Token colours — GitHub dark */
+.tok-comment {
+  color: #8b949e;
+  font-style: italic;
+}
+.tok-string {
+  color: #a5d6ff;
+}
+.tok-decorator {
+  color: #ffa657;
+}
+.tok-keyword {
+  color: #ff7b72;
+}
+.tok-number {
+  color: #79c0ff;
+}
+.tok-type {
+  color: #7ee787;
+}
+.tok-fn {
+  color: #d2a8ff;
+}
+
+/* Floating stack chips */
+.code-hero__techs {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: -1.4rem;
+  padding-inline: 1rem;
+}
+
+.code-hero__tech {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.85rem;
+  height: 2.85rem;
+  border-radius: 12px;
+  background: rgba(13, 17, 23, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 10px 24px rgba(4, 12, 22, 0.3);
+  font-size: 1.4rem;
+  backdrop-filter: blur(6px);
+  animation: code-float 4.5s ease-in-out infinite;
+}
+
+html[data-theme="light"] .code-hero__tech {
+  background: #ffffff;
+  border-color: rgba(4, 12, 22, 0.1);
+}
+
+@keyframes code-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .code-hero__tech,
+  .code-hero__caret {
+    animation: none;
+  }
+}
+
+@media (max-width: 575px) {
+  .code-hero__code {
+    font-size: 0.68rem;
+  }
+
+  .code-hero__tech {
+    width: 2.4rem;
+    height: 2.4rem;
+    font-size: 1.15rem;
+  }
+}
+
+/* ---- Dark theme nav contrast ----
+   The base template colours the nav for a light page (#232a32), which the dark
+   theme never overrode — so at the top of the page the menu sat at roughly a
+   1.45:1 contrast ratio against the dark background. Dark is the default
+   theme, so this was the first thing most visitors saw. */
+html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a,
+html:not([data-theme="light"]) .header-top-fixed .navbar-brand {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a:hover,
+html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a:focus,
+html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
+  color: #ffffff;
+}
+
+@media (max-width: 991px) {
+  html:not([data-theme="light"]) .header-top-fixed .main-menu {
+    background-color: #0d1117;
+    border-top-color: rgba(255, 255, 255, 0.08);
+  }
+}
