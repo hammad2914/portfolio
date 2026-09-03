@@ -4,13 +4,17 @@ import { Icon } from "@iconify/react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 /**
- * Hero visual: a panel that types out code, then flips to the interface that
- * code actually produces. Three scenes, each drawn from a system described
- * further down the page. Decorative — the hero copy carries the message.
+ * Hero visual: one panel that walks a journey — the code is written, it
+ * builds, and the same panel becomes the running interface that code
+ * produces. Decorative — the hero copy carries the message.
  */
+
+type Stage = "writing" | "building" | "running";
 
 type Scene = {
   file: string;
+  appTitle: string;
+  appIcon: string;
   lines: string[];
   app: "extract" | "grid" | "register";
 };
@@ -18,6 +22,8 @@ type Scene = {
 const SCENES: Scene[] = [
   {
     file: "extraction.service.ts",
+    appTitle: "Invoice intake",
+    appIcon: "mdi:file-document-check-outline",
     app: "extract",
     lines: [
       "async extract(doc: Buffer, client: string) {",
@@ -33,6 +39,8 @@ const SCENES: Scene[] = [
   },
   {
     file: "useGridSync.ts",
+    appTitle: "Purchase orders",
+    appIcon: "mdi:table-large",
     app: "grid",
     lines: [
       "export function useGridSync(module: string) {",
@@ -49,6 +57,8 @@ const SCENES: Scene[] = [
   },
   {
     file: "attendance.query.ts",
+    appTitle: "Class 7-B · Today",
+    appIcon: "mdi:clipboard-check-outline",
     app: "register",
     lines: [
       "const register = await prisma.attendance.findMany({",
@@ -64,8 +74,9 @@ const SCENES: Scene[] = [
 
 const MAX_LINES = Math.max(...SCENES.map((s) => s.lines.length));
 const TYPE_MS = 15;
-const HOLD_CODE_MS = 850;
-const HOLD_APP_MS = 3400;
+const SETTLE_MS = 550;
+const BUILD_MS = 1400;
+const RUN_MS = 3800;
 
 const TOKEN_PATTERN = new RegExp(
   [
@@ -129,44 +140,33 @@ const GRID_ROWS = [
 ];
 
 const REGISTER_ROWS = [
-  { name: "Ayesha K.", state: "present" },
-  { name: "Bilal R.", state: "present" },
+  { name: "Ayesha K.", state: "present", edited: false },
+  { name: "Bilal R.", state: "present", edited: false },
   { name: "Fatima S.", state: "absent", edited: true },
-  { name: "Hamza T.", state: "present" },
+  { name: "Hamza T.", state: "present", edited: false },
 ];
 
-function AppFace({ app }: { app: Scene["app"] }) {
-  if (app === "extract") {
+function AppFace({ scene }: { scene: Scene }) {
+  const rowStyle = (i: number) => ({ "--i": i }) as React.CSSProperties;
+
+  if (scene.app === "extract") {
     return (
-      <div className="c2a-app">
-        <div className="c2a-app__bar">
-          <span className="c2a-app__doc">
-            <Icon icon="mdi:file-pdf-box" />
-            invoice-8842.pdf
-          </span>
-          <span className="c2a-pill c2a-pill--info">Extracted</span>
-        </div>
-        <div className="c2a-app__body">
-          {EXTRACT_FIELDS.map((f, i) => {
-            const low = f.score < 0.7;
-            return (
-              <div
-                className="c2a-field"
-                key={f.label}
-                style={{ animationDelay: `${0.12 * i}s` }}
+      <div className="c2a-app__rows">
+        {EXTRACT_FIELDS.map((f, i) => {
+          const low = f.score < 0.7;
+          return (
+            <div className="c2a-field" key={f.label} style={rowStyle(i)}>
+              <span className="c2a-field__label">{f.label}</span>
+              <span className="c2a-field__value">{f.value}</span>
+              <span
+                className={`c2a-pill ${low ? "c2a-pill--warn" : "c2a-pill--ok"}`}
               >
-                <span className="c2a-field__label">{f.label}</span>
-                <span className="c2a-field__value">{f.value}</span>
-                <span
-                  className={`c2a-pill ${low ? "c2a-pill--warn" : "c2a-pill--ok"}`}
-                >
-                  {low ? "review" : f.score.toFixed(2)}
-                </span>
-              </div>
-            );
-          })}
-        </div>
-        <div className="c2a-app__foot">
+                {low ? "review" : f.score.toFixed(2)}
+              </span>
+            </div>
+          );
+        })}
+        <div className="c2a-app__foot" style={rowStyle(EXTRACT_FIELDS.length)}>
           <Icon icon="mdi:shield-check-outline" />3 committed · 1 held for
           review
         </div>
@@ -174,50 +174,38 @@ function AppFace({ app }: { app: Scene["app"] }) {
     );
   }
 
-  if (app === "grid") {
+  if (scene.app === "grid") {
     return (
-      <div className="c2a-app">
-        <div className="c2a-app__bar">
-          <span className="c2a-app__doc">
-            <Icon icon="mdi:table-large" />
-            Purchase Orders
-          </span>
-          <span className="c2a-live">
-            <i />
-            50,000 rows
-          </span>
+      <div className="c2a-app__rows">
+        <div className="c2a-row c2a-row--head" style={rowStyle(0)}>
+          <span>PO</span>
+          <span>Vendor</span>
+          <span>Qty</span>
+          <span>Status</span>
         </div>
-        <div className="c2a-app__body c2a-app__body--grid">
-          <div className="c2a-row c2a-row--head">
-            <span>PO</span>
-            <span>Vendor</span>
-            <span>Qty</span>
-            <span>Status</span>
-          </div>
-          {GRID_ROWS.map((r, i) => (
-            <div
-              className={`c2a-row${i === 1 ? " is-updating" : ""}`}
-              key={r.po}
-              style={{ animationDelay: `${0.1 * i}s` }}
+        {GRID_ROWS.map((r, i) => (
+          <div
+            className={`c2a-row${i === 1 ? " is-updating" : ""}`}
+            key={r.po}
+            style={rowStyle(i + 1)}
+          >
+            <span>{r.po}</span>
+            <span>{r.vendor}</span>
+            <span className="c2a-num">{r.qty.toLocaleString()}</span>
+            <span
+              className={`c2a-pill ${
+                r.status === "Approved"
+                  ? "c2a-pill--ok"
+                  : r.status === "In review"
+                    ? "c2a-pill--warn"
+                    : "c2a-pill--mute"
+              }`}
             >
-              <span>{r.po}</span>
-              <span>{r.vendor}</span>
-              <span className="c2a-num">{r.qty.toLocaleString()}</span>
-              <span
-                className={`c2a-pill ${
-                  r.status === "Approved"
-                    ? "c2a-pill--ok"
-                    : r.status === "In review"
-                      ? "c2a-pill--warn"
-                      : "c2a-pill--mute"
-                }`}
-              >
-                {r.status}
-              </span>
-            </div>
-          ))}
-        </div>
-        <div className="c2a-app__foot">
+              {r.status}
+            </span>
+          </div>
+        ))}
+        <div className="c2a-app__foot" style={rowStyle(GRID_ROWS.length + 1)}>
           <Icon icon="mdi:lightning-bolt-outline" />
           live over websocket · no refetch
         </div>
@@ -226,41 +214,28 @@ function AppFace({ app }: { app: Scene["app"] }) {
   }
 
   return (
-    <div className="c2a-app">
-      <div className="c2a-app__bar">
-        <span className="c2a-app__doc">
-          <Icon icon="mdi:clipboard-check-outline" />
-          Class 7-B · Today
-        </span>
-        <span className="c2a-pill c2a-pill--info">Branch: Clifton</span>
-      </div>
-      <div className="c2a-app__body">
-        {REGISTER_ROWS.map((r, i) => (
-          <div
-            className="c2a-field"
-            key={r.name}
-            style={{ animationDelay: `${0.12 * i}s` }}
+    <div className="c2a-app__rows">
+      {REGISTER_ROWS.map((r, i) => (
+        <div className="c2a-field" key={r.name} style={rowStyle(i)}>
+          <span className="c2a-field__label">{r.name}</span>
+          <span className="c2a-field__value">
+            {r.edited ? (
+              <span className="c2a-edited">
+                <Icon icon="mdi:history" />
+                edited 09:14
+              </span>
+            ) : null}
+          </span>
+          <span
+            className={`c2a-pill ${
+              r.state === "present" ? "c2a-pill--ok" : "c2a-pill--warn"
+            }`}
           >
-            <span className="c2a-field__label">{r.name}</span>
-            <span className="c2a-field__value">
-              {r.edited ? (
-                <span className="c2a-edited">
-                  <Icon icon="mdi:history" />
-                  edited 09:14
-                </span>
-              ) : null}
-            </span>
-            <span
-              className={`c2a-pill ${
-                r.state === "present" ? "c2a-pill--ok" : "c2a-pill--warn"
-              }`}
-            >
-              {r.state}
-            </span>
-          </div>
-        ))}
-      </div>
-      <div className="c2a-app__foot">
+            {r.state}
+          </span>
+        </div>
+      ))}
+      <div className="c2a-app__foot" style={rowStyle(REGISTER_ROWS.length)}>
         <Icon icon="mdi:history" />
         every correction keeps its trail
       </div>
@@ -270,10 +245,16 @@ function AppFace({ app }: { app: Scene["app"] }) {
 
 /* ---------------- the panel ---------------- */
 
+const STAGE_LABEL: Record<Stage, string> = {
+  writing: "writing",
+  building: "building",
+  running: "live",
+};
+
 export function CodeToApp() {
   const [index, setIndex] = useState(0);
   const [typed, setTyped] = useState(0);
-  const [flipped, setFlipped] = useState(false);
+  const [stage, setStage] = useState<Stage>("writing");
   const [animate, setAnimate] = useState(true);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
@@ -295,17 +276,14 @@ export function CodeToApp() {
 
   useEffect(() => {
     clearTimers();
-    setFlipped(false);
+    setStage("writing");
 
-    // Reduced motion: hold each side, no typing and no flip animation.
+    // Reduced motion: hold each stage, no typing and no transitions.
     if (!animate) {
       setTyped(fullText.length);
       timers.current.push(
-        setTimeout(() => setFlipped(true), HOLD_APP_MS),
-        setTimeout(
-          () => setIndex((i) => (i + 1) % SCENES.length),
-          HOLD_APP_MS * 2,
-        ),
+        setTimeout(() => setStage("running"), RUN_MS),
+        setTimeout(() => setIndex((i) => (i + 1) % SCENES.length), RUN_MS * 2),
       );
       return clearTimers;
     }
@@ -328,12 +306,13 @@ export function CodeToApp() {
         setTyped(chars);
       }
       if (chars >= fullText.length) {
-        // code is written -> run it -> show what it renders -> next scene
+        // written -> builds -> the same panel becomes the running app
         timers.current.push(
-          setTimeout(() => setFlipped(true), HOLD_CODE_MS),
+          setTimeout(() => setStage("building"), SETTLE_MS),
+          setTimeout(() => setStage("running"), SETTLE_MS + BUILD_MS),
           setTimeout(
             () => setIndex((i) => (i + 1) % SCENES.length),
-            HOLD_CODE_MS + HOLD_APP_MS,
+            SETTLE_MS + BUILD_MS + RUN_MS,
           ),
         );
         return;
@@ -350,26 +329,46 @@ export function CodeToApp() {
 
   const visible = fullText.slice(0, typed).split("\n");
   const done = typed >= fullText.length;
+  const running = stage === "running";
 
   return (
-    <div className="c2a" aria-hidden="true">
-      <div className={`c2a__stage${flipped ? " is-flipped" : ""}`}>
-        {/* front: the code */}
-        <div className="c2a__face c2a__face--code">
-          <div className="c2a__chrome">
-            <span className="c2a__dots">
-              <i style={{ background: "#ff5f57" }} />
-              <i style={{ background: "#febc2e" }} />
-              <i style={{ background: "#28c840" }} />
+    <div className={`c2a is-${stage}`} aria-hidden="true">
+      <div className="c2a__panel">
+        <div className="c2a__chrome">
+          <span className="c2a__dots">
+            <i style={{ background: "#ff5f57" }} />
+            <i style={{ background: "#febc2e" }} />
+            <i style={{ background: "#28c840" }} />
+          </span>
+
+          <span className="c2a__titles">
+            <span className="c2a__title c2a__title--file">{scene.file}</span>
+            <span className="c2a__title c2a__title--app">
+              <Icon icon={scene.appIcon} />
+              {scene.appTitle}
             </span>
-            <span className="c2a__file">{scene.file}</span>
-          </div>
+          </span>
+
+          <span className={`c2a__stage-tag is-${stage}`}>
+            {running ? <i className="c2a__live-dot" /> : null}
+            {STAGE_LABEL[stage]}
+          </span>
+        </div>
+
+        {/* the build sweep that carries code across into interface */}
+        <span className="c2a__progress" />
+
+        <div className="c2a__body">
           <pre className="c2a__code">
             {Array.from({ length: MAX_LINES }, (_, i) => {
               const text = visible[i];
               const isCaretLine = !done && i === visible.length - 1;
               return (
-                <span className="c2a__line" key={i}>
+                <span
+                  className="c2a__line"
+                  key={i}
+                  style={{ "--i": i } as React.CSSProperties}
+                >
                   <span className="c2a__ln">
                     {text !== undefined ? i + 1 : ""}
                   </span>
@@ -381,11 +380,10 @@ export function CodeToApp() {
               );
             })}
           </pre>
-        </div>
 
-        {/* back: what it renders */}
-        <div className="c2a__face c2a__face--app">
-          <AppFace app={scene.app} />
+          <div className="c2a__app">
+            <AppFace scene={scene} />
+          </div>
         </div>
       </div>
     </div>

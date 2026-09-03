@@ -526,63 +526,45 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
   }
 }
 
-/* ================= Hero: code that becomes the app =================
-   A panel that types the code, then flips to the interface that code renders. */
+/* ================= Hero: the journey from code to running app =================
+   One panel, three stages. The code is written, it builds, and the same panel
+   becomes the interface that code renders. Dark in both themes. */
 .c2a {
   width: 100%;
   max-width: 545px;
   margin-inline: auto;
-  perspective: 1600px;
 }
 
-.c2a__stage {
+.c2a__panel {
   position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.85s cubic-bezier(0.65, 0, 0.35, 1);
-}
-
-.c2a__stage.is-flipped {
-  transform: rotateY(180deg);
-}
-
-.c2a__face {
-  border-radius: 14px;
   overflow: hidden;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+  border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.09);
+  background: #0d1117;
   box-shadow: 0 28px 64px -24px rgba(2, 8, 16, 0.62);
+  transition:
+    background 0.7s ease,
+    border-color 0.7s ease;
 }
 
-html[data-theme="light"] .c2a__face {
+.c2a.is-running .c2a__panel {
+  background: #0f141b;
+  border-color: rgba(7, 136, 255, 0.28);
+}
+
+html[data-theme="light"] .c2a__panel {
   border-color: rgba(4, 12, 22, 0.12);
   box-shadow: 0 24px 52px -22px rgba(4, 12, 22, 0.26);
 }
 
-.c2a__face--code {
-  background: #0d1117;
-}
-
-/* The back face is stacked on the front and pre-rotated. */
-.c2a__face--app {
-  position: absolute;
-  inset: 0;
-  transform: rotateY(180deg);
-  background: #0f141b;
-  display: flex;
-}
-
-html[data-theme="light"] .c2a__face--app {
-  background: #ffffff;
-}
-
-/* ---- code side ---- */
+/* ---- chrome ---- */
 .c2a__chrome {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0.85rem;
   height: 2.45rem;
-  padding: 0 0.95rem;
+  padding: 0 0.9rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
@@ -599,16 +581,136 @@ html[data-theme="light"] .c2a__face--app {
   border-radius: 50%;
 }
 
-.c2a__file {
+/* filename and app title share one slot and cross-fade */
+.c2a__titles {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 1.1rem;
+}
+
+.c2a__title {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s ease;
+}
+
+.c2a__title--file {
   color: rgba(201, 209, 217, 0.6);
-  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 0.71rem;
+}
+
+.c2a__title--app {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.78rem;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+.c2a__title--app svg {
+  color: #0788ff;
+  font-size: 0.95rem;
+}
+
+.c2a.is-running .c2a__title--file {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+.c2a.is-running .c2a__title--app {
+  opacity: 1;
+  transform: none;
+}
+
+/* stage tag: writing -> building -> live */
+.c2a__stage-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex-shrink: 0;
+  padding: 0.14rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.55);
+  transition:
+    background 0.4s ease,
+    color 0.4s ease;
+}
+
+.c2a__stage-tag.is-building {
+  background: rgba(217, 119, 6, 0.18);
+  color: #fbbf24;
+}
+
+.c2a__stage-tag.is-running {
+  background: rgba(22, 163, 74, 0.18);
+  color: #4ade80;
+}
+
+.c2a__live-dot {
+  width: 0.38rem;
+  height: 0.38rem;
+  border-radius: 50%;
+  background: #4ade80;
+  animation: c2a-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes c2a-pulse {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+/* ---- the build sweep ---- */
+.c2a__progress {
+  position: absolute;
+  top: 2.45rem;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background: linear-gradient(90deg, #0788ff, #4ade80);
+  box-shadow: 0 0 12px rgba(7, 136, 255, 0.8);
+  opacity: 0;
+  z-index: 3;
+}
+
+.c2a.is-building .c2a__progress {
+  opacity: 1;
+  animation: c2a-build 1.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes c2a-build {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* ---- body: code and interface share one box ---- */
+.c2a__body {
+  position: relative;
 }
 
 .c2a__code {
   margin: 0;
   padding: 0.95rem 1rem 1.1rem;
-  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 0.755rem;
   line-height: 1.62;
   color: #c9d1d9;
@@ -620,6 +722,19 @@ html[data-theme="light"] .c2a__face--app {
   display: flex;
   gap: 0.85rem;
   min-height: 1.62em;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease,
+    filter 0.4s ease;
+  transition-delay: calc(var(--i) * 45ms);
+}
+
+/* the code dissolves upward, line by line, as the build sweeps across */
+.c2a.is-building .c2a__line,
+.c2a.is-running .c2a__line {
+  opacity: 0;
+  transform: translateY(-10px);
+  filter: blur(3px);
 }
 
 .c2a__ln {
@@ -671,81 +786,38 @@ html[data-theme="light"] .c2a__face--app {
   color: #d2a8ff;
 }
 
-/* ---- app side ---- */
-.c2a-app {
+/* the interface rises into the space the code just left */
+.c2a__app {
+  position: absolute;
+  inset: 0;
+  padding: 0.6rem 0.9rem;
+  pointer-events: none;
+}
+
+.c2a-app__rows {
   display: flex;
   flex-direction: column;
-  width: 100%;
   font-size: 0.78rem;
 }
 
-.c2a-app__bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  height: 2.45rem;
-  padding: 0 0.9rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-  background: rgba(255, 255, 255, 0.02);
-}
-
-html[data-theme="light"] .c2a-app__bar {
-  border-bottom-color: rgba(4, 12, 22, 0.08);
-  background: #f7f9fc;
-}
-
-.c2a-app__doc {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  color: rgba(255, 255, 255, 0.86);
-  font-weight: 600;
-  font-size: 0.76rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-html[data-theme="light"] .c2a-app__doc {
-  color: #16202c;
-}
-
-.c2a-app__doc svg {
-  color: #0788ff;
-  font-size: 0.95rem;
-  flex-shrink: 0;
-}
-
-.c2a-app__body {
-  flex: 1;
-  padding: 0.55rem 0.9rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-}
-
+.c2a-field,
+.c2a-row,
 .c2a-app__foot {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.5rem 0.9rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
-  color: rgba(255, 255, 255, 0.45);
-  font-size: 0.68rem;
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-html[data-theme="light"] .c2a-app__foot {
-  border-top-color: rgba(4, 12, 22, 0.08);
-  color: #6b7684;
+.c2a.is-running .c2a-field,
+.c2a.is-running .c2a-row,
+.c2a.is-running .c2a-app__foot {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(var(--i) * 85ms);
 }
 
-.c2a-app__foot svg {
-  color: #16a34a;
-  font-size: 0.85rem;
-}
-
-/* rows */
 .c2a-field,
 .c2a-row {
   display: grid;
@@ -754,8 +826,6 @@ html[data-theme="light"] .c2a-app__foot {
   gap: 0.6rem;
   padding: 0.42rem 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  opacity: 0;
-  animation: c2a-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 html[data-theme="light"] .c2a-field,
@@ -763,42 +833,13 @@ html[data-theme="light"] .c2a-row {
   border-bottom-color: rgba(4, 12, 22, 0.07);
 }
 
-.is-flipped .c2a-field,
-.is-flipped .c2a-row {
-  animation-play-state: running;
-}
-
-@keyframes c2a-rise {
-  from {
-    opacity: 0;
-    transform: translateY(7px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
 .c2a-field__label {
   color: rgba(255, 255, 255, 0.55);
-}
-
-html[data-theme="light"] .c2a-field__label {
-  color: #6b7684;
 }
 
 .c2a-field__value {
   color: rgba(255, 255, 255, 0.92);
   font-weight: 600;
-}
-
-html[data-theme="light"] .c2a-field__value {
-  color: #16202c;
-}
-
-/* grid variant */
-.c2a-app__body--grid {
-  gap: 0;
 }
 
 .c2a-row {
@@ -807,50 +848,50 @@ html[data-theme="light"] .c2a-field__value {
   color: rgba(255, 255, 255, 0.86);
 }
 
-html[data-theme="light"] .c2a-row {
-  color: #16202c;
-}
-
 .c2a-row--head {
   color: rgba(255, 255, 255, 0.38);
   font-size: 0.65rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  animation: none;
-  opacity: 1;
-}
-
-html[data-theme="light"] .c2a-row--head {
-  color: #8792a2;
 }
 
 .c2a-num {
   font-variant-numeric: tabular-nums;
 }
 
-.c2a-row.is-updating {
-  animation:
-    c2a-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards,
-    c2a-flash 1.6s ease-out 0.6s;
+.c2a.is-running .c2a-row.is-updating {
+  animation: c2a-flash 1.8s ease-out 1.1s;
 }
 
 @keyframes c2a-flash {
   0% {
-    background: rgba(22, 163, 74, 0.22);
+    background: rgba(22, 163, 74, 0.24);
   }
   100% {
     background: transparent;
   }
 }
 
-/* pills */
+.c2a-app__foot {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding-top: 0.55rem;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.68rem;
+}
+
+.c2a-app__foot svg {
+  color: #16a34a;
+  font-size: 0.85rem;
+}
+
 .c2a-pill {
   justify-self: end;
   padding: 0.16rem 0.5rem;
   border-radius: 999px;
   font-size: 0.63rem;
   font-weight: 700;
-  letter-spacing: 0.02em;
   white-space: nowrap;
 }
 
@@ -858,60 +899,13 @@ html[data-theme="light"] .c2a-row--head {
   background: rgba(22, 163, 74, 0.16);
   color: #4ade80;
 }
-
 .c2a-pill--warn {
   background: rgba(217, 119, 6, 0.18);
   color: #fbbf24;
 }
-
-.c2a-pill--info {
-  background: rgba(7, 136, 255, 0.16);
-  color: #58a6ff;
-}
-
 .c2a-pill--mute {
   background: rgba(255, 255, 255, 0.08);
   color: rgba(255, 255, 255, 0.6);
-}
-
-html[data-theme="light"] .c2a-pill--ok {
-  color: #15803d;
-}
-html[data-theme="light"] .c2a-pill--warn {
-  color: #b45309;
-}
-html[data-theme="light"] .c2a-pill--info {
-  color: #0369a1;
-}
-html[data-theme="light"] .c2a-pill--mute {
-  background: rgba(4, 12, 22, 0.06);
-  color: #6b7684;
-}
-
-.c2a-live {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.66rem;
-}
-
-html[data-theme="light"] .c2a-live {
-  color: #6b7684;
-}
-
-.c2a-live i {
-  width: 0.42rem;
-  height: 0.42rem;
-  border-radius: 50%;
-  background: #16a34a;
-  animation: c2a-pulse 1.8s ease-in-out infinite;
-}
-
-@keyframes c2a-pulse {
-  50% {
-    opacity: 0.25;
-  }
 }
 
 .c2a-edited {
@@ -927,26 +921,24 @@ html[data-theme="light"] .c2a-live {
   .c2a__code {
     font-size: 0.66rem;
   }
-
-  .c2a-app {
+  .c2a-app__rows {
     font-size: 0.72rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .c2a__stage {
+  .c2a__line,
+  .c2a-field,
+  .c2a-row,
+  .c2a-app__foot,
+  .c2a__title {
     transition: none;
   }
 
   .c2a__caret,
-  .c2a-live i,
-  .c2a-row.is-updating {
-    animation: none;
-  }
-
-  .c2a-field,
-  .c2a-row {
-    opacity: 1;
+  .c2a__live-dot,
+  .c2a__progress,
+  .c2a.is-running .c2a-row.is-updating {
     animation: none;
   }
 }
