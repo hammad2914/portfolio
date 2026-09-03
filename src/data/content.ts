@@ -302,24 +302,28 @@ const allProjects: ProjectItem[] = [
     },
   },
   {
-    thumbUrl: "/images/car-rental.png",
-    modalImages: ["/images/car-rental.png", "/images/car-rental2.png"],
-    title: "MiCar",
-    subTitle: "Car Rental App — UI",
+    thumbUrl: "/images/hotelkey.png",
+    title: "HotelKey",
+    subTitle: "Hotel & Guest Services App",
     collageSize: "portrait",
+    confidential: true,
+    privacyNote: "Client demo build — the source is not public.",
     details: {
-      title: "MiCar – Car Rental App (UI)",
+      title: "HotelKey – Hotel & Guest Services App",
       challenge:
-        "A car rental concept that needed a complete mobile interface designed and built out — browse, booking flow, and account screens — before any backend work was scoped.",
+        "A client wanted to see a guest-services app before committing to building one: hotels, reservations and the services around a stay, all in one place rather than scattered across separate booking sites.",
       approach:
-        "Built the full cross-platform mobile UI in React Native — vehicle browsing, booking flow, and account screens, laid out for both iOS and Android. Front-end only: this project has no backend, and the screens run against mocked data.",
+        "A 30-screen React Native app for iOS and Android covering hotel browsing and detail pages, reservations with current and past booking history, and service categories around the stay — cars, activities, pharmacy and supermarkets. Full auth flow with email signup, login, forgot and change password, plus Google and Apple sign-in, and profile, settings and notification screens. Built as a client demo against sample data, and taken as far as a signed release build.",
       decisions:
-        "TODO(hammad): why React Native for this, and anything notable about the screen/component structure.",
+        "Navigation is split across a bottom tab bar with nested stacks, so each service category keeps its own history and a guest can move between hotels and reservations without losing their place. Connectivity is checked explicitly with a dedicated offline screen rather than letting requests fail silently — the app is aimed at travellers, who are the users most likely to be on bad hotel wifi or roaming.",
       impact: [
-        "Complete booking-flow UI covering both iOS and Android from one codebase",
+        "30 screens covering the full guest journey, from signup to booking history",
+        "Single React Native codebase targeting both iOS and Android",
+        "Demo build only — it was never deployed to production",
       ],
-      type: "Mobile UI",
-      technologies: "React Native, TypeScript",
+      type: "Mobile Application",
+      technologies:
+        "React Native, React Navigation, Google & Apple Sign-In, Axios",
       platform: "Android & iOS",
     },
   },
