@@ -151,12 +151,12 @@ const allProjects: ProjectItem[] = [
       challenge:
         "An ERP spanning 8 interconnected modules where every invoice and purchase order was keyed in by hand from supplier PDFs — each client sending a different layout. Data entry was the bottleneck, and the grids were large enough that naive rendering locked up the browser.",
       approach:
-        "Led full-stack development across 8 modules with complex admin panels and permission flows. Built an AI bulk PDF extraction pipeline on OpenAI handling 8–12 different client document formats, and AG Grid interfaces over 50,000+ row datasets with live WebSocket synchronization.",
+        "Led full-stack development across 8 modules with complex admin panels and permission flows. Built a bulk PDF extraction pipeline on OpenAI with a per-client template covering 8–12 document formats, feeding a review step before anything is committed, plus AG Grid interfaces over 50,000+ row datasets with live WebSocket synchronization.",
       decisions:
-        "TODO(hammad): why OpenAI over a document-specific extraction service, and how you handle varying layouts / low-confidence fields. AG Grid's server-side row model over a custom table: at 50k rows the work is virtualization, and that's a solved problem not worth rebuilding. WebSockets because 8 modules share state — a purchase order updated in one module has to be correct everywhere without a refresh.",
+        "This started on Azure Document Intelligence and moved off it — training custom models per document type did not reach accuracy we could rely on. OpenAI with a template per client beat a single generalized prompt, because any one client's layout is stable even though layouts vary widely between clients; a per-client template encodes that structure instead of asking the model to rediscover it every time. Extraction is still imperfect, so the pipeline is designed around correction rather than trust: extracted values are surfaced for a person to fix before they are committed, which keeps a wrong read from silently becoming a wrong record. AG Grid's server-side row model over a custom table, because at 50k rows the work is virtualization and that is a solved problem. WebSockets because 8 modules share state — a purchase order updated in one module has to be correct everywhere without a refresh.",
       impact: [
-        "Document processing time reduced by 70%",
-        "Manual data entry for invoices and purchase orders eliminated",
+        "Removed the long manual entry form merchants previously filled in for every document — around 70% less processing time",
+        "Invoice and purchase-order data now extracted then reviewed, instead of keyed in from scratch",
         "Zero UI lag on 50,000+ row grids with live data consistency",
       ],
       type: "AI-Powered ERP",
