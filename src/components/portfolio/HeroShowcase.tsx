@@ -64,7 +64,6 @@ const MARKS = [
   { icon: "logos:postgresql", name: "PostgreSQL", modifier: "hx-mark--c" },
   { icon: "logos:typescript-icon", name: "TypeScript", modifier: "hx-mark--d" },
   { icon: "logos:nestjs", name: "NestJS", modifier: "hx-mark--e" },
-  { icon: "logos:docker-icon", name: "Docker", modifier: "hx-mark--f" },
 ];
 
 const TYPE_MS = 22;

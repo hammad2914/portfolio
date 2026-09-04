@@ -630,7 +630,7 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
 .hx-code {
   margin: 0;
   /* left gutter: the cards overlay this strip, never the code itself */
-  padding: 16px 18px 22px 172px;
+  padding: 16px 20px 22px 18px;
   font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
   font-size: 13px;
   line-height: 1.8;
@@ -735,17 +735,18 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
   color: #0788ff;
 }
 
+/* the three outer corners, straddling the window edge */
 .hx-card--one {
-  left: 1%;
-  top: 12%;
+  left: -9%;
+  top: -7%;
 }
 .hx-card--two {
-  left: 1%;
-  bottom: 16%;
+  right: 3%;
+  bottom: -9%;
 }
 .hx-card--three {
-  right: -6%;
-  bottom: 13%;
+  right: -7%;
+  top: -5%;
 }
 
 @keyframes hx-float {
@@ -775,29 +776,26 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
   animation: hx-float 7s ease-in-out infinite;
 }
 
+/* marks ring the edges, clear of every card */
 .hx-mark--a {
-  left: -5%;
-  top: -6%;
+  left: -7%;
+  top: 36%;
 }
 .hx-mark--b {
-  left: -1%;
-  top: 46%;
+  left: 9%;
+  bottom: -9%;
 }
 .hx-mark--c {
-  left: 2%;
-  bottom: -5%;
+  right: -8%;
+  bottom: 30%;
 }
 .hx-mark--d {
-  right: 16%;
-  top: -7%;
+  left: -5%;
+  bottom: 14%;
 }
 .hx-mark--e {
-  right: -9%;
-  top: 20%;
-}
-.hx-mark--f {
-  right: 22%;
-  bottom: -7%;
+  left: 46%;
+  top: -10%;
 }
 
 /* ---- narrower screens: straighten up, pull everything inside ---- */
@@ -807,7 +805,6 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
     transform: rotateY(-5deg) rotateX(2deg);
   }
   .hx-code {
-    padding-left: 150px;
   }
   .hx-card {
     min-width: 128px;
@@ -837,25 +834,27 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
   .hx-card--one {
     left: auto;
     right: 2%;
-    top: -3%;
+    top: -4%;
   }
   .hx-card--two {
-    left: -2%;
-    bottom: -4%;
+    left: 2%;
+    right: auto;
+    bottom: -5%;
   }
   .hx-card--three {
     display: none;
   }
-  .hx-mark--a,
-  .hx-mark--b {
+  .hx-mark--a {
     left: -3%;
+    top: 30%;
   }
-  .hx-mark--e,
-  .hx-mark--f {
+  .hx-mark--c {
     right: -3%;
+    bottom: 34%;
   }
-  .hx-mark--c,
-  .hx-mark--d {
+  .hx-mark--b,
+  .hx-mark--d,
+  .hx-mark--e {
     display: none;
   }
 }
