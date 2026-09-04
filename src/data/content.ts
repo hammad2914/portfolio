@@ -19,12 +19,8 @@ export const site = {
 export const hero = {
   name: "Hammad Ali",
   heading: "Hi, I'm Hammad",
-  typingText: [
-    "Full Stack Software Engineer",
-    1500,
-    "Building ERP & SaaS Systems",
-    1500,
-  ] as (string | number)[],
+  role: "Full Stack Software Engineer",
+  focus: "ERP · SaaS · Supply-chain systems",
   description: `Results-driven Full Stack Software Engineer with ${yearsOfExperience}+ years of experience designing and delivering enterprise-grade ERP, SaaS, and supply-chain systems. I lead end-to-end development — frontend architecture, backend APIs, real-time data, AI integrations, and production deployments.`,
   location: site.location,
   availability: site.availability,
