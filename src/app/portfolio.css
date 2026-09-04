@@ -696,59 +696,6 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
   }
 }
 
-/* ---- floating stat cards ---- */
-.hx-card {
-  position: absolute;
-  z-index: 4;
-  min-width: 132px;
-  padding: 11px 14px;
-  border-radius: 12px;
-  background: #ffffff;
-  box-shadow:
-    0 22px 44px -16px rgba(0, 0, 0, 0.55),
-    0 0 0 1px rgba(4, 12, 22, 0.05);
-  animation: hx-float 6s ease-in-out infinite;
-}
-
-.hx-card__label {
-  display: block;
-  font-size: 10px;
-  letter-spacing: 1.6px;
-  text-transform: uppercase;
-  color: #8b96a5;
-}
-
-.hx-card strong {
-  display: block;
-  margin-top: 3px;
-  font-size: 23px;
-  font-weight: 700;
-  line-height: 1.1;
-  color: #0f1b2a;
-  letter-spacing: -0.01em;
-}
-
-.hx-card__note {
-  display: block;
-  margin-top: 2px;
-  font-size: 11.5px;
-  color: #0788ff;
-}
-
-/* the three outer corners, straddling the window edge */
-.hx-card--one {
-  left: -9%;
-  top: -7%;
-}
-.hx-card--two {
-  right: 3%;
-  bottom: -9%;
-}
-.hx-card--three {
-  right: -7%;
-  top: -5%;
-}
-
 @keyframes hx-float {
   0%,
   100% {
@@ -776,25 +723,25 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
   animation: hx-float 7s ease-in-out infinite;
 }
 
-/* marks ring the edges, clear of every card */
+/* marks ring the window evenly */
 .hx-mark--a {
   left: -7%;
-  top: 36%;
+  top: 20%;
 }
 .hx-mark--b {
-  left: 9%;
+  left: 15%;
   bottom: -9%;
 }
 .hx-mark--c {
   right: -8%;
-  bottom: 30%;
+  top: 38%;
 }
 .hx-mark--d {
-  left: -5%;
-  bottom: 14%;
+  left: -6%;
+  bottom: 24%;
 }
 .hx-mark--e {
-  left: 46%;
+  left: 44%;
   top: -10%;
 }
 
@@ -805,13 +752,6 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
     transform: rotateY(-5deg) rotateX(2deg);
   }
   .hx-code {
-  }
-  .hx-card {
-    min-width: 128px;
-    padding: 11px 13px;
-  }
-  .hx-card strong {
-    font-size: 22px;
   }
 }
 
@@ -830,19 +770,6 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
   }
   .hx:hover .hx-win {
     transform: none;
-  }
-  .hx-card--one {
-    left: auto;
-    right: 2%;
-    top: -4%;
-  }
-  .hx-card--two {
-    left: 2%;
-    right: auto;
-    bottom: -5%;
-  }
-  .hx-card--three {
-    display: none;
   }
   .hx-mark--a {
     left: -3%;
@@ -869,19 +796,9 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
     height: 36px;
     font-size: 17px;
   }
-  .hx-card {
-    min-width: 116px;
-  }
-  .hx-card strong {
-    font-size: 19px;
-  }
-  .hx-card__note {
-    font-size: 10.5px;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hx-card,
   .hx-mark {
     animation: none;
   }

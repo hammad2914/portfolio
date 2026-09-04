@@ -35,28 +35,6 @@ const CODE = [
   "}",
 ];
 
-/** Facts, phrased so they can't be mistaken for placeholder data. */
-const CARDS = [
-  {
-    label: "Production systems",
-    value: "8",
-    note: "shipped since 2023",
-    modifier: "hx-card--one",
-  },
-  {
-    label: "Live products",
-    value: "2",
-    note: "Okulium · Law in Action",
-    modifier: "hx-card--two",
-  },
-  {
-    label: "Largest dataset",
-    value: "50,000",
-    note: "rows, no UI lag",
-    modifier: "hx-card--three",
-  },
-];
-
 /** Core stack, matching the skills section and the résumé. */
 const MARKS = [
   { icon: "logos:react", name: "React", modifier: "hx-mark--a" },
@@ -66,8 +44,8 @@ const MARKS = [
   { icon: "logos:nestjs", name: "NestJS", modifier: "hx-mark--e" },
 ];
 
-const TYPE_MS = 22;
-const HOLD_MS = 5000;
+const TYPE_MS = 14;
+const HOLD_MS = 7000;
 
 const escapeHtml = (t: string) =>
   t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -180,18 +158,6 @@ export function HeroShowcase() {
           </pre>
         </div>
       </div>
-
-      {CARDS.map((c, i) => (
-        <div
-          className={`hx-card ${c.modifier}`}
-          key={c.label}
-          style={{ animationDelay: `${i * 0.8}s` }}
-        >
-          <span className="hx-card__label">{c.label}</span>
-          <strong>{c.value}</strong>
-          <span className="hx-card__note">{c.note}</span>
-        </div>
-      ))}
 
       {MARKS.map((m, i) => (
         <span
