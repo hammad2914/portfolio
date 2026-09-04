@@ -567,8 +567,8 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
 }
 
 .hx-win {
-  width: 116%;
-  margin-left: 2%;
+  width: 108%;
+  margin-left: 1%;
   border-radius: 14px;
   overflow: hidden;
   /* lifted well clear of the page ground — a dark panel on a dark hero has no
@@ -629,7 +629,8 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
 
 .hx-code {
   margin: 0;
-  padding: 16px 18px 22px;
+  /* left gutter: the cards overlay this strip, never the code itself */
+  padding: 16px 18px 22px 172px;
   font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
   font-size: 13px;
   line-height: 1.8;
@@ -699,8 +700,8 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
 .hx-card {
   position: absolute;
   z-index: 4;
-  min-width: 148px;
-  padding: 13px 16px;
+  min-width: 132px;
+  padding: 11px 14px;
   border-radius: 12px;
   background: #ffffff;
   box-shadow:
@@ -720,7 +721,7 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
 .hx-card strong {
   display: block;
   margin-top: 3px;
-  font-size: 26px;
+  font-size: 23px;
   font-weight: 700;
   line-height: 1.1;
   color: #0f1b2a;
@@ -735,16 +736,16 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
 }
 
 .hx-card--one {
-  left: 3%;
-  top: 2%;
+  left: 1%;
+  top: 12%;
 }
 .hx-card--two {
-  left: 0;
-  bottom: 14%;
+  left: 1%;
+  bottom: 16%;
 }
 .hx-card--three {
-  right: -5%;
-  top: 44%;
+  right: -6%;
+  bottom: 13%;
 }
 
 @keyframes hx-float {
@@ -775,27 +776,38 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
 }
 
 .hx-mark--a {
-  left: -3%;
-  top: 32%;
+  left: -5%;
+  top: -6%;
 }
 .hx-mark--b {
-  right: 10%;
-  top: -7%;
+  left: -1%;
+  top: 46%;
 }
 .hx-mark--c {
-  right: -9%;
-  bottom: 16%;
+  left: 2%;
+  bottom: -5%;
 }
 .hx-mark--d {
-  left: 12%;
-  bottom: -6%;
+  right: 16%;
+  top: -7%;
+}
+.hx-mark--e {
+  right: -9%;
+  top: 20%;
+}
+.hx-mark--f {
+  right: 22%;
+  bottom: -7%;
 }
 
 /* ---- narrower screens: straighten up, pull everything inside ---- */
 @media (max-width: 1199px) {
   .hx-win {
-    width: 108%;
-    transform: rotateY(-6deg) rotateX(2deg);
+    width: 104%;
+    transform: rotateY(-5deg) rotateX(2deg);
+  }
+  .hx-code {
+    padding-left: 150px;
   }
   .hx-card {
     min-width: 128px;
@@ -816,6 +828,9 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
     margin-left: 0;
     transform: none;
   }
+  .hx-code {
+    padding-left: 18px;
+  }
   .hx:hover .hx-win {
     transform: none;
   }
@@ -831,11 +846,17 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
   .hx-card--three {
     display: none;
   }
-  .hx-mark--a {
-    left: -2%;
+  .hx-mark--a,
+  .hx-mark--b {
+    left: -3%;
   }
-  .hx-mark--c {
+  .hx-mark--e,
+  .hx-mark--f {
     right: -3%;
+  }
+  .hx-mark--c,
+  .hx-mark--d {
+    display: none;
   }
 }
 
