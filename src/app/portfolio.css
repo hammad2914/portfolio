@@ -526,158 +526,349 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
   }
 }
 
-/* ================= Hero: code editor =================
-   One restrained window. Dark in both themes — a code editor reads as one. */
-.code-hero {
+/* ================= Hero showcase =================
+   Staged the way a product site presents a screenshot: the window is tilted in
+   perspective and bled off the right edge, stat cards float over it, stack
+   marks sit at the corners. A flat, centred, fully-contained panel reads as a
+   pasted screenshot; this reads as a composition.
+
+   hx- prefixed — hs-* is already the template's (hs-text-box, hs-banner) and
+   btn/nav/card collide with Bootstrap. */
+
+.hx {
+  position: relative;
   width: 100%;
-  max-width: 560px;
-  margin-inline: auto;
+  min-height: 400px;
+  perspective: 1400px;
 }
 
-.code-hero__window {
-  overflow: hidden;
+/* soft light behind the window */
+.hx-glow {
+  position: absolute;
+  right: -6%;
+  top: 6%;
+  width: 78%;
+  height: 76%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(7, 136, 255, 0.32) 0%,
+    rgba(7, 136, 255, 0) 68%
+  );
+  filter: blur(38px);
+  pointer-events: none;
+}
+
+/* ---- the window ---- */
+.hx-stage {
+  position: relative;
+  z-index: 2;
+  transform-style: preserve-3d;
+}
+
+.hx-win {
+  width: 116%;
+  margin-left: 2%;
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  background: #0d1117;
-  box-shadow: 0 26px 60px -22px rgba(2, 8, 16, 0.6);
+  overflow: hidden;
+  /* lifted well clear of the page ground — a dark panel on a dark hero has no
+     edge, which is why it read as a void rather than a surface */
+  background: linear-gradient(158deg, #223041 0%, #151f2b 100%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow:
+    0 40px 80px -26px rgba(0, 0, 0, 0.8),
+    0 0 0 1px rgba(7, 136, 255, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transform: rotateY(-8deg) rotateX(3deg) rotate(-1deg);
+  transform-origin: left center;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-html[data-theme="light"] .code-hero__window {
-  border-color: rgba(4, 12, 22, 0.12);
-  box-shadow: 0 22px 48px -20px rgba(4, 12, 22, 0.28);
+.hx:hover .hx-win {
+  transform: rotateY(-5deg) rotateX(2deg) rotate(-0.5deg);
 }
 
-.code-hero__chrome {
+.hx-bar {
   display: flex;
   align-items: center;
-  gap: 0.85rem;
-  height: 2.5rem;
-  padding: 0 0.95rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  gap: 12px;
+  height: 34px;
+  padding: 0 14px;
+  background: rgba(255, 255, 255, 0.07);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.code-hero__dots {
+.hx-dots {
   display: inline-flex;
-  gap: 0.42rem;
-  flex-shrink: 0;
+  gap: 6px;
 }
 
-.code-hero__dots i {
-  display: block;
-  width: 0.66rem;
-  height: 0.66rem;
+.hx-dots i {
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
+  display: block;
+  background: rgba(255, 255, 255, 0.18);
 }
 
-.code-hero__file {
-  color: rgba(201, 209, 217, 0.62);
+.hx-dots i:first-child {
+  background: #ff5f57;
+}
+.hx-dots i:nth-child(2) {
+  background: #febc2e;
+}
+.hx-dots i:nth-child(3) {
+  background: #28c840;
+}
+
+.hx-file {
   font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-  font-size: 0.72rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.55);
 }
 
-.code-hero__code {
+.hx-code {
   margin: 0;
-  padding: 1rem 1.1rem 1.2rem;
+  padding: 16px 18px 22px;
   font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-  font-size: 0.775rem;
-  line-height: 1.6;
-  color: #c9d1d9;
-  overflow-x: auto;
-  tab-size: 2;
+  font-size: 13px;
+  line-height: 1.8;
+  color: rgba(228, 238, 250, 0.96);
+  white-space: pre;
+  overflow: hidden;
 }
 
-.code-hero__line {
+.hx-line {
   display: flex;
-  gap: 0.9rem;
-  min-height: 1.6em;
+  align-items: baseline;
+  gap: 14px;
+  min-height: 1.75em;
 }
 
-.code-hero__ln {
-  flex: 0 0 1.4rem;
+.hx-ln {
+  flex: 0 0 16px;
   text-align: right;
-  color: rgba(201, 209, 217, 0.22);
+  color: rgba(255, 255, 255, 0.18);
   user-select: none;
 }
 
-.code-hero__code code {
+.hx-code code {
   font: inherit;
   white-space: pre-wrap;
   word-break: break-word;
 }
 
-.code-hero__caret {
-  display: inline-block;
-  width: 2px;
-  height: 1.05em;
-  margin-left: 1px;
-  vertical-align: text-bottom;
-  background: #0788ff;
-  animation: code-caret 1.05s steps(2, start) infinite;
+.hx-code i {
+  font-style: normal;
 }
 
-@keyframes code-caret {
+.hx-kw {
+  color: #ff8b81;
+}
+.hx-st {
+  color: #a5d6ff;
+}
+.hx-cm {
+  color: rgba(255, 255, 255, 0.32);
+  font-style: italic !important;
+}
+.hx-nu {
+  color: #79c0ff;
+}
+.hx-ty {
+  color: #7ee787;
+}
+
+.hx-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 2px;
+  align-self: center;
+  background: #0788ff;
+  animation: hx-blink 1s steps(2, start) infinite;
+}
+
+@keyframes hx-blink {
   50% {
     opacity: 0;
   }
 }
 
-/* Token colours — GitHub dark */
-.tok-comment {
-  color: #8b949e;
-  font-style: italic;
-}
-.tok-string {
-  color: #a5d6ff;
-}
-.tok-decorator {
-  color: #ffa657;
-}
-.tok-keyword {
-  color: #ff7b72;
-}
-.tok-number {
-  color: #79c0ff;
-}
-.tok-type {
-  color: #7ee787;
-}
-.tok-fn {
-  color: #d2a8ff;
+/* ---- floating stat cards ---- */
+.hx-card {
+  position: absolute;
+  z-index: 4;
+  min-width: 148px;
+  padding: 13px 16px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow:
+    0 22px 44px -16px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(4, 12, 22, 0.05);
+  animation: hx-float 6s ease-in-out infinite;
 }
 
-/* Static role + focus line under the H1 */
-.hs-focus {
-  margin: 0.35rem 0 1.1rem;
-  color: rgba(255, 255, 255, 0.55);
-  font-size: 0.92rem;
-  letter-spacing: 0.02em;
+.hx-card__label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: #8b96a5;
 }
 
-html[data-theme="light"] .hs-focus {
-  color: #5b6470;
+.hx-card strong {
+  display: block;
+  margin-top: 3px;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: #0f1b2a;
+  letter-spacing: -0.01em;
+}
+
+.hx-card__note {
+  display: block;
+  margin-top: 2px;
+  font-size: 11.5px;
+  color: #0788ff;
+}
+
+.hx-card--one {
+  left: 3%;
+  top: 2%;
+}
+.hx-card--two {
+  left: 0;
+  bottom: 14%;
+}
+.hx-card--three {
+  right: -5%;
+  top: 44%;
+}
+
+@keyframes hx-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-9px);
+  }
+}
+
+/* ---- stack marks at the corners ---- */
+.hx-mark {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(6px);
+  font-size: 22px;
+  animation: hx-float 7s ease-in-out infinite;
+}
+
+.hx-mark--a {
+  left: -3%;
+  top: 32%;
+}
+.hx-mark--b {
+  right: 10%;
+  top: -7%;
+}
+.hx-mark--c {
+  right: -9%;
+  bottom: 16%;
+}
+.hx-mark--d {
+  left: 12%;
+  bottom: -6%;
+}
+
+/* ---- narrower screens: straighten up, pull everything inside ---- */
+@media (max-width: 1199px) {
+  .hx-win {
+    width: 108%;
+    transform: rotateY(-6deg) rotateX(2deg);
+  }
+  .hx-card {
+    min-width: 128px;
+    padding: 11px 13px;
+  }
+  .hx-card strong {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 991px) {
+  .hx {
+    min-height: 360px;
+    perspective: none;
+  }
+  .hx-win {
+    width: 100%;
+    margin-left: 0;
+    transform: none;
+  }
+  .hx:hover .hx-win {
+    transform: none;
+  }
+  .hx-card--one {
+    left: auto;
+    right: 2%;
+    top: -3%;
+  }
+  .hx-card--two {
+    left: -2%;
+    bottom: -4%;
+  }
+  .hx-card--three {
+    display: none;
+  }
+  .hx-mark--a {
+    left: -2%;
+  }
+  .hx-mark--c {
+    right: -3%;
+  }
 }
 
 @media (max-width: 575px) {
-  .code-hero__code {
-    font-size: 0.68rem;
+  .hx-code {
+    font-size: 11px;
+    padding: 13px 14px 18px;
+  }
+  .hx-mark {
+    width: 36px;
+    height: 36px;
+    font-size: 17px;
+  }
+  .hx-card {
+    min-width: 116px;
+  }
+  .hx-card strong {
+    font-size: 19px;
+  }
+  .hx-card__note {
+    font-size: 10.5px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .code-hero__caret {
+  .hx-card,
+  .hx-mark {
     animation: none;
   }
-}
-
-/* The role line is a subtitle, not a second headline. The template sized this
-   H2 for progressively-typed text, so as static copy it rendered at the full
-   70px H1 size and wrapped to three lines. */
-html .home-section .hs-text-box h2 {
-  margin-bottom: 0;
-  color: #0788ff;
-  font-size: clamp(1.45rem, 2.4vw, 2.05rem);
-  line-height: 1.25;
+  .hx-caret {
+    animation: none;
+  }
+  .hx-win {
+    transition: none;
+  }
 }

@@ -3,7 +3,7 @@
 import { Icon } from "@iconify/react";
 import { Link } from "react-scroll";
 import { hero, socialLinks } from "@/data/content";
-import { CodeEditorAnimation } from "./CodeEditorAnimation";
+import { HeroShowcase } from "./HeroShowcase";
 import { SocialIcons } from "./Shared";
 
 export function HeroSection() {
@@ -74,7 +74,7 @@ export function HeroSection() {
           </div>
           <div className="col-lg-6">
             <div className="hs-banner">
-              <CodeEditorAnimation />
+              <HeroShowcase />
             </div>
           </div>
         </div>
