@@ -1,142 +1,138 @@
 "use client";
 
 import { Icon } from "@iconify/react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 /**
- * Hero visual: the code is written, a terminal builds and deploys it, and the
- * panel opens on the running product. Decorative — the hero copy carries the
- * message.
- *
- * Every class is `hj`-prefixed: the natural names here (btn, nav, app, main,
- * side, row, p) all collide with Bootstrap or the base template stylesheet.
- *
- * The screen is dense on purpose — a nav, KPIs, filters, selection and
- * pagination are what make it read as real software rather than a mockup — so
- * it is authored at a fixed design size and scaled to fit its column.
+ * Hero visual: a dark code editor that builds and turns into the real, light
+ * web app that code produces — browser bar, sidebar and all. Stack logos orbit
+ * the panel. Decorative — the hero copy carries the message.
  */
 
-const DESIGN_W = 620;
-const DESIGN_H = 434;
+type Stage = "writing" | "building" | "running";
 
-const CODE = [
-  "export function useGridSync(module: string) {",
-  "  const [rows, setRows] = useState<Row[]>([]);",
+type Scene = {
+  file: string;
+  url: string;
+  appTitle: string;
+  appIcon: string;
+  lines: string[];
+  app: "extract" | "grid" | "register";
+};
+
+const SCENES: Scene[] = [
+  {
+    file: "extraction.service.ts",
+    url: "cortex.app/invoices/8842",
+    appTitle: "Invoice intake",
+    appIcon: "mdi:file-document-check-outline",
+    app: "extract",
+    lines: [
+      "async extract(doc: Buffer, client: string) {",
+      "  const tpl = await this.templates.for(client);",
+      "  const fields = await this.ai.parse(doc, tpl);",
+      "",
+      "  // a low-confidence read never reaches the ledger",
+      "  return fields.some((f) => f.score < 0.7)",
+      "    ? this.queueForReview(fields)",
+      "    : this.commit(fields);",
+      "}",
+    ],
+  },
+  {
+    file: "useGridSync.ts",
+    url: "cortex.app/purchase-orders",
+    appTitle: "Purchase orders",
+    appIcon: "mdi:table-large",
+    app: "grid",
+    lines: [
+      "export function useGridSync(module: string) {",
+      "  const [rows, setRows] = useState<Row[]>([]);",
+      "",
+      "  // 50k rows stay live without a refetch",
+      "  socket.on('row:update', (row) => {",
+      "    setRows((prev) => merge(prev, row));",
+      "  });",
+      "",
+      "  return rows;",
+      "}",
+    ],
+  },
+  {
+    file: "attendance.query.ts",
+    url: "okulium.app/attendance/7-B",
+    appTitle: "Class 7-B · Today",
+    appIcon: "mdi:clipboard-check-outline",
+    app: "register",
+    lines: [
+      "const register = await prisma.attendance.findMany({",
+      "  where: { branchId, date: today },",
+      "  include: {",
+      "    // a corrected register keeps its history",
+      "    edits: { orderBy: { changedAt: 'desc' } },",
+      "  },",
+      "});",
+    ],
+  },
+];
+
+/** Logos orbiting the panel. */
+const ORBIT = [
+  { name: "React", icon: "logos:react", x: 0, y: 44, size: 3.1, dur: 5 },
+  {
+    name: "PostgreSQL",
+    icon: "logos:postgresql",
+    x: 95,
+    y: 4,
+    size: 2.9,
+    dur: 6,
+  },
+  {
+    name: "Next.js",
+    icon: "logos:nextjs-icon",
+    x: 47,
+    y: 100,
+    size: 2.7,
+    dur: 5.5,
+  },
+  {
+    name: "TypeScript",
+    icon: "logos:typescript-icon",
+    x: 8,
+    y: 96,
+    size: 2.4,
+    dur: 6.5,
+  },
+  { name: "NestJS", icon: "logos:nestjs", x: 100, y: 72, size: 2.5, dur: 5.2 },
+];
+
+const MAX_LINES = Math.max(...SCENES.map((s) => s.lines.length));
+const TYPE_MS = 15;
+const SETTLE_MS = 500;
+const BUILD_MS = 1300;
+const RUN_MS = 4200;
+
+const TOKEN_PATTERN = new RegExp(
+  [
+    "(\\/\\/[^\\n]*)",
+    "(`[^`]*`|\"[^\"]*\"|'[^']*')",
+    "\\b(export|const|let|async|await|return|function|class|new|if|else|true|false|null|undefined)\\b",
+    "\\b(\\d+(?:\\.\\d+)?)\\b",
+    "\\b([A-Z][A-Za-z0-9_]*)\\b",
+    "\\b([a-zA-Z_$][\\w$]*)(?=\\()",
+  ].join("|"),
+  "g",
+);
+
+const CLASS_BY_GROUP = [
   "",
-  "  useEffect(() => {",
-  "    const socket = connect(`/ws/${module}`);",
-  "",
-  "    // 50k rows stay live without a refetch",
-  "    socket.on('row:update', (row) => {",
-  "      setRows((prev) => merge(prev, row));",
-  "    });",
-  "",
-  "    return () => socket.close();",
-  "  }, [module]);",
-  "",
-  "  return rows;",
-  "}",
+  "tok-comment",
+  "tok-string",
+  "tok-keyword",
+  "tok-number",
+  "tok-type",
+  "tok-fn",
 ];
-
-const TERMINAL = [
-  { text: "$ npm run build", tone: "prompt" },
-  { text: "  ✓ compiled 9 modules in 1.2s", tone: "ok" },
-  { text: "  ✓ bundle 41.2 kB gzipped", tone: "ok" },
-  { text: "$ deploy --prod", tone: "prompt" },
-  { text: "  ✓ live at cortex.app", tone: "ok" },
-];
-
-const ROWS = [
-  {
-    po: "PO-4471",
-    vendor: "Meridian Textiles",
-    initial: "M",
-    colour: "#7c3aed",
-    qty: "1,200",
-    value: "€84,120",
-    status: "Approved",
-    tone: "ok",
-    selected: true,
-  },
-  {
-    po: "PO-4472",
-    vendor: "Halcyon Mills",
-    initial: "H",
-    colour: "#0891b2",
-    qty: "340",
-    value: "€22,780",
-    status: "In review",
-    tone: "wa",
-  },
-  {
-    po: "PO-4473",
-    vendor: "Northbay Supply",
-    initial: "N",
-    colour: "#c2410c",
-    qty: "980",
-    value: "€61,405",
-    status: "Approved",
-    tone: "ok",
-  },
-  {
-    po: "PO-4474",
-    vendor: "Meridian Textiles",
-    initial: "M",
-    colour: "#7c3aed",
-    qty: "75",
-    value: "€5,240",
-    status: "Draft",
-    tone: "mu",
-  },
-];
-
-const NAV = [
-  { label: "Dashboard", icon: "mdi:view-grid-outline" },
-  { label: "Orders", icon: "mdi:cart-outline", active: true },
-  { label: "Vendors", icon: "mdi:account-group-outline" },
-  { label: "Reports", icon: "mdi:chart-bar" },
-  { label: "Settings", icon: "mdi:cog-outline" },
-];
-
-const TILES = [
-  {
-    label: "Open",
-    value: "1,284",
-    delta: "+4.1%",
-    up: true,
-    points: [4, 6, 5, 8, 7, 11, 13],
-    colour: "#0f7ae5",
-  },
-  {
-    label: "Awaiting approval",
-    value: "96",
-    delta: "−12%",
-    up: false,
-    points: [9, 8, 9, 6, 7, 5, 4],
-    colour: "#d97706",
-  },
-  {
-    label: "Value this month",
-    value: "€4.2M",
-    delta: "+12.4%",
-    up: true,
-    points: [3, 5, 4, 6, 8, 9, 12],
-    colour: "#16a34a",
-  },
-];
-
-const TYPE_MS = 13;
-const SETTLE_MS = 380;
-const LOG_STEP_MS = 320;
-const DEPLOY_PAUSE_MS = 420;
-const LIVE_MS = 5200;
-
-type Stage = "editing" | "building" | "live";
-
-const TOKEN_PATTERN =
-  /(\/\/[^\n]*)|('[^']*'|"[^"]*")|\b(export|const|function|return|new)\b|\b(\d+)\b|\b([A-Z][A-Za-z0-9]*)\b|\b([a-zA-Z_$][\w$]*)(?=\()/g;
-
-const TOKEN_CLASS = ["", "hj-c", "hj-s", "hj-k", "hj-nu", "hj-ty", "hj-fn"];
 
 function highlight(line: string, keyPrefix: string) {
   const out: React.ReactNode[] = [];
@@ -148,7 +144,10 @@ function highlight(line: string, keyPrefix: string) {
     if (match.index > last) out.push(line.slice(last, match.index));
     const group = match.findIndex((v, i) => i > 0 && v !== undefined);
     out.push(
-      <span key={`${keyPrefix}-${match.index}`} className={TOKEN_CLASS[group]}>
+      <span
+        key={`${keyPrefix}-${match.index}`}
+        className={CLASS_BY_GROUP[group] ?? ""}
+      >
         {match[0]}
       </span>,
     );
@@ -158,65 +157,141 @@ function highlight(line: string, keyPrefix: string) {
   return out;
 }
 
-function Sparkline({ points, colour }: { points: number[]; colour: string }) {
-  const w = 58;
-  const h = 14;
-  const max = Math.max(...points);
-  const min = Math.min(...points);
-  const span = max - min || 1;
-  const d = points
-    .map((p, i) => {
-      const x = (i / (points.length - 1)) * w;
-      const y = h - ((p - min) / span) * h;
-      return `${i ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`;
-    })
-    .join(" ");
+/* ---------------- the app the code produces ---------------- */
+
+const EXTRACT_FIELDS = [
+  { label: "Vendor", value: "Meridian Textiles", score: 0.98 },
+  { label: "Invoice no.", value: "INV-8842", score: 0.96 },
+  { label: "Date", value: "12 Aug 2026", score: 0.94 },
+  { label: "Total", value: "€ 14,208.50", score: 0.62 },
+];
+
+const GRID_ROWS = [
+  { po: "PO-4471", vendor: "Meridian", qty: 1200, status: "Approved" },
+  { po: "PO-4472", vendor: "Halcyon", qty: 340, status: "In review" },
+  { po: "PO-4473", vendor: "Northbay", qty: 980, status: "Approved" },
+  { po: "PO-4474", vendor: "Meridian", qty: 75, status: "Draft" },
+];
+
+const REGISTER_ROWS = [
+  { name: "Ayesha Khan", state: "present", edited: false },
+  { name: "Bilal Raza", state: "present", edited: false },
+  { name: "Fatima Sheikh", state: "absent", edited: true },
+  { name: "Hamza Tariq", state: "present", edited: false },
+];
+
+const row = (i: number) => ({ "--i": i }) as React.CSSProperties;
+
+function AppBody({ scene }: { scene: Scene }) {
+  if (scene.app === "extract") {
+    return (
+      <>
+        {EXTRACT_FIELDS.map((f, i) => {
+          const low = f.score < 0.7;
+          return (
+            <div
+              className={`web-row web-row--field${low ? " is-flagged" : ""}`}
+              key={f.label}
+              style={row(i + 1)}
+            >
+              <span className="web-row__label">{f.label}</span>
+              <span className="web-row__value">{f.value}</span>
+              <span className={`web-pill ${low ? "is-warn" : "is-ok"}`}>
+                {low ? "needs review" : f.score.toFixed(2)}
+              </span>
+            </div>
+          );
+        })}
+        <div className="web-foot" style={row(EXTRACT_FIELDS.length + 1)}>
+          <Icon icon="mdi:shield-check-outline" />3 fields committed · 1 held
+          for review
+        </div>
+      </>
+    );
+  }
+
+  if (scene.app === "grid") {
+    return (
+      <>
+        <div className="web-row web-row--head web-row--grid" style={row(1)}>
+          <span>PO</span>
+          <span>Vendor</span>
+          <span>Qty</span>
+          <span>Status</span>
+        </div>
+        {GRID_ROWS.map((r, i) => (
+          <div
+            className={`web-row web-row--grid${i === 1 ? " is-updating" : ""}`}
+            key={r.po}
+            style={row(i + 2)}
+          >
+            <span className="web-row__value">{r.po}</span>
+            <span>{r.vendor}</span>
+            <span className="web-num">{r.qty.toLocaleString()}</span>
+            <span
+              className={`web-pill ${
+                r.status === "Approved"
+                  ? "is-ok"
+                  : r.status === "In review"
+                    ? "is-warn"
+                    : "is-mute"
+              }`}
+            >
+              {r.status}
+            </span>
+          </div>
+        ))}
+        <div className="web-foot" style={row(GRID_ROWS.length + 2)}>
+          <Icon icon="mdi:lightning-bolt-outline" />
+          live over websocket · no refetch
+        </div>
+      </>
+    );
+  }
 
   return (
-    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none">
-      <path
-        d={d}
-        stroke={colour}
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+    <>
+      {REGISTER_ROWS.map((r, i) => (
+        <div className="web-row web-row--field" key={r.name} style={row(i + 1)}>
+          <span className="web-row__value">{r.name}</span>
+          <span className="web-row__label">
+            {r.edited ? (
+              <span className="web-edited">
+                <Icon icon="mdi:history" />
+                edited 09:14
+              </span>
+            ) : null}
+          </span>
+          <span
+            className={`web-pill ${r.state === "present" ? "is-ok" : "is-warn"}`}
+          >
+            {r.state}
+          </span>
+        </div>
+      ))}
+      <div className="web-foot" style={row(REGISTER_ROWS.length + 1)}>
+        <Icon icon="mdi:history" />
+        every correction keeps its trail
+      </div>
+    </>
   );
 }
 
-export function CodeToApp() {
-  const [typed, setTyped] = useState(0);
-  const [stage, setStage] = useState<Stage>("editing");
-  const [logs, setLogs] = useState(0);
-  const [revealed, setRevealed] = useState(0);
-  const [flash, setFlash] = useState(false);
-  const [cycle, setCycle] = useState(0);
-  const [animate, setAnimate] = useState(true);
+/* ---------------- the panel ---------------- */
 
-  const fitRef = useRef<HTMLDivElement>(null);
+export function CodeToApp() {
+  const [index, setIndex] = useState(0);
+  const [typed, setTyped] = useState(0);
+  const [stage, setStage] = useState<Stage>("writing");
+  const [animate, setAnimate] = useState(true);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  const scene = SCENES[index];
+  const fullText = useMemo(() => scene.lines.join("\n"), [scene]);
 
   const clearTimers = useCallback(() => {
     timers.current.forEach(clearTimeout);
     timers.current = [];
-  }, []);
-
-  // Scale the fixed-size screen down to whatever the hero column gives us.
-  useEffect(() => {
-    const node = fitRef.current;
-    if (!node) return;
-
-    const apply = () => {
-      const scale = Math.min(1, node.clientWidth / DESIGN_W);
-      node.style.setProperty("--hj-fit", String(scale));
-      node.style.height = `${DESIGN_H * scale}px`;
-    };
-
-    apply();
-    const observer = new ResizeObserver(apply);
-    observer.observe(node);
-    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -229,59 +304,43 @@ export function CodeToApp() {
 
   useEffect(() => {
     clearTimers();
-    setStage("editing");
-    setLogs(0);
-    setRevealed(0);
-    setFlash(false);
+    setStage("writing");
 
-    const full = CODE.join("\n");
-
-    // Reduced motion: rest on the finished product, no typing or build.
     if (!animate) {
-      setTyped(full.length);
-      setStage("live");
-      setRevealed(99);
+      setTyped(fullText.length);
+      timers.current.push(
+        setTimeout(() => setStage("running"), RUN_MS),
+        setTimeout(() => setIndex((i) => (i + 1) % SCENES.length), RUN_MS * 2),
+      );
       return clearTimers;
     }
 
+    // Time-driven: rAF pauses outright in a hidden tab where setInterval only
+    // throttles, and elapsed-time progress stays correct on return.
     setTyped(0);
     let raf = 0;
     let startedAt: number | null = null;
     let shown = -1;
 
-    const runBuild = () => {
-      timers.current.push(
-        setTimeout(() => setStage("building"), SETTLE_MS),
-        ...TERMINAL.map((_, i) =>
-          setTimeout(() => setLogs(i + 1), SETTLE_MS + 200 + i * LOG_STEP_MS),
-        ),
-      );
-
-      const deployAt =
-        SETTLE_MS + 200 + TERMINAL.length * LOG_STEP_MS + DEPLOY_PAUSE_MS;
-
-      timers.current.push(
-        setTimeout(() => setStage("live"), deployAt),
-        ...Array.from({ length: 11 }, (_, i) =>
-          setTimeout(() => setRevealed(i + 1), deployAt + 60 * i),
-        ),
-        setTimeout(() => setFlash(true), deployAt + 1500),
-        setTimeout(() => setCycle((c) => c + 1), deployAt + LIVE_MS),
-      );
-    };
-
     const step = (ts: number) => {
       if (startedAt === null) startedAt = ts;
       const chars = Math.min(
         Math.floor((ts - startedAt) / TYPE_MS),
-        full.length,
+        fullText.length,
       );
       if (chars !== shown) {
         shown = chars;
         setTyped(chars);
       }
-      if (chars >= full.length) {
-        runBuild();
+      if (chars >= fullText.length) {
+        timers.current.push(
+          setTimeout(() => setStage("building"), SETTLE_MS),
+          setTimeout(() => setStage("running"), SETTLE_MS + BUILD_MS),
+          setTimeout(
+            () => setIndex((i) => (i + 1) % SCENES.length),
+            SETTLE_MS + BUILD_MS + RUN_MS,
+          ),
+        );
         return;
       }
       raf = requestAnimationFrame(step);
@@ -292,203 +351,110 @@ export function CodeToApp() {
       cancelAnimationFrame(raf);
       clearTimers();
     };
-  }, [cycle, animate, clearTimers]);
+  }, [fullText, animate, clearTimers]);
 
-  const full = CODE.join("\n");
-  const visible = full.slice(0, typed).split("\n");
-  const typing = typed < full.length;
-  const live = stage === "live";
-
-  const seen = (order: number) => (revealed > order ? " hj-in" : "");
+  const visible = fullText.slice(0, typed).split("\n");
+  const done = typed >= fullText.length;
 
   return (
-    <div className="hj" ref={fitRef} aria-hidden="true">
-      <div className={`hj__screen hj--${stage}`}>
-        <div className="hj__bar">
-          <span className="hj__dots">
+    <div className={`c2a is-${stage}`} aria-hidden="true">
+      {ORBIT.map((o, i) => (
+        <span
+          className="c2a__orbit"
+          key={o.name}
+          style={
+            {
+              "--x": o.x,
+              "--y": o.y,
+              "--size": `${o.size}rem`,
+              animationDuration: `${o.dur}s`,
+              animationDelay: `${i * 0.6}s`,
+            } as React.CSSProperties
+          }
+        >
+          <Icon icon={o.icon} />
+        </span>
+      ))}
+
+      <div className="c2a__panel">
+        <div className="c2a__chrome">
+          <span className="c2a__dots">
             <i style={{ background: "#ff5f57" }} />
             <i style={{ background: "#febc2e" }} />
             <i style={{ background: "#28c840" }} />
           </span>
 
-          <span className="hj__slot">
-            <span className="hj__file">useGridSync.ts</span>
-            <span className="hj__url">
+          <span className="c2a__slot">
+            <span className="c2a__file">{scene.file}</span>
+            <span className="c2a__url">
               <Icon icon="mdi:lock" />
-              <b>cortex.app</b>/purchase-orders
+              {scene.url}
             </span>
           </span>
 
-          <span className="hj__tag">
-            {live ? <i className="hj__pulse" /> : null}
-            {stage === "editing"
-              ? "editing"
-              : stage === "building"
-                ? "building"
-                : "live"}
+          <span className="c2a__tag">
+            {stage === "running" ? <i className="c2a__dot" /> : null}
+            {stage === "running" ? "live" : stage}
           </span>
         </div>
 
-        <div className="hj__body">
+        <span className="c2a__progress" />
+
+        <div className="c2a__body">
           {/* the editor */}
-          <pre className="hj__code">
-            {CODE.map((_, i) => {
+          <pre className="c2a__code">
+            {Array.from({ length: MAX_LINES }, (_, i) => {
               const text = visible[i];
-              const caret = typing && i === visible.length - 1;
+              const caret = !done && i === visible.length - 1;
               return (
-                <span className="hj__line" key={i}>
-                  <span className="hj__ln">
+                <span className="c2a__line" key={i} style={row(i)}>
+                  <span className="c2a__ln">
                     {text !== undefined ? i + 1 : ""}
                   </span>
-                  <span className="hj__src">
-                    {text !== undefined ? highlight(text, `${cycle}-${i}`) : ""}
-                    {caret ? <span className="hj__caret" /> : null}
-                  </span>
+                  <code>
+                    {text !== undefined ? highlight(text, `${index}-${i}`) : ""}
+                    {caret ? <span className="c2a__caret" /> : null}
+                  </code>
                 </span>
               );
             })}
           </pre>
 
-          {/* the build */}
-          <div className={`hj__term${stage === "building" ? " hj-up" : ""}`}>
-            {TERMINAL.map((l, i) => (
-              <div
-                className={`hj__log hj-${l.tone}${i < logs ? " hj-in" : ""}`}
-                key={l.text}
-              >
-                {l.text}
-              </div>
-            ))}
-          </div>
-
-          {/* the product */}
-          <div className={`hj__app${live ? " hj-on" : ""}`}>
-            <aside className="hj-side">
-              <div className="hj-brand">
-                <span className="hj-brand__sq">C</span>
-                <span>Cortex</span>
-              </div>
-              {NAV.map((n) => (
-                <span
-                  className={`hj-nav${n.active ? " hj-act" : ""}`}
-                  key={n.label}
-                >
-                  <Icon icon={n.icon} />
-                  {n.label}
-                </span>
-              ))}
-              <span className="hj-side__gap" />
-              <div className="hj-quota">
-                <b>Sync 68%</b>
-                <span className="hj-quota__track">
-                  <span className="hj-quota__fill" />
-                </span>
-              </div>
+          {/* the running web app */}
+          <div className="c2a__web">
+            <aside className="web-side">
+              <span className="web-side__mark" style={row(0)} />
+              <span className="web-side__item is-active" style={row(1)}>
+                <Icon icon="mdi:view-grid-outline" />
+              </span>
+              <span className="web-side__item" style={row(2)}>
+                <Icon icon="mdi:file-document-outline" />
+              </span>
+              <span className="web-side__item" style={row(3)}>
+                <Icon icon="mdi:chart-line" />
+              </span>
+              <span className="web-side__item" style={row(4)}>
+                <Icon icon="mdi:cog-outline" />
+              </span>
             </aside>
 
-            <div className="hj-main">
-              <div className={`hj-topbar${seen(0)}`}>
-                <span className="hj-crumb">
-                  Procurement / <b>Purchase orders</b>
+            <div className="web-main">
+              <header className="web-head" style={row(0)}>
+                <span className="web-head__title">
+                  <Icon icon={scene.appIcon} />
+                  {scene.appTitle}
                 </span>
-                <span className="hj-tools">
-                  <span className="hj-search">
+                <span className="web-head__tools">
+                  <span className="web-search">
                     <Icon icon="mdi:magnify" />
-                    Search orders
+                    Search
                   </span>
-                  <span className="hj-iconbtn">
-                    <Icon icon="mdi:bell-outline" />
-                  </span>
-                  <span className="hj-av">HA</span>
+                  <span className="web-avatar">HA</span>
                 </span>
-              </div>
+              </header>
 
-              <div className={`hj-pagehead${seen(1)}`}>
-                <h3>Purchase orders</h3>
-                <span className="hj-btn">
-                  <Icon icon="mdi:plus" />
-                  New order
-                </span>
-              </div>
-
-              <div className="hj-tiles">
-                {TILES.map((t, i) => (
-                  <div className={`hj-tile${seen(2 + i)}`} key={t.label}>
-                    <span className="hj-tile__lbl">{t.label}</span>
-                    <span className="hj-tile__val">
-                      {t.value}
-                      <em className={t.up ? "hj-up" : "hj-dn"}>{t.delta}</em>
-                    </span>
-                    <Sparkline points={t.points} colour={t.colour} />
-                  </div>
-                ))}
-              </div>
-
-              <div className={`hj-tabs${seen(5)}`}>
-                <span className="hj-act">
-                  All<em>50,000</em>
-                </span>
-                <span>Approved</span>
-                <span>In review</span>
-                <span>Draft</span>
-              </div>
-
-              <div className="hj-table">
-                <div className={`hj-r hj-r--head${seen(5)}`}>
-                  <span />
-                  <span>PO</span>
-                  <span>Vendor</span>
-                  <span className="hj-num">Qty</span>
-                  <span className="hj-num">Value</span>
-                  <span>Status</span>
-                  <span />
-                </div>
-                {ROWS.map((r, i) => (
-                  <div
-                    className={`hj-r${r.selected ? " hj-sel" : ""}${seen(
-                      6 + i,
-                    )}${flash && i === 1 ? " hj-flash" : ""}`}
-                    key={r.po}
-                  >
-                    <span className="hj-cbx" />
-                    <span>
-                      <b>{r.po}</b>
-                    </span>
-                    <span className="hj-vend">
-                      <span
-                        className="hj-vend__ini"
-                        style={{ background: r.colour }}
-                      >
-                        {r.initial}
-                      </span>
-                      <span>{r.vendor}</span>
-                    </span>
-                    <span className="hj-num">{r.qty}</span>
-                    <span className="hj-num">
-                      <b>{r.value}</b>
-                    </span>
-                    <span className={`hj-p hj-${r.tone}`}>
-                      <i />
-                      {r.status}
-                    </span>
-                    <span className="hj-more">⋯</span>
-                  </div>
-                ))}
-              </div>
-
-              <div className={`hj-tfoot${seen(10)}`}>
-                <span>Showing 1–4 of 50,000</span>
-                <span className="hj-livechip">
-                  <i />
-                  live over websocket
-                </span>
-                <span className="hj-pages">
-                  <em>‹</em>
-                  <b>1</b>
-                  <em>2</em>
-                  <em>3</em>
-                  <em>›</em>
-                </span>
+              <div className="web-rows">
+                <AppBody scene={scene} />
               </div>
             </div>
           </div>
