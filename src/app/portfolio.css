@@ -632,7 +632,7 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
 .hx-code {
   margin: 0;
   /* left gutter: the cards overlay this strip, never the code itself */
-  padding: 12px 16px 15px 14px;
+  padding: 12px 16px 15px 34px;
   font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
   font-size: 11px;
   line-height: 1.62;
@@ -725,25 +725,27 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
   animation: hx-float 7s ease-in-out infinite;
 }
 
-/* marks ring the window evenly */
+/* Marks ring the window, but the whole ring sits inside two hard limits: the
+   copy column on the left and the container edge on the right. Reaching past
+   either is what made them read as strays rather than part of the picture. */
 .hx-mark--a {
-  left: -7%;
+  left: -1%;
   top: 20%;
 }
 .hx-mark--b {
-  left: 14%;
-  bottom: -5%;
+  left: 20%;
+  bottom: -2%;
 }
 .hx-mark--c {
-  right: -8%;
+  right: 0%;
   top: 38%;
 }
 .hx-mark--d {
-  left: -6%;
+  left: -1%;
   bottom: 24%;
 }
 .hx-mark--e {
-  left: 44%;
+  left: 50%;
   top: -10%;
 }
 
@@ -774,11 +776,11 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
     transform: none;
   }
   .hx-mark--a {
-    left: -3%;
+    left: 0%;
     top: 30%;
   }
   .hx-mark--c {
-    right: -3%;
+    right: 0%;
     bottom: 34%;
   }
   .hx-mark--b,
@@ -810,4 +812,14 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
   .hx-win {
     transition: none;
   }
+}
+
+/* The typed title empties between phrases, and an empty h2 is 0px tall — the
+   whole hero collapsed and sprang back on every cycle, which is what made the
+   low stack mark look like it was drifting into the next section. Reserve
+   the longest phrase's three lines, in em so it follows the template's
+   breakpoint font sizes (it wraps to three at every width, not just mobile).
+   html-prefixed: main.css loads after this file and would otherwise win. */
+html .home-section .hs-text-box h2 {
+  min-height: 3.6em;
 }
