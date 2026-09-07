@@ -816,10 +816,10 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
 
 /* The typed title empties between phrases, and an empty h2 is 0px tall — the
    whole hero collapsed and sprang back on every cycle, which is what made the
-   low stack mark look like it was drifting into the next section. Reserve
-   the longest phrase's three lines, in em so it follows the template's
-   breakpoint font sizes (it wraps to three at every width, not just mobile).
+   low stack mark look like it was drifting into the next section. Reserve two
+   lines — what the phrases wrap to at every width — in em so it follows the
+   template's breakpoint font sizes.
    html-prefixed: main.css loads after this file and would otherwise win. */
 html .home-section .hs-text-box h2 {
-  min-height: 3.6em;
+  min-height: 2.4em;
 }

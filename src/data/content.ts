@@ -19,10 +19,13 @@ export const site = {
 export const hero = {
   name: "Hammad Ali",
   heading: "Hi, I'm Hammad",
+  // Kept short on purpose: the column is half the row, so anything much longer
+  // than this wraps to three lines at every width from 375 to 1440. The full
+  // title still reads in full in `description` directly below the animation.
   typingText: [
-    "Full Stack Software Engineer",
+    "Full Stack Engineer",
     1500,
-    "Building ERP & SaaS Systems",
+    "Building ERP & SaaS",
     1500,
   ] as (string | number)[],
   focus: "ERP · SaaS · Supply-chain systems",
