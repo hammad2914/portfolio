@@ -20,16 +20,17 @@ export const hero = {
   name: "Hammad Ali",
   heading: "Hi, I'm Hammad",
   // Each of these lands under `heading` ("Hi, I'm Hammad"), so every phrase has
-  // to describe a person — a title, or something he does. A bare product noun
-  // ("Real-time ERP") reads as if he were the software. Beyond that they earn
-  // their place by saying something `description` and `focus` don't repeat.
-  // Verified to wrap to at most two lines from 375 to 1920.
+  // to read as a person — a title, or what he's doing. A bare product noun
+  // ("Real-time ERP") reads as if he were the software.
+  // Verified to wrap to at most two lines from 375 to 1920; note that the full
+  // "Full Stack Software Engineer" takes three at almost every width, which is
+  // why the title is abbreviated here and left intact in `description`.
   typingText: [
     "Full Stack Engineer",
     1500,
-    "I build ERP systems",
+    "Building ERP Systems",
     1500,
-    "I ship multi-tenant SaaS",
+    "Shipping SaaS Products",
     1500,
   ] as (string | number)[],
   focus: "ERP · SaaS · Supply-chain systems",
