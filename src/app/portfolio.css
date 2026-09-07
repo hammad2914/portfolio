@@ -567,8 +567,8 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
 }
 
 .hx-win {
-  width: 108%;
-  margin-left: 1%;
+  width: 98%;
+  margin-left: 2%;
   border-radius: 14px;
   overflow: hidden;
   /* lifted well clear of the page ground — a dark panel on a dark hero has no
@@ -592,8 +592,8 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
   display: flex;
   align-items: center;
   gap: 12px;
-  height: 34px;
-  padding: 0 14px;
+  height: 31px;
+  padding: 0 13px;
   background: rgba(255, 255, 255, 0.07);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -630,10 +630,10 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
 .hx-code {
   margin: 0;
   /* left gutter: the cards overlay this strip, never the code itself */
-  padding: 16px 20px 22px 18px;
+  padding: 14px 18px 18px 16px;
   font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-  font-size: 13px;
-  line-height: 1.8;
+  font-size: 12px;
+  line-height: 1.72;
   color: rgba(228, 238, 250, 0.96);
   white-space: pre;
   overflow: hidden;
@@ -713,13 +713,13 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 46px;
-  height: 46px;
-  border-radius: 13px;
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(6px);
-  font-size: 22px;
+  font-size: 29px;
   animation: hx-float 7s ease-in-out infinite;
 }
 
@@ -792,9 +792,9 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
     padding: 13px 14px 18px;
   }
   .hx-mark {
-    width: 36px;
-    height: 36px;
-    font-size: 17px;
+    width: 44px;
+    height: 44px;
+    font-size: 22px;
   }
 }
 

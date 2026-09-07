@@ -2,6 +2,7 @@
 
 import { Icon } from "@iconify/react";
 import { Link } from "react-scroll";
+import { TypeAnimation } from "react-type-animation";
 import { hero, socialLinks } from "@/data/content";
 import { HeroShowcase } from "./HeroShowcase";
 import { SocialIcons } from "./Shared";
@@ -28,7 +29,11 @@ export function HeroSection() {
                 data-aos-duration="1200"
                 data-aos-delay="200"
               >
-                {hero.role}
+                <TypeAnimation
+                  sequence={hero.typingText as (string | number)[]}
+                  speed={50}
+                  repeat={Infinity}
+                />
               </h2>
               <p
                 className="hs-focus"
