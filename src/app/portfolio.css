@@ -538,7 +538,9 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
 .hx {
   position: relative;
   width: 100%;
-  min-height: 400px;
+  /* a floor, not a size — anything taller than the window left dead space
+     below it, which is what pushed the low mark down into the next section */
+  min-height: 300px;
   perspective: 1400px;
 }
 
@@ -567,9 +569,9 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
 }
 
 .hx-win {
-  width: 98%;
-  margin-left: 2%;
-  border-radius: 14px;
+  width: 88%;
+  margin-left: 4%;
+  border-radius: 13px;
   overflow: hidden;
   /* lifted well clear of the page ground — a dark panel on a dark hero has no
      edge, which is why it read as a void rather than a surface */
@@ -592,8 +594,8 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
   display: flex;
   align-items: center;
   gap: 12px;
-  height: 31px;
-  padding: 0 13px;
+  height: 28px;
+  padding: 0 12px;
   background: rgba(255, 255, 255, 0.07);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -630,10 +632,10 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
 .hx-code {
   margin: 0;
   /* left gutter: the cards overlay this strip, never the code itself */
-  padding: 14px 18px 18px 16px;
+  padding: 12px 16px 15px 14px;
   font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-  font-size: 12px;
-  line-height: 1.72;
+  font-size: 11px;
+  line-height: 1.62;
   color: rgba(228, 238, 250, 0.96);
   white-space: pre;
   overflow: hidden;
@@ -642,8 +644,8 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
 .hx-line {
   display: flex;
   align-items: baseline;
-  gap: 14px;
-  min-height: 1.75em;
+  gap: 12px;
+  min-height: 1.62em;
 }
 
 .hx-ln {
@@ -729,8 +731,8 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
   top: 20%;
 }
 .hx-mark--b {
-  left: 15%;
-  bottom: -9%;
+  left: 14%;
+  bottom: -5%;
 }
 .hx-mark--c {
   right: -8%;
@@ -748,7 +750,7 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
 /* ---- narrower screens: straighten up, pull everything inside ---- */
 @media (max-width: 1199px) {
   .hx-win {
-    width: 104%;
+    width: 96%;
     transform: rotateY(-5deg) rotateX(2deg);
   }
   .hx-code {
