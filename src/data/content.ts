@@ -19,16 +19,17 @@ export const site = {
 export const hero = {
   name: "Hammad Ali",
   heading: "Hi, I'm Hammad",
-  // The title anchors it for anyone skimming for one; the rest earn their place
-  // by saying something `description` and `focus` below don't already repeat.
-  // Kept to ~19 characters: the column is half the row, so anything longer wraps
-  // to three lines at every width from 375 to 1440.
+  // Each of these lands under `heading` ("Hi, I'm Hammad"), so every phrase has
+  // to describe a person — a title, or something he does. A bare product noun
+  // ("Real-time ERP") reads as if he were the software. Beyond that they earn
+  // their place by saying something `description` and `focus` don't repeat.
+  // Verified to wrap to at most two lines from 375 to 1920.
   typingText: [
     "Full Stack Engineer",
     1500,
-    "Real-time ERP",
+    "I build ERP systems",
     1500,
-    "Multi-tenant SaaS",
+    "I ship multi-tenant SaaS",
     1500,
   ] as (string | number)[],
   focus: "ERP · SaaS · Supply-chain systems",
