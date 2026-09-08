@@ -5,7 +5,7 @@ export const yearsOfExperience = Math.floor(
   (Date.now() - CAREER_START.getTime()) / (365.25 * 24 * 60 * 60 * 1000),
 );
 
-export const siteUrl = "https://hammad-shahid.vercel.app";
+export const siteUrl = "https://hammad-ali-dev.vercel.app";
 
 export const site = {
   title: "Hammad Ali | Full Stack Software Engineer",
