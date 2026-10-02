@@ -108,6 +108,10 @@ export type ProjectItem = {
   title: string;
   subTitle: string;
   collageSize: ProjectCollageSize;
+  /** The two headline builds, shown large; everything else is a compact row. */
+  featured?: boolean;
+  /** One line under the title in the compact row — the thing worth knowing. */
+  oneLiner?: string;
   /** No public source. Defaults to the client-NDA wording. */
   confidential?: boolean;
   /** Overrides the default NDA wording when the reason isn't a client NDA. */
@@ -125,6 +129,7 @@ const allProjects: ProjectItem[] = [
   {
     thumbUrl: "/images/qa-app.png",
     title: "Integra",
+    oneLiner: "Approvals as a state machine, because inspections bounce backwards",
     subTitle: "Quality Inspection Platform",
     collageSize: "featured",
     confidential: true,
@@ -149,6 +154,7 @@ const allProjects: ProjectItem[] = [
   {
     thumbUrl: "/images/cortex-demo.png",
     title: "Cortex",
+    featured: true,
     subTitle: "AI-Powered ERP System",
     collageSize: "featured",
     confidential: true,
@@ -173,6 +179,7 @@ const allProjects: ProjectItem[] = [
   {
     thumbUrl: "/images/okulium.png",
     title: "Okulium",
+    featured: true,
     subTitle: "School Management SaaS",
     collageSize: "featured",
     confidential: true,
@@ -207,6 +214,7 @@ const allProjects: ProjectItem[] = [
   {
     thumbUrl: "/images/lia.png",
     title: "Law in Action",
+    oneLiner: "Translation fails over across four providers so compliance never stalls",
     subTitle: "Global Regulations Platform",
     collageSize: "featured",
     confidential: true,
@@ -235,6 +243,7 @@ const allProjects: ProjectItem[] = [
   {
     thumbUrl: "/images/vp.png",
     title: "Vendor Portal",
+    oneLiner: "Extraction is validated before anything reaches the ledger",
     subTitle: "B2B Supply Chain Management",
     collageSize: "featured",
     confidential: true,
@@ -259,6 +268,7 @@ const allProjects: ProjectItem[] = [
   {
     thumbUrl: "/images/hotelkey.png",
     title: "HotelKey",
+    oneLiner: "30 screens, one React Native codebase, iOS and Android",
     subTitle: "Hotel & Guest Services App",
     collageSize: "featured",
     confidential: true,
@@ -290,7 +300,7 @@ export const projects = {
     title: "SELECTED PROJECTS",
   },
   /** Shown under the section heading to pre-empt "where's the code?". */
-  note: "Most of these are proprietary client systems, so the source isn't public. Each case study covers the problem, the architecture, and why I made the calls I did — and I'm happy to walk through the code on a call.",
+  note: "Client systems, so the source stays private. The decisions behind them don't.",
   allProjects,
 };
 

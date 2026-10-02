@@ -6,6 +6,37 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { projects, type ProjectItem } from "@/data/content";
 import { SectionHeading } from "./SectionHeading";
 
+/**
+ * Two headline builds get a large card; the rest are compact rows. A uniform
+ * grid said everything mattered equally, which told a visitor nothing about
+ * where to look.
+ *
+ * pj- prefixed: project-collage-* was the old grid, and card/list/row collide
+ * with Bootstrap.
+ */
+
+function Badges({ project }: { project: ProjectItem }) {
+  return (
+    <span className="pj-badges">
+      {project.liveUrl ? (
+        <span className="pj-badge pj-badge--live">
+          <span className="pj-dot" aria-hidden="true" />
+          Live
+        </span>
+      ) : null}
+      {project.inProgress ? (
+        <span className="pj-badge pj-badge--wip">In progress</span>
+      ) : null}
+      {project.confidential ? (
+        <span className="pj-badge pj-badge--nda">
+          <Icon icon="mdi:lock-outline" aria-hidden="true" />
+          Private source
+        </span>
+      ) : null}
+    </span>
+  );
+}
+
 export function ProjectsSection() {
   const [active, setActive] = useState<ProjectItem | null>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -59,6 +90,9 @@ export function ProjectsSection() {
     };
   }, [active, closeModal]);
 
+  const featured = projects.allProjects.filter((p) => p.featured);
+  const rest = projects.allProjects.filter((p) => !p.featured);
+
   return (
     <>
       <section className="project-section section gray-bg" id="project">
@@ -67,83 +101,71 @@ export function ProjectsSection() {
             miniTitle={projects.sectionHeading.miniTitle}
             title={projects.sectionHeading.title}
           />
-          <p
-            className="project-note"
-            data-aos="fade-up"
-            data-aos-duration="1200"
-            data-aos-delay="200"
-          >
+          <p className="pj-note" data-aos="fade-up" data-aos-duration="1000">
             {projects.note}
           </p>
-          <div
-            className="project-collage"
-            data-aos="fade-up"
-            data-aos-duration="1200"
-            data-aos-delay="400"
-          >
-            {projects.allProjects.map((project) => (
+
+          <div className="pj-featured" data-aos="fade-up" data-aos-duration="1000">
+            {featured.map((project) => (
               <button
                 key={project.title}
                 type="button"
-                className={`project-collage__item project-collage__item--${project.collageSize}`}
+                className="pj-card"
                 onClick={() => openModal(project)}
-                aria-label={`View case study: ${project.title} — ${project.subTitle}`}
+                aria-label={`Case study: ${project.title} — ${project.subTitle}`}
               >
-                <div className="project-collage__media">
+                <span className="pj-shot">
                   <Image
                     src={project.thumbUrl}
                     alt={`${project.title} — ${project.subTitle}`}
                     fill
-                    sizes="(max-width: 767px) 100vw, (max-width: 1199px) 50vw, 33vw"
-                    className={`project-collage__img${project.collageSize === "portrait" ? " project-collage__img--portrait" : ""}`}
+                    sizes="(max-width: 991px) 100vw, 50vw"
+                    className="pj-img"
                   />
-                  <div className="project-collage__overlay">
-                    <span className="project-collage__tags">
-                      <span className="project-collage__tag">
-                        {project.details.type}
-                      </span>
-                      {project.liveUrl ? (
-                        <span className="project-collage__tag project-collage__tag--live">
-                          <span
-                            className="project-collage__live-dot"
-                            aria-hidden="true"
-                          />
-                          Live
-                        </span>
-                      ) : null}
-                      {project.inProgress ? (
-                        <span className="project-collage__tag project-collage__tag--wip">
-                          In progress
-                        </span>
-                      ) : null}
-                      {project.confidential ? (
-                        <span className="project-collage__tag project-collage__tag--nda">
-                          <Icon icon="mdi:lock-outline" aria-hidden="true" />
-                          {project.privacyNote ? "Private" : "NDA"}
-                        </span>
-                      ) : null}
-                      {project.links?.some((l) =>
-                        l.url.includes("github.com"),
-                      ) ? (
-                        <span className="project-collage__tag project-collage__tag--repo">
-                          <Icon icon="mdi:github" aria-hidden="true" />
-                          Source
-                        </span>
-                      ) : null}
-                    </span>
-                    <div className="project-collage__copy">
-                      <h5>{project.title}</h5>
-                      <p>{project.subTitle}</p>
-                    </div>
-                    <span className="project-collage__cta">
-                      Read case study
-                      <span aria-hidden="true">+</span>
-                    </span>
-                  </div>
-                </div>
+                </span>
+                <span className="pj-body">
+                  <Badges project={project} />
+                  <strong className="pj-title">{project.title}</strong>
+                  <span className="pj-sub">{project.subTitle}</span>
+                  <span className="pj-stack">{project.details.technologies}</span>
+                  <span className="pj-cta">
+                    Read the case study
+                    <Icon icon="mdi:arrow-right" aria-hidden="true" />
+                  </span>
+                </span>
               </button>
             ))}
           </div>
+
+          <ul className="pj-list" data-aos="fade-up" data-aos-duration="1000">
+            {rest.map((project) => (
+              <li key={project.title}>
+                <button
+                  type="button"
+                  className="pj-row"
+                  onClick={() => openModal(project)}
+                  aria-label={`Case study: ${project.title} — ${project.subTitle}`}
+                >
+                  <span className="pj-row__head">
+                    <strong>{project.title}</strong>
+                    <em>{project.subTitle}</em>
+                    <Badges project={project} />
+                  </span>
+                  {project.oneLiner ? (
+                    <span className="pj-row__line">{project.oneLiner}</span>
+                  ) : null}
+                  <span className="pj-row__stack">
+                    {project.details.technologies}
+                  </span>
+                  <Icon
+                    className="pj-row__go"
+                    icon="mdi:arrow-top-right"
+                    aria-hidden="true"
+                  />
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
@@ -165,139 +187,106 @@ export function ProjectsSection() {
                 ×
               </button>
               <div
-                className="px-modal"
+                className="px-modal pj-modal"
                 ref={dialogRef}
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="project-modal-title"
                 tabIndex={-1}
               >
-                <div className="single-project-box">
-                  <div className="row align-items-start">
-                    <div
-                      className={`col-lg-6 project-modal__media${active.collageSize === "portrait" ? " project-modal__media--portrait" : ""}`}
-                    >
-                      {(active.modalImages ?? [active.thumbUrl]).map(
-                        (src, index) => (
-                          <Image
-                            key={src}
-                            className="border img-fluid project-modal__img"
-                            src={src}
-                            alt={
-                              index === 0
-                                ? `${active.title} — ${active.subTitle}`
-                                : `${active.title} screenshot ${index + 1}`
-                            }
-                            width={700}
-                            height={460}
-                          />
-                        ),
-                      )}
-                    </div>
-                    <div className="col-lg-6 pt-4 pt-lg-0">
-                      <h4 id="project-modal-title">{active.details.title}</h4>
+                <header className="pj-modal__head">
+                  <Badges project={active} />
+                  <h4 id="project-modal-title">{active.title}</h4>
+                  <p>{active.subTitle}</p>
+                </header>
 
-                      {active.inProgress ? (
-                        <p className="project-modal__wip">
-                          <Icon icon="mdi:progress-wrench" aria-hidden="true" />
-                          <span>
-                            This project is in active development — the outcomes
-                            below are what it is being built to deliver.
-                          </span>
-                        </p>
-                      ) : null}
-                      {active.confidential ? (
-                        <p className="project-modal__nda">
-                          <Icon icon="mdi:lock-outline" aria-hidden="true" />
-                          <span>
-                            {active.privacyNote ??
-                              "Proprietary client system — source is not public."}{" "}
-                            The screens here are representative mockups rather
-                            than live captures, so no client data is shown.
-                            Happy to walk through the architecture on a call.
-                          </span>
-                        </p>
-                      ) : null}
+                {(active.modalImages ?? [active.thumbUrl]).map((src, index) => (
+                  <Image
+                    key={src}
+                    className="pj-modal__shot"
+                    src={src}
+                    alt={
+                      index === 0
+                        ? `${active.title} — ${active.subTitle}`
+                        : `${active.title} screenshot ${index + 1}`
+                    }
+                    width={1400}
+                    height={1027}
+                  />
+                ))}
 
-                      <div className="project-modal__block">
-                        <h6>The problem</h6>
-                        <p>{active.details.challenge}</p>
-                      </div>
-                      <div className="project-modal__block">
-                        <h6>What I built</h6>
-                        <p>{active.details.approach}</p>
-                      </div>
-                      <div className="project-modal__block">
-                        <h6>Why these choices</h6>
-                        <p>{active.details.decisions}</p>
-                      </div>
-                      <div className="project-modal__block">
-                        <h6>
-                          {active.inProgress ? "Intended impact" : "Impact"}
-                        </h6>
-                        <ul className="project-modal__impact">
-                          {active.details.impact.map((item) => (
-                            <li key={item}>
-                              <Icon
-                                icon="mdi:check-circle-outline"
-                                aria-hidden="true"
-                              />
-                              <span>{item}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                <ul className="pj-modal__impact">
+                  {active.details.impact.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
 
-                      <div className="about-content">
-                        <ul>
-                          <li className="d-flex">
-                            <span className="col-4 col-lg-4">Type:</span>
-                            <span>{active.details.type}</span>
-                          </li>
-                          <li className="d-flex">
-                            <span className="col-4 col-lg-4">Stack:</span>
-                            <span>{active.details.technologies}</span>
-                          </li>
-                          <li className="d-flex">
-                            <span className="col-4 col-lg-4">Platform:</span>
-                            <span>{active.details.platform}</span>
-                          </li>
-                        </ul>
-                      </div>
-
-                      {active.liveUrl || active.links?.length ? (
-                        <div className="project-modal__links">
-                          {active.liveUrl ? (
-                            <a
-                              className="px-btn px-btn--sm"
-                              href={active.liveUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <Icon icon="mdi:open-in-new" aria-hidden="true" />
-                              <span>Visit live site</span>
-                            </a>
-                          ) : null}
-                          {active.links?.map((link) => (
-                            <a
-                              key={link.url}
-                              className="px-btn px-btn--sm"
-                              href={link.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <Icon
-                                icon={link.icon ?? "mdi:github"}
-                                aria-hidden="true"
-                              />
-                              <span>{link.label}</span>
-                            </a>
-                          ))}
-                        </div>
-                      ) : null}
-                    </div>
-                  </div>
+                <div className="pj-modal__prose">
+                  <section>
+                    <h6>The problem</h6>
+                    <p>{active.details.challenge}</p>
+                  </section>
+                  <section>
+                    <h6>What I built</h6>
+                    <p>{active.details.approach}</p>
+                  </section>
+                  <section className="pj-modal__why">
+                    <h6>Why these calls</h6>
+                    <p>{active.details.decisions}</p>
+                  </section>
                 </div>
+
+                <footer className="pj-modal__foot">
+                  <dl className="pj-modal__meta">
+                    <div>
+                      <dt>Type</dt>
+                      <dd>{active.details.type}</dd>
+                    </div>
+                    <div>
+                      <dt>Stack</dt>
+                      <dd>{active.details.technologies}</dd>
+                    </div>
+                    <div>
+                      <dt>Platform</dt>
+                      <dd>{active.details.platform}</dd>
+                    </div>
+                  </dl>
+
+                  {active.liveUrl || active.links?.length ? (
+                    <div className="pj-modal__links">
+                      {active.liveUrl ? (
+                        <a
+                          className="px-btn px-btn--sm"
+                          href={active.liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Icon icon="mdi:open-in-new" aria-hidden="true" />
+                          <span>Visit live site</span>
+                        </a>
+                      ) : null}
+                      {active.links?.map((link) => (
+                        <a
+                          key={link.url}
+                          className="px-btn px-btn--sm"
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Icon
+                            icon={link.icon ?? "mdi:github"}
+                            aria-hidden="true"
+                          />
+                          <span>{link.label}</span>
+                        </a>
+                      ))}
+                    </div>
+                  ) : null}
+
+                  <p className="pj-modal__privacy">
+                    {active.privacyNote ?? "Source is private."}
+                  </p>
+                </footer>
               </div>
             </div>
           </div>

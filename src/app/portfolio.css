@@ -823,3 +823,476 @@ html:not([data-theme="light"]) .header-top-fixed .main-menu > li > a.active {
 html .home-section .hs-text-box h2 {
   min-height: 2.4em;
 }
+
+/* ================= Projects: two featured + compact list =================
+   The old grid dimmed every screenshot behind a near-black gradient and gave
+   six projects identical weight. Here the shot sits above the copy rather than
+   behind it, so it is actually legible, and only two builds get the big slot.
+
+   pj- prefixed: card/list/row collide with Bootstrap. */
+
+.pj-note {
+  max-width: 54ch;
+  margin: -0.25rem 0 2.25rem;
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+html[data-theme="light"] .pj-note {
+  color: #5b6470;
+}
+
+/* ---- the two headline builds ---- */
+.pj-featured {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+@media (min-width: 992px) {
+  .pj-featured {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.pj-card {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  text-align: left;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.03);
+  cursor: pointer;
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.3s ease,
+    box-shadow 0.4s ease;
+}
+
+html[data-theme="light"] .pj-card {
+  background: #fff;
+  border-color: rgba(4, 12, 22, 0.1);
+  box-shadow: 0 12px 28px rgba(4, 12, 22, 0.05);
+}
+
+.pj-card:hover,
+.pj-card:focus-visible {
+  transform: translateY(-5px);
+  border-color: rgba(7, 136, 255, 0.5);
+  box-shadow: 0 26px 52px rgba(7, 136, 255, 0.16);
+  outline: none;
+}
+
+/* the screenshot is the point, so nothing sits on top of it */
+.pj-shot {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  background: #0b1623;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.pj-img {
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pj-card:hover .pj-img,
+.pj-card:focus-visible .pj-img {
+  transform: scale(1.03);
+}
+
+.pj-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+  padding: 1.25rem 1.35rem 1.4rem;
+}
+
+.pj-title {
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #fff;
+}
+
+html[data-theme="light"] .pj-title {
+  color: #040c16;
+}
+
+.pj-sub {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+html[data-theme="light"] .pj-sub {
+  color: #5b6470;
+}
+
+.pj-stack {
+  margin-top: 0.3rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+html[data-theme="light"] .pj-stack {
+  color: #8792a2;
+}
+
+.pj-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #0788ff;
+}
+
+.pj-cta svg {
+  transition: transform 0.3s ease;
+}
+
+.pj-card:hover .pj-cta svg {
+  transform: translateX(4px);
+}
+
+/* ---- badges ---- */
+.pj-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.3rem;
+}
+
+.pj-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+}
+
+.pj-badge--live {
+  background: rgba(22, 163, 74, 0.14);
+  border-color: rgba(22, 163, 74, 0.4);
+  color: #22c55e;
+}
+
+.pj-badge--wip {
+  background: rgba(217, 119, 6, 0.14);
+  border-color: rgba(217, 119, 6, 0.4);
+  color: #f59e0b;
+}
+
+.pj-badge--nda {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+html[data-theme="light"] .pj-badge--nda {
+  background: rgba(4, 12, 22, 0.04);
+  border-color: rgba(4, 12, 22, 0.14);
+  color: #68717e;
+}
+
+.pj-dot {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: pj-pulse 2s ease-in-out infinite;
+}
+
+@keyframes pj-pulse {
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* ---- the compact rest ---- */
+.pj-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+html[data-theme="light"] .pj-list {
+  border-top-color: rgba(4, 12, 22, 0.1);
+}
+
+.pj-list li + li .pj-row {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+html[data-theme="light"] .pj-list li + li .pj-row {
+  border-top-color: rgba(4, 12, 22, 0.08);
+}
+
+.pj-row {
+  display: grid;
+  width: 100%;
+  gap: 0.3rem 1.5rem;
+  padding: 1.15rem 1rem 1.15rem 0;
+  text-align: left;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  transition:
+    background 0.3s ease,
+    padding 0.3s ease;
+  grid-template-areas:
+    "head go"
+    "line go"
+    "stack go";
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+
+@media (min-width: 992px) {
+  .pj-row {
+    grid-template-areas: "head line stack go";
+    grid-template-columns: 15rem 1fr 15rem auto;
+  }
+}
+
+.pj-row:hover,
+.pj-row:focus-visible {
+  background: rgba(7, 136, 255, 0.06);
+  padding-left: 1rem;
+  outline: none;
+}
+
+.pj-row__head {
+  grid-area: head;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.45rem;
+}
+
+.pj-row__head strong {
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+html[data-theme="light"] .pj-row__head strong {
+  color: #040c16;
+}
+
+.pj-row__head em {
+  font-style: normal;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+html[data-theme="light"] .pj-row__head em {
+  color: #8792a2;
+}
+
+.pj-row__head .pj-badges {
+  margin-bottom: 0;
+}
+
+.pj-row__line {
+  grid-area: line;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+html[data-theme="light"] .pj-row__line {
+  color: #5b6470;
+}
+
+.pj-row__stack {
+  grid-area: stack;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+html[data-theme="light"] .pj-row__stack {
+  color: #8792a2;
+}
+
+.pj-row__go {
+  grid-area: go;
+  font-size: 1.15rem;
+  color: rgba(255, 255, 255, 0.35);
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
+}
+
+.pj-row:hover .pj-row__go {
+  color: #0788ff;
+  transform: translate(3px, -3px);
+}
+
+/* ================= Case study modal ================= */
+.pj-modal {
+  max-width: 860px;
+  padding: 0 0 1.75rem;
+}
+
+.pj-modal__head {
+  padding: 1.9rem 2rem 1.1rem;
+}
+
+.pj-modal__head h4 {
+  margin: 0.55rem 0 0.2rem;
+  font-size: 1.85rem;
+  line-height: 1.2;
+  color: #040c16;
+}
+
+.pj-modal__head p {
+  margin: 0;
+  font-size: 1rem;
+  color: #5b6470;
+}
+
+.pj-modal__head .pj-badge--nda {
+  background: rgba(4, 12, 22, 0.04);
+  border-color: rgba(4, 12, 22, 0.14);
+  color: #68717e;
+}
+
+.pj-modal__shot {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-top: 1px solid rgba(4, 12, 22, 0.08);
+  border-bottom: 1px solid rgba(4, 12, 22, 0.08);
+}
+
+/* the outcomes, read before the prose */
+.pj-modal__impact {
+  list-style: none;
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 1.5rem 2rem 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .pj-modal__impact {
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  }
+}
+
+.pj-modal__impact li {
+  position: relative;
+  padding-left: 1.1rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: #253246;
+}
+
+.pj-modal__impact li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: #0788ff;
+}
+
+.pj-modal__prose {
+  padding: 1.25rem 2rem 0;
+}
+
+.pj-modal__prose section + section {
+  margin-top: 1.4rem;
+}
+
+.pj-modal__prose h6 {
+  margin: 0 0 0.4rem;
+  color: #8792a2;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.pj-modal__prose p {
+  margin: 0;
+  font-size: 0.97rem;
+  line-height: 1.7;
+  color: #253246;
+}
+
+/* the reasoning is the thing worth reading, so it gets its own block */
+.pj-modal__why {
+  padding: 1.1rem 1.25rem;
+  border-left: 3px solid #0788ff;
+  border-radius: 0 10px 10px 0;
+  background: rgba(7, 136, 255, 0.05);
+}
+
+.pj-modal__why h6 {
+  color: #0788ff;
+}
+
+.pj-modal__foot {
+  margin-top: 1.75rem;
+  padding: 1.5rem 2rem 0;
+  border-top: 1px solid rgba(4, 12, 22, 0.08);
+}
+
+.pj-modal__meta {
+  display: grid;
+  gap: 1rem;
+  margin: 0 0 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .pj-modal__meta {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.pj-modal__meta dt {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8792a2;
+}
+
+.pj-modal__meta dd {
+  margin: 0.25rem 0 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: #253246;
+}
+
+.pj-modal__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.pj-modal__privacy {
+  margin: 1.25rem 0 0;
+  font-size: 0.82rem;
+  color: #8792a2;
+}
