@@ -4,15 +4,17 @@ import Image from "next/image";
 import { Icon } from "@iconify/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { projects, type ProjectItem } from "@/data/content";
-import { SectionHeading } from "./SectionHeading";
 
 /**
- * Two headline builds get a large card; the rest are compact rows. A uniform
- * grid said everything mattered equally, which told a visitor nothing about
- * where to look.
+ * Projects carry the hero's visual language rather than a second, flatter one:
+ * a dark band with its own light, app windows tilted in perspective and bled
+ * off the edge, floating stack marks, outlined numerals. Flat light cards read
+ * as a default template, which is exactly what this section is competing with.
  *
- * pj- prefixed: project-collage-* was the old grid, and card/list/row collide
- * with Bootstrap.
+ * The band stays dark in both site themes — it is a deliberate dark stripe, not
+ * a theme bug.
+ *
+ * pj- prefixed: card/row/tile all collide with Bootstrap.
  */
 
 function Badges({ project }: { project: ProjectItem }) {
@@ -20,7 +22,7 @@ function Badges({ project }: { project: ProjectItem }) {
     <span className="pj-badges">
       {project.liveUrl ? (
         <span className="pj-badge pj-badge--live">
-          <span className="pj-dot" aria-hidden="true" />
+          <span className="pj-badge__dot" aria-hidden="true" />
           Live
         </span>
       ) : null}
@@ -28,10 +30,7 @@ function Badges({ project }: { project: ProjectItem }) {
         <span className="pj-badge pj-badge--wip">In progress</span>
       ) : null}
       {project.confidential ? (
-        <span className="pj-badge pj-badge--nda">
-          <Icon icon="mdi:lock-outline" aria-hidden="true" />
-          Private source
-        </span>
+        <span className="pj-badge pj-badge--nda">Private source</span>
       ) : null}
     </span>
   );
@@ -92,80 +91,118 @@ export function ProjectsSection() {
 
   const featured = projects.allProjects.filter((p) => p.featured);
   const rest = projects.allProjects.filter((p) => !p.featured);
+  const num = (i: number) => String(i + 1).padStart(2, "0");
 
   return (
     <>
-      <section className="project-section section gray-bg" id="project">
-        <div className="container">
-          <SectionHeading
-            miniTitle={projects.sectionHeading.miniTitle}
-            title={projects.sectionHeading.title}
-          />
-          <p className="pj-note" data-aos="fade-up" data-aos-duration="1000">
+      <section className="section pj" id="project">
+        <span className="pj-glow" aria-hidden="true" />
+        <span className="pj-mesh" aria-hidden="true" />
+
+        <div className="container pj-inner">
+          <p className="pj-kicker" data-aos="fade-right" data-aos-duration="900">
+            <span aria-hidden="true" />
+            {projects.sectionHeading.miniTitle}
+          </p>
+          <h2 className="pj-heading" data-aos="fade-up" data-aos-duration="900">
+            Selected <em>projects</em>
+          </h2>
+          <p className="pj-note" data-aos="fade-up" data-aos-duration="900">
             {projects.note}
           </p>
 
-          <div className="pj-featured" data-aos="fade-up" data-aos-duration="1000">
-            {featured.map((project) => (
-              <button
-                key={project.title}
-                type="button"
-                className="pj-card"
-                onClick={() => openModal(project)}
-                aria-label={`Case study: ${project.title} — ${project.subTitle}`}
-              >
-                <span className="pj-shot">
+          {featured.map((project, i) => (
+            <button
+              key={project.title}
+              type="button"
+              className={`pj-row${i % 2 ? " pj-row--flip" : ""}`}
+              onClick={() => openModal(project)}
+              aria-label={`Case study: ${project.title} — ${project.subTitle}`}
+              data-aos="fade-up"
+              data-aos-duration="1000"
+            >
+              <span className="pj-ghost" aria-hidden="true">
+                {num(i)}
+              </span>
+
+              <span className="pj-txt">
+                <Badges project={project} />
+                <strong className="pj-name">{project.title}</strong>
+                <span className="pj-sub">{project.subTitle}</span>
+                {project.oneLiner ? (
+                  <span className="pj-line">{project.oneLiner}</span>
+                ) : null}
+                <span className="pj-meta">{project.details.technologies}</span>
+                <span className="pj-cta">
+                  Read the case study
+                  <span className="pj-cta__rule" aria-hidden="true" />
+                </span>
+              </span>
+
+              <span className="pj-stage">
+                <span className="pj-win">
+                  <span className="pj-bar">
+                    <i />
+                    <i />
+                    <i />
+                    <em>{project.title.toLowerCase().replace(/\s+/g, "")}.app</em>
+                  </span>
                   <Image
                     src={project.thumbUrl}
                     alt={`${project.title} — ${project.subTitle}`}
-                    fill
-                    sizes="(max-width: 991px) 100vw, 50vw"
-                    className="pj-img"
+                    width={1400}
+                    height={1027}
+                    sizes="(max-width: 991px) 100vw, 60vw"
+                    className="pj-shot"
                   />
                 </span>
-                <span className="pj-body">
-                  <Badges project={project} />
-                  <strong className="pj-title">{project.title}</strong>
-                  <span className="pj-sub">{project.subTitle}</span>
-                  <span className="pj-stack">{project.details.technologies}</span>
-                  <span className="pj-cta">
-                    Read the case study
-                    <Icon icon="mdi:arrow-right" aria-hidden="true" />
+                {(project.marks ?? []).map((icon, m) => (
+                  <span className={`pj-mark pj-mark--${m + 1}`} key={icon}>
+                    <Icon icon={icon} aria-hidden="true" />
                   </span>
+                ))}
+              </span>
+            </button>
+          ))}
+
+          <div className="pj-tiles">
+            {rest.map((project, i) => (
+              <button
+                key={project.title}
+                type="button"
+                className="pj-tile"
+                onClick={() => openModal(project)}
+                aria-label={`Case study: ${project.title} — ${project.subTitle}`}
+                data-aos="fade-up"
+                data-aos-duration="900"
+                data-aos-delay={i * 80}
+              >
+                <span className="pj-tile__ghost" aria-hidden="true">
+                  {num(i + featured.length)}
+                </span>
+                <span className="pj-tile__head">
+                  <strong>{project.title}</strong>
+                  <Badges project={project} />
+                </span>
+                <span className="pj-tile__sub">{project.subTitle}</span>
+                {project.oneLiner ? (
+                  <span className="pj-tile__line">{project.oneLiner}</span>
+                ) : null}
+                <span className="pj-tile__meta">
+                  {project.details.technologies}
+                </span>
+                <span className="pj-tile__thumb" aria-hidden="true">
+                  <Image
+                    src={project.thumbUrl}
+                    alt=""
+                    width={700}
+                    height={514}
+                    sizes="320px"
+                  />
                 </span>
               </button>
             ))}
           </div>
-
-          <ul className="pj-list" data-aos="fade-up" data-aos-duration="1000">
-            {rest.map((project) => (
-              <li key={project.title}>
-                <button
-                  type="button"
-                  className="pj-row"
-                  onClick={() => openModal(project)}
-                  aria-label={`Case study: ${project.title} — ${project.subTitle}`}
-                >
-                  <span className="pj-row__head">
-                    <strong>{project.title}</strong>
-                    <em>{project.subTitle}</em>
-                    <Badges project={project} />
-                  </span>
-                  {project.oneLiner ? (
-                    <span className="pj-row__line">{project.oneLiner}</span>
-                  ) : null}
-                  <span className="pj-row__stack">
-                    {project.details.technologies}
-                  </span>
-                  <Icon
-                    className="pj-row__go"
-                    icon="mdi:arrow-top-right"
-                    aria-hidden="true"
-                  />
-                </button>
-              </li>
-            ))}
-          </ul>
         </div>
       </section>
 
@@ -180,14 +217,14 @@ export function ProjectsSection() {
             <div className="mfp-content">
               <button
                 type="button"
-                className="mfp-close"
+                className="mfp-close pj-modal__x"
                 onClick={closeModal}
                 aria-label="Close case study"
               >
                 ×
               </button>
               <div
-                className="px-modal pj-modal"
+                className="pj-modal"
                 ref={dialogRef}
                 role="dialog"
                 aria-modal="true"
@@ -200,20 +237,32 @@ export function ProjectsSection() {
                   <p>{active.subTitle}</p>
                 </header>
 
-                {(active.modalImages ?? [active.thumbUrl]).map((src, index) => (
-                  <Image
-                    key={src}
-                    className="pj-modal__shot"
-                    src={src}
-                    alt={
-                      index === 0
-                        ? `${active.title} — ${active.subTitle}`
-                        : `${active.title} screenshot ${index + 1}`
-                    }
-                    width={1400}
-                    height={1027}
-                  />
-                ))}
+                <div className="pj-modal__frame">
+                  <span className="pj-bar">
+                    <i />
+                    <i />
+                    <i />
+                    <em>
+                      {active.title.toLowerCase().replace(/\s+/g, "")}.app
+                    </em>
+                  </span>
+                  {(active.modalImages ?? [active.thumbUrl]).map(
+                    (src, index) => (
+                      <Image
+                        key={src}
+                        className="pj-modal__shot"
+                        src={src}
+                        alt={
+                          index === 0
+                            ? `${active.title} — ${active.subTitle}`
+                            : `${active.title} screenshot ${index + 1}`
+                        }
+                        width={1400}
+                        height={1027}
+                      />
+                    ),
+                  )}
+                </div>
 
                 <ul className="pj-modal__impact">
                   {active.details.impact.map((item) => (
@@ -237,7 +286,7 @@ export function ProjectsSection() {
                 </div>
 
                 <footer className="pj-modal__foot">
-                  <dl className="pj-modal__meta">
+                  <dl className="pj-modal__specs">
                     <div>
                       <dt>Type</dt>
                       <dd>{active.details.type}</dd>

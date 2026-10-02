@@ -110,8 +110,10 @@ export type ProjectItem = {
   collageSize: ProjectCollageSize;
   /** The two headline builds, shown large; everything else is a compact row. */
   featured?: boolean;
-  /** One line under the title in the compact row — the thing worth knowing. */
+  /** The single decision worth knowing — carries the card on its own. */
   oneLiner?: string;
+  /** Iconify names for the logos that float over the panel, as in the hero. */
+  marks?: string[];
   /** No public source. Defaults to the client-NDA wording. */
   confidential?: boolean;
   /** Overrides the default NDA wording when the reason isn't a client NDA. */
@@ -129,7 +131,7 @@ const allProjects: ProjectItem[] = [
   {
     thumbUrl: "/images/qa-app.png",
     title: "Integra",
-    oneLiner: "Approvals as a state machine, because inspections bounce backwards",
+    oneLiner: "Approvals modelled as a state machine, because inspections bounce backwards on rejection.",
     subTitle: "Quality Inspection Platform",
     collageSize: "featured",
     confidential: true,
@@ -155,6 +157,9 @@ const allProjects: ProjectItem[] = [
     thumbUrl: "/images/cortex-demo.png",
     title: "Cortex",
     featured: true,
+    oneLiner:
+      "Extraction goes to human review before commit, so a wrong read never becomes a wrong record.",
+    marks: ["logos:react", "logos:nestjs", "logos:postgresql"],
     subTitle: "AI-Powered ERP System",
     collageSize: "featured",
     confidential: true,
@@ -180,6 +185,9 @@ const allProjects: ProjectItem[] = [
     thumbUrl: "/images/okulium.png",
     title: "Okulium",
     featured: true,
+    oneLiner:
+      "Attendance edits write to a history table instead of overwriting the register.",
+    marks: ["logos:react", "logos:nestjs", "logos:prisma"],
     subTitle: "School Management SaaS",
     collageSize: "featured",
     confidential: true,
@@ -214,7 +222,7 @@ const allProjects: ProjectItem[] = [
   {
     thumbUrl: "/images/lia.png",
     title: "Law in Action",
-    oneLiner: "Translation fails over across four providers so compliance never stalls",
+    oneLiner: "Translation fails over across four providers so compliance work never stalls.",
     subTitle: "Global Regulations Platform",
     collageSize: "featured",
     confidential: true,
@@ -243,7 +251,7 @@ const allProjects: ProjectItem[] = [
   {
     thumbUrl: "/images/vp.png",
     title: "Vendor Portal",
-    oneLiner: "Extraction is validated before anything reaches the ledger",
+    oneLiner: "Nothing reaches the ledger until extraction has passed validation.",
     subTitle: "B2B Supply Chain Management",
     collageSize: "featured",
     confidential: true,
@@ -268,7 +276,7 @@ const allProjects: ProjectItem[] = [
   {
     thumbUrl: "/images/hotelkey.png",
     title: "HotelKey",
-    oneLiner: "30 screens, one React Native codebase, iOS and Android",
+    oneLiner: "Offline is an explicit screen, not a silently failed request.",
     subTitle: "Hotel & Guest Services App",
     collageSize: "featured",
     confidential: true,
