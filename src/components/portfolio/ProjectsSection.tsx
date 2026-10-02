@@ -212,6 +212,8 @@ export function ProjectsSection() {
                           <span>
                             {active.privacyNote ??
                               "Proprietary client system — source is not public."}{" "}
+                            The screens here are representative mockups rather
+                            than live captures, so no client data is shown.
                             Happy to walk through the architecture on a call.
                           </span>
                         </p>

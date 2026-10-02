@@ -205,33 +205,6 @@ const allProjects: ProjectItem[] = [
     },
   },
   {
-    thumbUrl: "/images/munshi.png",
-    title: "Munshi",
-    subTitle: "WhatsApp AI Assistant",
-    collageSize: "featured",
-    confidential: true,
-    privacyNote: "Unreleased product — the source stays private until launch.",
-    inProgress: true,
-    details: {
-      title: "Munshi – WhatsApp AI Assistant",
-      challenge:
-        "Pakistani small businesses answer the same WhatsApp questions all day — hours, prices, availability, booking — in a mix of Urdu, Roman Urdu and English. Messages missed after hours are lost sales, and no owner can staff a reply desk around the clock.",
-      approach:
-        "Building a WhatsApp assistant that answers from the business's own uploaded knowledge base, books appointments, takes orders, captures leads, runs follow-ups, collects reviews, and hands the hard ones to a human. Next.js dashboard over a NestJS API, PostgreSQL with pgvector for retrieval, Gemini for language, and PDF/DOCX ingestion to build the knowledge base.",
-      decisions:
-        'Every action is assigned to exactly one layer: Gemini for understanding language, pgvector for retrieval, regex for safety-critical detection, and plain code for business logic and scheduled work. Gemini never answers from its own training data — it only composes over the chunks the server returns, so the database stays the single source of truth. Escalation detection (complaint, refund, "manager bulao") is regex rather than a model, because it has to fire instantly and must never silently fail. Retrieval scoring below 0.70 similarity falls back to a human handoff instead of guessing.',
-      impact: [
-        "Replies in the customer's own language — Urdu, Roman Urdu or English",
-        "Grounded answers only: never from model training data",
-        "Complaints and refund requests escalate to a human immediately",
-      ],
-      type: "AI SaaS Product",
-      technologies:
-        "Next.js, NestJS, Prisma, PostgreSQL + pgvector, Gemini, WhatsApp API",
-      platform: "Web + WhatsApp",
-    },
-  },
-  {
     thumbUrl: "/images/lia.png",
     title: "Law in Action",
     subTitle: "Global Regulations Platform",
@@ -261,12 +234,12 @@ const allProjects: ProjectItem[] = [
   },
   {
     thumbUrl: "/images/vp.png",
-    title: "Oculas Vendor Portal",
+    title: "Vendor Portal",
     subTitle: "B2B Supply Chain Management",
-    collageSize: "medium",
+    collageSize: "featured",
     confidential: true,
     details: {
-      title: "OCULAS – Vendor Portal",
+      title: "Vendor Portal – Supplier Invoicing",
       challenge:
         "Suppliers submitted invoices and delivery documents as PDFs by email. Someone on the finance side re-keyed each one, reconciled it by hand, and filed it — roughly 10,000 documents a year, with transcription errors surfacing weeks later as payment disputes.",
       approach:
@@ -284,36 +257,10 @@ const allProjects: ProjectItem[] = [
     },
   },
   {
-    thumbUrl: "/images/qc-app.png",
-    title: "PPWR Compliance",
-    subTitle: "EU Packaging Regulation SaaS",
-    collageSize: "medium",
-    confidential: true,
-    privacyNote:
-      "In-house product at Interactive Technologies Gateway — the source is not public.",
-    inProgress: true,
-    details: {
-      title: "PPWR – EU Packaging Compliance SaaS",
-      challenge:
-        "The EU Packaging and Packaging Waste Regulation requires manufacturers to evidence compliance across their packaging portfolio. Clients were tracking this in spreadsheets — no audit trail, no role separation, and no way to prove what was reported when.",
-      approach:
-        "Building a multi-client SaaS compliance platform with a multi-role admin structure and several compliance modules, on a .NET Core backend with SQL Server and a React frontend. Currently in active development.",
-      decisions:
-        ".NET Core and SQL Server were a client requirement rather than a default — everything else we build runs on Node, so this one matches the environment the client already operates and can audit itself. For a compliance system that is a constraint worth taking, not a preference to argue with.",
-      impact: [
-        "Multi-client compliance tracking with per-role access control",
-        "Replacing spreadsheet-based reporting with an auditable system of record",
-      ],
-      type: "Compliance SaaS",
-      technologies: "React.js, .NET Core, .NET Web API, SQL Server",
-      platform: "Web",
-    },
-  },
-  {
     thumbUrl: "/images/hotelkey.png",
     title: "HotelKey",
     subTitle: "Hotel & Guest Services App",
-    collageSize: "portrait",
+    collageSize: "featured",
     confidential: true,
     privacyNote: "Client demo build — the source is not public.",
     details: {
