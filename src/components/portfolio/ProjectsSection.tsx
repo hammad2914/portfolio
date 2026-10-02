@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Icon } from "@iconify/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { projects, type ProjectItem } from "@/data/content";
+import { SectionHeading } from "./SectionHeading";
 
 /**
  * Projects carry the hero's visual language rather than a second, flatter one:
@@ -100,13 +101,10 @@ export function ProjectsSection() {
         <span className="pj-mesh" aria-hidden="true" />
 
         <div className="container pj-inner">
-          <p className="pj-kicker" data-aos="fade-right" data-aos-duration="900">
-            <span aria-hidden="true" />
-            {projects.sectionHeading.miniTitle}
-          </p>
-          <h2 className="pj-heading" data-aos="fade-up" data-aos-duration="900">
-            Selected <em>projects</em>
-          </h2>
+          <SectionHeading
+            miniTitle={projects.sectionHeading.miniTitle}
+            title={projects.sectionHeading.title}
+          />
           <p className="pj-note" data-aos="fade-up" data-aos-duration="900">
             {projects.note}
           </p>

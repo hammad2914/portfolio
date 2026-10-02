@@ -60,6 +60,7 @@ export function AboutSection() {
               <div className="section-heading">
                 {about.miniTitle ? (
                   <h6>
+                    <i aria-hidden="true" />
                     <span>{about.miniTitle}</span>
                   </h6>
                 ) : null}

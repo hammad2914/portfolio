@@ -305,7 +305,7 @@ const allProjects: ProjectItem[] = [
 export const projects = {
   sectionHeading: {
     miniTitle: "My Work",
-    title: "SELECTED PROJECTS",
+    title: "Selected <span>projects</span>",
   },
   /** Shown under the section heading to pre-empt "where's the code?". */
   note: "Client systems, so the source stays private. The decisions behind them don't.",

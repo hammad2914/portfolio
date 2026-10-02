@@ -17,6 +17,8 @@ export function SectionHeading({
           data-aos-duration="1200"
           data-aos-delay="200"
         >
+          {/* the rule is decorative; the kicker reads on its own */}
+          <i aria-hidden="true" />
           <span>{miniTitle}</span>
         </h6>
       ) : null}
