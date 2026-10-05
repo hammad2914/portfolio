@@ -126,23 +126,6 @@ html[data-theme="light"] .social-icon a.pdf {
   background: #d32f2f !important;
 }
 
-/* About stats */
-html[data-theme="light"] .about-section .review-box .r-box {
-  background: #fff !important;
-  border: 1px solid rgba(7, 136, 255, 0.18) !important;
-  box-shadow: 0 12px 28px rgba(4, 12, 22, 0.06);
-  color: #040c16 !important;
-}
-
-html[data-theme="light"] .about-section .review-box .r-box h3,
-html[data-theme="light"] .about-section .review-box .r-box h3 span {
-  color: #0788ff !important;
-}
-
-html[data-theme="light"] .about-section .review-box .r-box label {
-  color: #5b6470 !important;
-}
-
 /* Contact */
 html[data-theme="light"] .contactus-section .contactus-box {
   background: #fff !important;

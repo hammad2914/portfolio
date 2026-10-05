@@ -68,11 +68,6 @@ export const about = {
   title:
     "BUILDING <span>SCALABLE &</span><br /><span>EFFICIENT</span> FULL-STACK APPS",
   description: `I'm a Full Stack Software Engineer based in Karachi, Pakistan with ${yearsOfExperience}+ years delivering production ERP, SaaS, and supply-chain platforms for international clients. I work across React.js, Next.js, NestJS, .NET Core, Prisma, and PostgreSQL — from reusable frontend architecture and high-performance AG Grid interfaces to backend APIs, WebSocket synchronization, Docker deployments, and AI-powered document extraction.<br><br>Most of my work is proprietary client software, so the detail lives in the case studies below rather than in public repos. I'm always happy to walk through the architecture and trade-offs on a call.`,
-  funfacts: [
-    { title: "Production Systems", number: 7 },
-    { title: "Years Experience", number: yearsOfExperience },
-    { title: "Legacy Systems Migrated", number: 3 },
-  ],
   btnText: "Get in touch",
   btnUrl: "contactus",
 };

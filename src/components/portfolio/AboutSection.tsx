@@ -49,22 +49,6 @@ export function AboutSection() {
                 priority
               />
             </div>
-            {/* The stats sit under the photo rather than under the copy: the
-                portrait is close to square, so it can never grow tall enough
-                to match a column holding heading, paragraphs and a button.
-                Moving them here splits the height between the two columns
-                instead of stacking it all on one side. */}
-            <div className="review-box">
-              {about.funfacts.map((fact) => (
-                <div className="r-box" key={fact.title}>
-                  <h3>
-                    {fact.number}
-                    <span>+</span>
-                  </h3>
-                  <label>{fact.title}</label>
-                </div>
-              ))}
-            </div>
           </div>
           {/* no px-lg-5: the extra 96px of padding squeezed the measure hard
               enough to add four lines to the heading and the paragraph */}
