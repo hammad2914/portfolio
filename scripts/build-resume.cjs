@@ -202,7 +202,9 @@ ${r.bullets.map((b) => `  <li>${esc(b)}</li>`).join("\n")}
       (p, i) => `
 <div class="head${i === 0 ? " first" : ""}">
   <span class="org">${esc(p.name)}</span> <span class="sub">${esc(p.sub)}</span>${
-    p.url ? ` <a class="url" href="https://${esc(p.url)}">${esc(p.url)}</a>` : ""
+    p.url
+      ? ` <a class="url" href="https://${esc(p.url)}" title="${esc(p.url)}">↗</a>`
+      : ""
   }
   <span class="stack">| ${esc(p.stack)}</span>
 </div>

@@ -37,6 +37,29 @@ function run(text, { b = false, i = false, color = BODY, size = 20 } = {}) {
 const tabRun = () => `<w:r><w:tab/></w:r>`;
 
 /**
+ * External links live in word/_rels/document.xml.rels and are referenced by id,
+ * so each one has to be registered before it can be used.
+ */
+const rels = [];
+function link(url, runs) {
+  const id = `rId${rels.length + 2}`; // rId1 is the document part itself
+  rels.push({ id, url });
+  return `<w:hyperlink r:id="${id}">${runs}</w:hyperlink>`;
+}
+
+/** Makes the pipe-separated contact line clickable, as the PDF version is. */
+const linkifyRuns = (line, opts) =>
+  line
+    .split(" | ")
+    .map((part) => {
+      const t = part.trim();
+      if (t.includes("@")) return link(`mailto:${t}`, run(t, opts));
+      if (/^[a-z0-9.-]+\.[a-z]{2,}(\/|$)/i.test(t)) return link(`https://${t}`, run(t, opts));
+      return run(t, opts);
+    })
+    .join(run(" | ", opts));
+
+/**
  * One paragraph. `tab` puts a right-aligned tab stop at the text margin so
  * dates sit on the right edge the way they do in the PDF.
  */
@@ -55,8 +78,8 @@ const body = [];
 /* header */
 body.push(para(run(C.name, { b: true, color: NAVY, size: 50 }), { after: 0 }));
 body.push(para(run(C.role, { b: true, color: BLUE, size: 25 }), { after: 60 }));
-body.push(para(run(C.contact1, { color: GREY, size: 19 }), { after: 0 }));
-body.push(para(run(C.contact2, { color: GREY, size: 19 }), { after: 120 }));
+body.push(para(linkifyRuns(C.contact1, { color: GREY, size: 19 }), { after: 0 }));
+body.push(para(linkifyRuns(C.contact2, { color: GREY, size: 19 }), { after: 120 }));
 
 const heading = (text) =>
   body.push(
@@ -102,7 +125,7 @@ for (const p of C.projects) {
     para(
       run(p.name, { b: true, color: NAVY }) +
         run(` ${p.sub}`, { color: BLUE }) +
-        (p.url ? run(` ${p.url}`, { color: BLUE }) : "") +
+        (p.url ? run(" ") + link(`https://${p.url}`, run("↗", { color: BLUE })) : "") +
         run(` | ${p.stack}`, { color: BLUE }),
       { before: 120, after: 40 },
     ),
@@ -125,7 +148,8 @@ for (const [title, place, dates] of C.education) {
 
 const documentXml =
   `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>` +
-  `<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">` +
+  `<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"` +
+  ` xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">` +
   `<w:body>${body.join("")}` +
   `<w:sectPr><w:pgSz w:w="12240" w:h="15840"/>` +
   `<w:pgMar w:top="648" w:right="1080" w:bottom="648" w:left="1080" w:header="0" w:footer="0" w:gutter="0"/>` +
@@ -213,6 +237,17 @@ function zip(entries) {
   return Buffer.concat([...locals, centralBuf, end]);
 }
 
+const DOC_RELS =
+  `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>` +
+  `<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">` +
+  rels
+    .map(
+      (r) =>
+        `<Relationship Id="${r.id}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink" Target="${esc(r.url)}" TargetMode="External"/>`,
+    )
+    .join("") +
+  `</Relationships>`;
+
 const out = process.argv[2] || "Hammad_Ali_Resume.docx";
 fs.writeFileSync(
   out,
@@ -220,6 +255,7 @@ fs.writeFileSync(
     ["[Content_Types].xml", CONTENT_TYPES],
     ["_rels/.rels", RELS],
     ["word/document.xml", documentXml],
+    ["word/_rels/document.xml.rels", DOC_RELS],
   ]),
 );
-console.log(`${out} written (${body.length} paragraphs)`);
+console.log(`${out} written (${body.length} paragraphs, ${rels.length} links)`);
