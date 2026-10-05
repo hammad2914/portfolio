@@ -240,101 +240,6 @@ html[data-theme="light"] .education-box__duration {
   color: #8792a2;
 }
 
-/* ---- Footer ---- */
-.footer-grid {
-  display: grid;
-  gap: 2rem;
-  padding: 3rem 0 2rem;
-  grid-template-columns: 1fr;
-}
-
-@media (min-width: 768px) {
-  .footer-grid {
-    grid-template-columns: 1.6fr 1fr 1fr;
-    align-items: start;
-  }
-}
-
-.footer-brand h5 {
-  margin: 0 0 0.3rem;
-  font-size: 1.15rem;
-  color: #fff;
-}
-
-html[data-theme="light"] .footer-brand h5 {
-  color: #040c16;
-}
-
-.footer-brand p {
-  margin: 0 0 0.25rem;
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.72);
-}
-
-.footer-meta {
-  font-size: 0.82rem !important;
-  color: rgba(255, 255, 255, 0.5) !important;
-}
-
-html[data-theme="light"] .footer-meta {
-  color: #8792a2 !important;
-}
-
-.footer-email {
-  display: inline-block;
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
-  color: #0788ff;
-  text-decoration: none;
-}
-
-.footer-email:hover {
-  text-decoration: underline;
-}
-
-.footer-nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.footer-nav li {
-  margin-bottom: 0.5rem;
-}
-
-.footer-nav a {
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.72);
-  text-decoration: none;
-  cursor: pointer;
-  transition: color 0.25s ease;
-}
-
-.footer-nav a:hover {
-  color: #0788ff;
-}
-
-html[data-theme="light"] .footer-nav a {
-  color: #5b6470;
-}
-
-.footer-social .social-icon {
-  justify-content: flex-start;
-}
-
-.footer-copy {
-  padding: 1.25rem 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  font-size: 0.82rem;
-  text-align: center;
-  color: rgba(255, 255, 255, 0.5);
-}
-
-html[data-theme="light"] .footer-copy {
-  border-top-color: rgba(4, 12, 22, 0.08);
-  color: #8792a2;
-}
-
 /* ---- Contact form feedback ---- */
 .form-feedback {
   display: flex;
@@ -1708,4 +1613,227 @@ html .pj .section-heading h2 span {
     right: 0.3rem;
     z-index: 5;
   }
+}
+
+/* ---- footer -------------------------------------------------------------
+   The old footer repeated the header's nav and the contact block's social
+   icons a few hundred pixels after both, and closed on a copyright line. It
+   now closes on the one thing a visitor might actually do: the address. */
+.ft {
+  position: relative;
+  overflow: hidden;
+  background: #050d18;
+}
+
+html[data-theme="light"] .ft {
+  background: #0a1422;
+}
+
+/* a single wash of the accent, so the band reads as a destination */
+.ft::before {
+  content: "";
+  position: absolute;
+  top: -55%;
+  left: 50%;
+  width: 70rem;
+  height: 70rem;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    circle,
+    rgba(7, 136, 255, 0.13),
+    rgba(7, 136, 255, 0) 62%
+  );
+  pointer-events: none;
+}
+
+.ft > .container {
+  position: relative;
+}
+
+.ft-call {
+  padding: 4.5rem 0 3.25rem;
+  text-align: center;
+}
+
+.ft-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1.1rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8fb6dd;
+}
+
+.ft-status i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.6);
+  animation: ft-pulse 2.4s ease-out infinite;
+}
+
+@keyframes ft-pulse {
+  70% {
+    box-shadow: 0 0 0 9px rgba(34, 197, 94, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ft-status i {
+    animation: none;
+  }
+}
+
+.ft-lead {
+  margin: 0 0 1.75rem;
+  font-size: clamp(1.9rem, 5vw, 3.1rem);
+  line-height: 1.1;
+  font-weight: 700;
+  color: #eaf2fb !important;
+}
+
+/* the second half is the ask, so it carries the accent */
+.ft-lead span {
+  color: #0788ff;
+}
+
+.ft-mail {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: clamp(1rem, 2.4vw, 1.45rem);
+  font-weight: 500;
+  color: #eaf2fb;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(234, 242, 251, 0.25);
+  padding-bottom: 0.35rem;
+  transition:
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.ft-mail svg {
+  font-size: 0.85em;
+  transition: transform 0.25s ease;
+}
+
+.ft-mail:hover {
+  color: #0788ff;
+  border-color: #0788ff;
+}
+
+.ft-mail:hover svg {
+  transform: translate(2px, -2px);
+}
+
+.ft-bar {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1.75rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: center;
+}
+
+@media (min-width: 992px) {
+  .ft-bar {
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    text-align: left;
+  }
+}
+
+.ft-who strong {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #eaf2fb;
+}
+
+.ft-who span {
+  font-size: 0.82rem;
+  color: rgba(234, 242, 251, 0.5);
+  font-variant-numeric: tabular-nums;
+}
+
+.ft-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem 1.4rem;
+}
+
+.ft-nav a {
+  font-size: 0.86rem;
+  color: rgba(234, 242, 251, 0.62);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.25s ease;
+}
+
+.ft-nav a:hover {
+  color: #0788ff;
+}
+
+.ft-side {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+@media (min-width: 992px) {
+  .ft-side {
+    justify-content: flex-end;
+  }
+}
+
+/* plain marks rather than the filled circles the contact block already uses */
+.ft-social {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.ft-social a,
+.ft-top {
+  display: grid;
+  place-items: center;
+  width: 2.3rem;
+  height: 2.3rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(234, 242, 251, 0.75);
+  font-size: 1rem;
+  transition:
+    color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.ft-social a:hover,
+.ft-top:hover {
+  color: #0788ff;
+  border-color: rgba(7, 136, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+.ft-top {
+  margin-left: 0.4rem;
+  padding: 0;
+  cursor: pointer;
+}
+
+.ft-copy {
+  margin: 0;
+  padding: 1.1rem 0 1.4rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: center;
+  font-size: 0.78rem;
+  color: rgba(234, 242, 251, 0.38);
 }

@@ -56,8 +56,7 @@ html[data-theme="light"] .about-section .about-text p,
 html[data-theme="light"] .ex-box .ex-right h5,
 html[data-theme="light"] .ex-box .ex-right p,
 html[data-theme="light"] .contactus-title h5,
-html[data-theme="light"] .contactus-title p,
-html[data-theme="light"] .footer p {
+html[data-theme="light"] .contactus-title p {
   color: #040c16 !important;
 }
 
