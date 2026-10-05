@@ -6,7 +6,11 @@
  * Theme "b" is the one that ships. To rebuild public/resume/Hammad_Ali_Resume.pdf:
  *
  *   node scripts/build-resume.cjs .
- *   chrome --headless=new --no-pdf-header-footer  *     --print-to-pdf=public/resume/Hammad_Ali_Resume.pdf file:///ABSOLUTE/PATH/resume-b.html
+ *   chrome --headless=new --no-pdf-header-footer
+ *     --print-to-pdf=public/resume/Hammad_Ali_Resume.pdf
+ *     file:///ABSOLUTE/PATH/resume-b.html
+ *
+ * The .docx version is built from the same content by build-resume-docx.cjs.
  */
 const fs = require("fs");
 const path = require("path");
@@ -218,9 +222,15 @@ ${C.education
 `;
 }
 
-const outDir = process.argv[2] || ".";
-for (const k of Object.keys(THEMES)) {
-  const file = path.join(outDir, `resume-${k}.html`);
-  fs.writeFileSync(file, build(k));
-  console.log(`${file}  (${THEMES[k].label})`);
+/* The .docx builder reads the same content object, so the two outputs
+   cannot drift apart. */
+module.exports = { CONTENT: C, THEMES, build };
+
+if (require.main === module) {
+  const outDir = process.argv[2] || ".";
+  for (const k of Object.keys(THEMES)) {
+    const file = path.join(outDir, `resume-${k}.html`);
+    fs.writeFileSync(file, build(k));
+    console.log(`${file}  (${THEMES[k].label})`);
+  }
 }
