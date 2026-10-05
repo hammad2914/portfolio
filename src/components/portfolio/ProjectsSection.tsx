@@ -205,7 +205,7 @@ export function ProjectsSection() {
       </section>
 
       {active ? (
-        <div className="mfp-wrap mfp-ready" style={{ overflow: "hidden auto" }}>
+        <div className="mfp-wrap mfp-ready pj-wrap">
           <div className="mfp-container">
             <div
               className="mfp-bg mfp-close"
