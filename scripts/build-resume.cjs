@@ -70,6 +70,14 @@ const C = {
       ],
     },
     {
+      name: "Integra",
+      sub: "Quality Inspection Platform",
+      stack: "React.js, Node.js, PostgreSQL, WebSockets, PDF Generation",
+      bullets: [
+        "Built 7 inspection workflows with approvals as a state machine, real-time updates, server-side PDF reports, and KPI dashboards.",
+      ],
+    },
+    {
       name: "Vendor Portal",
       sub: "Supplier Invoicing",
       stack: "React, .NET Core, SQL Server, PDF Automation",
@@ -86,17 +94,9 @@ const C = {
         "Translation falls back automatically across DeepL, Azure, Google and MyMemory, so one provider's outage never stalls the work.",
       ],
     },
-    {
-      name: "HotelKey",
-      sub: "Hotel & Guest Services App (client demo)",
-      stack: "React Native, React Navigation",
-      bullets: [
-        "Built a 30-screen iOS and Android app from one codebase: hotel browsing, reservations, service categories, and Google/Apple sign-in.",
-      ],
-    },
   ],
   education: [
-    ["BS Software Engineering", "Virtual University of Pakistan", "Oct 2023 - Oct 2027"],
+    ["BS Software Engineering", "Virtual University of Pakistan", "Oct 2021 - Oct 2025"],
     ["MERN Stack Development", "Jawan Pakistan", "Jan - Jun 2023"],
     ["Frontend Development", "Jawan Pakistan", "Jun - Dec 2022"],
   ],
