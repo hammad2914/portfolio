@@ -34,7 +34,7 @@ const C = {
       title: "Software Engineer",
       dates: "May 2023 - Present",
       bullets: [
-        "Ship full-stack features across 7+ enterprise ERP systems for supply-chain and quality-inspection clients, from React/Next.js frontends to Node.js/NestJS APIs.",
+        "Ship full-stack features across 7+ enterprise systems for supply-chain and quality-inspection clients, from React/Next.js frontends to Node.js/NestJS APIs.",
         "Design NestJS and Prisma ORM backend APIs with authentication, RBAC, and multi-module ERP business logic.",
         "Migrated 3 legacy VB.NET systems to React + Node.js + PostgreSQL, cutting UI load times by 40%.",
         "Built Excel Genie, a reporting engine reused across 10+ ERP modules in place of per-module reporting code.",

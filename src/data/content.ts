@@ -426,7 +426,7 @@ export const experience = {
       jobType: "Full time",
       companyTitle: "My Role & Responsibilities",
       companyDescription:
-        "Ship full-stack features across 7+ enterprise ERP systems for international clients in supply-chain and quality inspection, working from React/Next.js frontends through to Node.js/NestJS backend APIs.<br><br>Design scalable backend APIs with NestJS and Prisma ORM — authentication, RBAC, and multi-module business logic. Migrated 3 legacy VB.NET systems to React + Node.js + PostgreSQL, cutting UI load times by 40%. Built Excel Genie, a reporting engine reused across 10+ modules, and reusable React component libraries and NestJS service patterns that cut per-module development time by 30%. Independently ship production endpoints and Docker-based services through CI/CD.",
+        "Ship full-stack features across 7+ enterprise systems for international clients in supply-chain and quality inspection, working from React/Next.js frontends through to Node.js/NestJS backend APIs.<br><br>Design scalable backend APIs with NestJS and Prisma ORM — authentication, RBAC, and multi-module business logic. Migrated 3 legacy VB.NET systems to React + Node.js + PostgreSQL, cutting UI load times by 40%. Built Excel Genie, a reporting engine reused across 10+ modules, and reusable React component libraries and NestJS service patterns that cut per-module development time by 30%. Independently ship production endpoints and Docker-based services through CI/CD.",
     },
     {
       designation: "Full Stack Developer",
