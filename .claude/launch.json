@@ -9,6 +9,74 @@
         "dev"
       ],
       "port": 3000
+    },
+    {
+      "name": "iqra-traders",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "E:/Data Dont delete/Hammad/iqra-traders/node_modules/next/dist/bin/next",
+        "dev",
+        "E:/Data Dont delete/Hammad/iqra-traders",
+        "-p",
+        "3200"
+      ],
+      "port": 3200
+    },
+    {
+      "name": "tekenza-labs",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "E:/Data Dont delete/Hammad/tekenza-labs/node_modules/next/dist/bin/next",
+        "dev",
+        "E:/Data Dont delete/Hammad/tekenza-labs",
+        "-p",
+        "3300"
+      ],
+      "port": 3300
+    },
+    {
+      "name": "tekenza-labs-prod",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "E:/Data Dont delete/Hammad/tekenza-labs/node_modules/next/dist/bin/next",
+        "start",
+        "E:/Data Dont delete/Hammad/tekenza-labs",
+        "-p",
+        "3400"
+      ],
+      "port": 3400
+    },
+    {
+      "name": "tekenza-concepts",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "C:/Users/Rex/AppData/Local/Temp/claude/D--Data-Dont-delete-Hammad-PortFolio-portfolio/69fc3baa-0434-48c6-b444-811142ee2aa4/scratchpad/review/serve-concepts.mjs"
+      ],
+      "port": 3500
+    },
+    {
+      "name": "tekenza-research",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "E:/Data Dont delete/Hammad/tekenza-research-tracker/node_modules/next/dist/bin/next",
+        "dev",
+        "E:/Data Dont delete/Hammad/tekenza-research-tracker",
+        "-p",
+        "3600"
+      ],
+      "port": 3600
+    },
+    {
+      "name": "tekenza-reader",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "E:/Data Dont delete/Hammad/tekenza-reader/node_modules/next/dist/bin/next",
+        "dev",
+        "E:/Data Dont delete/Hammad/tekenza-reader",
+        "-p",
+        "3700"
+      ],
+      "port": 3700
     }
   ]
 }
