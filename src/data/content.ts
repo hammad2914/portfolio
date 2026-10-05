@@ -193,14 +193,7 @@ const allProjects: ProjectItem[] = [
     confidential: true,
     privacyNote:
       "Commercial SaaS — the source is private, but the product is live.",
-    liveUrl: "https://skolar-landing.vercel.app",
-    links: [
-      {
-        label: "Open the app",
-        url: "https://skolar-web-app.vercel.app",
-        icon: "mdi:login-variant",
-      },
-    ],
+    liveUrl: "https://okulium-web.onrender.com",
     details: {
       title: "Okulium – School Management SaaS",
       challenge:
