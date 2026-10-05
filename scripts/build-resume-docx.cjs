@@ -102,6 +102,7 @@ for (const p of C.projects) {
     para(
       run(p.name, { b: true, color: NAVY }) +
         run(` ${p.sub}`, { color: BLUE }) +
+        (p.url ? run(` ${p.url}`, { color: BLUE }) : "") +
         run(` | ${p.stack}`, { color: BLUE }),
       { before: 120, after: 40 },
     ),

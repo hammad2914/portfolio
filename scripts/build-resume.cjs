@@ -58,7 +58,9 @@ const C = {
     },
     {
       name: "Okulium",
-      sub: "School Management SaaS (live)",
+      sub: "School Management SaaS",
+      // the URL says "live" better than the word does, and it is clickable
+      url: "okulium-web.onrender.com",
       stack: "React, Vite, NestJS, Prisma, PostgreSQL, PWA",
       bullets: [
         "Multi-tenant platform for multi-branch school groups: attendance, exams and results, fees, timetabling, staff and reporting, as an installable PWA.",
@@ -91,6 +93,23 @@ const C = {
 
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
 
+/**
+ * Turns the pipe-separated contact line into links. Chrome's print-to-PDF
+ * carries anchors through as real link annotations, so a recruiter can click
+ * the portfolio or the repo straight out of the document. The visible text is
+ * unchanged, so nothing about extraction changes.
+ */
+const linkify = (line) =>
+  line
+    .split(" | ")
+    .map((part) => {
+      const t = esc(part.trim());
+      if (t.includes("@")) return `<a href="mailto:${t}">${t}</a>`;
+      if (/^[a-z0-9.-]+\.[a-z]{2,}(\/|$)/i.test(t)) return `<a href="https://${t}">${t}</a>`;
+      return t;
+    })
+    .join(" | ");
+
 /* Each theme supplies only its own look; the markup below is shared. */
 const THEMES = {
   a: {
@@ -106,7 +125,7 @@ const THEMES = {
        margin: 9pt 0 4pt; border-bottom: 0.6pt solid #c3cedb; padding-bottom: 2pt; }
   .org { font-weight: 700; color: #22282e; }
   .dates { color: #6b7a89; font-size: 8.7pt; }
-  .stack, .sub { color: #52657a; font-weight: 400; }
+  .stack, .sub, .url { color: #52657a; font-weight: 400; }
   li::before { color: #1f3a5f; }
   .lbl { font-weight: 700; color: #1f3a5f; }`,
   },
@@ -122,7 +141,7 @@ const THEMES = {
        margin: 9pt 0 4pt; padding-left: 6pt; border-left: 3pt solid #0f6fc6; }
   .org { font-weight: 600; color: #11324d; }
   .dates { color: #6b7883; font-size: 9.6pt; }
-  .stack, .sub { color: #0f6fc6; font-weight: 400; }
+  .stack, .sub, .url { color: #0f6fc6; font-weight: 400; }
   li::before { color: #0f6fc6; }
   .lbl { font-weight: 600; color: #11324d; }`,
   },
@@ -142,7 +161,7 @@ const THEMES = {
        border-bottom: 0.6pt solid #cfcfcf; padding-bottom: 2pt; }
   .org { font-weight: 700; }
   .dates { color: #6d7276; font-size: 8.6pt; font-family: "Segoe UI", Calibri, sans-serif; }
-  .stack, .sub { color: #5c6166; font-weight: 400; font-style: italic; }
+  .stack, .sub, .url { color: #5c6166; font-weight: 400; font-style: italic; }
   li::before { color: #8a8f94; }
   .lbl { font-weight: 700; }`,
   },
@@ -160,6 +179,7 @@ const BASE = `
   li { position: relative; padding-left: 10pt; }
   li::before { content: "\\2022"; position: absolute; left: 1.5pt; }
   .skills div, .edu div { margin-bottom: 1.5pt; }
+  a { color: inherit; text-decoration: none; }
 `;
 
 function build(theme) {
@@ -181,7 +201,9 @@ ${r.bullets.map((b) => `  <li>${esc(b)}</li>`).join("\n")}
     .map(
       (p, i) => `
 <div class="head${i === 0 ? " first" : ""}">
-  <span class="org">${esc(p.name)}</span> <span class="sub">${esc(p.sub)}</span>
+  <span class="org">${esc(p.name)}</span> <span class="sub">${esc(p.sub)}</span>${
+    p.url ? ` <a class="url" href="https://${esc(p.url)}">${esc(p.url)}</a>` : ""
+  }
   <span class="stack">| ${esc(p.stack)}</span>
 </div>
 <ul>
@@ -198,7 +220,7 @@ ${p.bullets.map((b) => `  <li>${esc(b)}</li>`).join("\n")}
 <div class="hdr">
   <div class="name">${esc(C.name)}</div>
   <div class="role">${esc(C.role)}</div>
-  <div class="contact">${esc(C.contact1)}<br>${esc(C.contact2)}</div>
+  <div class="contact">${linkify(C.contact1)}<br>${linkify(C.contact2)}</div>
 </div>
 
 <h2>Professional Summary</h2>
