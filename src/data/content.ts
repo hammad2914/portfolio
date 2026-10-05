@@ -129,7 +129,7 @@ export type ProjectItem = {
 
 const allProjects: ProjectItem[] = [
   {
-    thumbUrl: "/images/qa-app.png",
+    thumbUrl: "/images/integra.png",
     title: "Integra",
     oneLiner: "Approvals modelled as a state machine, because inspections bounce backwards on rejection.",
     subTitle: "Quality Inspection Platform",
@@ -154,7 +154,7 @@ const allProjects: ProjectItem[] = [
     },
   },
   {
-    thumbUrl: "/images/cortex-demo.png",
+    thumbUrl: "/images/cortex.png",
     title: "Cortex",
     featured: true,
     oneLiner:
@@ -220,7 +220,7 @@ const allProjects: ProjectItem[] = [
     },
   },
   {
-    thumbUrl: "/images/lia.png",
+    thumbUrl: "/images/lawintoaction.png",
     title: "Law in Action",
     oneLiner: "Translation fails over across four providers so compliance work never stalls.",
     subTitle: "Global Regulations Platform",
