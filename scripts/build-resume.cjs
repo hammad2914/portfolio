@@ -41,14 +41,6 @@ const C = {
         "Engineered AG Grid interfaces over 50,000+ row datasets with real-time WebSocket sync and zero UI lag.",
       ],
     },
-    {
-      org: "Freelance, Upwork",
-      title: "Full Stack Developer",
-      dates: "Mar 2023 - Present",
-      bullets: [
-        "Deliver React.js, Next.js, and Node.js client projects end to end, from scope through to deployment.",
-      ],
-    },
   ],
   projects: [
     {
@@ -85,15 +77,6 @@ const C = {
         "Direct supplier uploads with automated extraction and validation before commit: 10,000+ documents a year, 70% less manual effort.",
       ],
     },
-    {
-      name: "Law in Action",
-      sub: "Global Regulations Platform (live)",
-      stack: "React, Express, Prisma, PostgreSQL",
-      bullets: [
-        "Subscription compliance platform with regulation tracking, HS-code classification over the 10,300-entry UN Comtrade set, and a metered API clients pull into their own ERPs.",
-        "Translation falls back automatically across DeepL, Azure, Google and MyMemory, so one provider's outage never stalls the work.",
-      ],
-    },
   ],
   education: [
     ["BS Software Engineering", "Virtual University of Pakistan", "Oct 2021 - Oct 2025"],
@@ -126,15 +109,15 @@ const THEMES = {
   b: {
     label: "Modern blue",
     css: `
-  body { font: 9.0pt/1.32 "Segoe UI", Calibri, Arial, sans-serif; color: #1d242b; }
-  .name { font-size: 24pt; font-weight: 600; color: #11324d; line-height: 1.02; }
-  .role { font-size: 11.5pt; font-weight: 600; color: #0f6fc6; margin-top: 1pt; }
-  .contact { font-size: 8.7pt; color: #56646f; margin-top: 4pt; }
+  body { font: 10.0pt/1.36 "Segoe UI", Calibri, Arial, sans-serif; color: #1d242b; }
+  .name { font-size: 25pt; font-weight: 600; color: #11324d; line-height: 1.02; }
+  .role { font-size: 12.5pt; font-weight: 600; color: #0f6fc6; margin-top: 1pt; }
+  .contact { font-size: 9.6pt; color: #56646f; margin-top: 4pt; }
   .hdr { padding-bottom: 6pt; }
-  h2 { font-size: 9.6pt; font-weight: 700; text-transform: uppercase; color: #11324d;
+  h2 { font-size: 10.8pt; font-weight: 700; text-transform: uppercase; color: #11324d;
        margin: 9pt 0 4pt; padding-left: 6pt; border-left: 3pt solid #0f6fc6; }
   .org { font-weight: 600; color: #11324d; }
-  .dates { color: #6b7883; font-size: 8.7pt; }
+  .dates { color: #6b7883; font-size: 9.6pt; }
   .stack, .sub { color: #0f6fc6; font-weight: 400; }
   li::before { color: #0f6fc6; }
   .lbl { font-weight: 600; color: #11324d; }`,
