@@ -1,16 +1,21 @@
 /**
- * Builds the resume in several visual treatments from one copy of the content,
- * so the words can't drift between variants. Every theme stays single column
- * with real text and no letter-spacing, which is what an ATS parser needs.
+ * Builds the resume from one copy of the content, so the words can't drift
+ * between the PDF and the .docx.
  *
- * Theme "b" is the one that ships. To rebuild public/resume/Hammad_Ali_Resume.pdf:
+ * To rebuild public/resume/Hammad_Ali_Resume.pdf:
  *
  *   node scripts/build-resume.cjs .
  *   chrome --headless=new --no-pdf-header-footer
  *     --print-to-pdf=public/resume/Hammad_Ali_Resume.pdf
- *     file:///ABSOLUTE/PATH/resume-b.html
+ *     file:///ABSOLUTE/PATH/resume.html
  *
- * The .docx version is built from the same content by build-resume-docx.cjs.
+ * ATS-safe on purpose: one column, real selectable text, standard section
+ * headings, no tables, no graphics, no icon fonts, plain ASCII punctuation.
+ * Ligatures are off because a broken fi/fl mapping turns "workflows" into
+ * "workows" in the extracted text, which no keyword match will survive.
+ *
+ * Bullets use **double asterisks** for emphasis; both renderers turn those
+ * into bold runs, and the visible text is identical either way.
  */
 const fs = require("fs");
 const path = require("path");
@@ -18,86 +23,98 @@ const path = require("path");
 const C = {
   name: "Hammad Ali",
   role: "Full Stack Software Engineer",
+  badges: ["React", "Next.js", "TypeScript", "NestJS", ".NET Core", "PostgreSQL"],
   contact1: "ch.hammad2914@gmail.com | +92 349 187 2526 | Karachi, Pakistan",
-  contact2: "hammad-ali-dev.vercel.app | linkedin.com/in/hammad-ali-1a4631255 | github.com/hammad2914",
+  contact2:
+    "hammad-ali-dev.vercel.app | linkedin.com/in/hammad-ali-1a4631255 | github.com/hammad2914",
+
   summary:
-    "Full Stack Software Engineer with 3+ years shipping production ERP, SaaS, and supply-chain systems in React.js, " +
-    "Next.js, Node.js, NestJS, and PostgreSQL. Owned end-to-end delivery across 7+ production systems: frontend " +
-    "architecture, backend APIs, real-time data, AI document-extraction pipelines, and deployment. Migrated legacy " +
-    "systems and set reusable patterns that cut per-module development time by 30%.",
-  skills: [
-    ["Frontend", "React.js, Next.js, React Native, TypeScript, JavaScript (ES6+), Redux, Zustand, AG Grid, Tailwind CSS"],
-    ["Backend", "Node.js, Express.js, NestJS, .NET Core Web API, Prisma ORM, REST APIs, WebSockets (Socket.io), JWT, RBAC"],
-    ["Databases", "PostgreSQL, SQL Server, MongoDB, Redis"],
-    ["AI & Automation", "OpenAI, Gemini, bulk PDF extraction, document-processing pipelines"],
-    ["DevOps & Tools", "Docker, CI/CD, Git, GitHub, code review, performance optimization"],
-  ],
+    "Full Stack Software Engineer specializing in **React**, **Next.js**, **TypeScript** and " +
+    "**NestJS**, with 3+ years delivering enterprise ERP, SaaS and supply-chain platforms across " +
+    "the full development lifecycle. Owned end-to-end delivery across **7+ production systems**, " +
+    "migrated **3 legacy VB.NET systems** to a modern stack, and built a document extraction " +
+    "pipeline on the **OpenAI API** that cut processing time by **70%**.",
+
   roles: [
     {
       org: "Interactive Technologies Gateway",
       title: "Software Engineer",
       dates: "May 2023 - Present",
       bullets: [
-        "Ship full-stack features across 7+ enterprise systems for supply-chain and quality-inspection clients, from React/Next.js frontends to Node.js/NestJS APIs.",
-        "Design NestJS and Prisma ORM backend APIs with authentication, RBAC, and multi-module ERP business logic.",
-        "Migrated 3 legacy VB.NET systems to React + Node.js + PostgreSQL, cutting UI load times by 40%.",
-        "Built Excel Genie, a reporting engine reused across 10+ ERP modules in place of per-module reporting code.",
-        "Engineered AG Grid interfaces over 50,000+ row datasets with real-time WebSocket sync and zero UI lag.",
+        "Own end-to-end delivery across **7+ enterprise systems** for international clients in supply-chain and quality inspection, from React/Next.js frontends through to Node.js/NestJS APIs.",
+        "Design backend APIs in **NestJS** and **Prisma ORM** covering authentication, **RBAC**, and multi-module business logic for ERP platforms.",
+        "Migrated **3 legacy VB.NET systems** to React + Node.js + PostgreSQL, cutting **UI load times by 40%** and retiring an unmaintainable codebase.",
+        "Built **Excel Genie**, a reporting engine reused across **10+ ERP modules** in place of per-module reporting code.",
+        "Engineered **AG Grid** interfaces over **50,000+ row datasets** with real-time **WebSocket** synchronization and zero UI lag.",
+        "Created reusable **React component libraries** and NestJS service patterns adopted across products, cutting **per-module development time by 30%**.",
+        "Ship production endpoints and **Docker**-based services independently through **CI/CD** pipelines.",
+      ],
+      projects: [
+        {
+          name: "Cortex",
+          sub: "AI-Powered ERP System",
+          stack: "React.js, NestJS, PostgreSQL, WebSockets, OpenAI, AG Grid",
+          bullets: [
+            "Led full-stack delivery across **8 interconnected modules** with admin panels, permission flows, and real-time 50,000+ row data grids.",
+            "Built a bulk **PDF extraction pipeline on the OpenAI API** with a per-client template covering **8-12 document formats**, routed through human review before commit: **~70% less processing time**.",
+          ],
+        },
+        {
+          name: "Integra",
+          sub: "Quality Inspection Platform",
+          stack: "React.js, Node.js, PostgreSQL, WebSockets, PDF Generation",
+          bullets: [
+            "Built **7 end-to-end inspection workflows** with approvals modelled as an explicit **state machine**, real-time status updates, server-side PDF reports and live KPI dashboards.",
+          ],
+        },
+        {
+          name: "Vendor Portal",
+          sub: "Supplier Invoicing",
+          stack: "React, .NET Core Web API, SQL Server, PDF Automation",
+          bullets: [
+            "Replaced emailed supplier PDFs with direct uploads, automated extraction and a validation step before commit: **10,000+ documents a year**, **70% less manual effort**.",
+          ],
+        },
       ],
     },
   ],
+
   projects: [
     {
-      name: "Cortex",
-      sub: "AI-Powered ERP System",
-      stack: "React.js, NestJS, PostgreSQL, WebSockets, OpenAI, AG Grid",
-      bullets: [
-        "Led full-stack delivery across 8 interconnected modules with admin panels, permission flows, and 50,000+ row live grids.",
-        "Built a bulk PDF extraction pipeline on OpenAI with per-client templates for 8-12 document formats and human review before commit: 70% faster processing.",
-      ],
-    },
-    {
       name: "Okulium",
-      sub: "School Management SaaS",
-      // the URL says "live" better than the word does, and it is clickable
-      url: "okulium-web.onrender.com",
+      sub: "Multi-Tenant School Management SaaS",
       stack: "React, Vite, NestJS, Prisma, PostgreSQL, PWA",
+      url: "okulium-web.onrender.com",
       bullets: [
-        "Multi-tenant platform for multi-branch school groups: attendance, exams and results, fees, timetabling, staff and reporting, as an installable PWA.",
-        "Attendance edits write to an edit-history table and result disputes are a separate reviewable model, so corrections stay auditable.",
-      ],
-    },
-    {
-      name: "Integra",
-      sub: "Quality Inspection Platform",
-      stack: "React.js, Node.js, PostgreSQL, WebSockets, PDF Generation",
-      bullets: [
-        "Built 7 inspection workflows with approvals as a state machine, real-time updates, server-side PDF reports, and KPI dashboards.",
-      ],
-    },
-    {
-      name: "Vendor Portal",
-      sub: "Supplier Invoicing",
-      stack: "React, .NET Core, SQL Server, PDF Automation",
-      bullets: [
-        "Direct supplier uploads with automated extraction and validation before commit: 10,000+ documents a year, 70% less manual effort.",
+        "Shipped a live multi-tenant platform for multi-branch school groups covering attendance, exams and results, fees, timetabling, staff and reporting, as an **installable PWA**.",
+        "Attendance edits write to an **edit-history table** and result disputes are a separate model, so corrections stay auditable.",
       ],
     },
   ],
+
+  skills: [
+    ["Frontend", "React.js, Next.js, React Native, TypeScript, JavaScript (ES6+), Redux, Zustand, Tailwind CSS, AG Grid"],
+    ["Backend & APIs", "Node.js, NestJS, Express.js, .NET Core Web API, Prisma ORM, REST APIs, WebSockets, JWT, RBAC"],
+    ["Databases & Caching", "PostgreSQL, Microsoft SQL Server, MongoDB, Redis"],
+    ["DevOps & Tools", "Docker, CI/CD, Git, GitHub, Vercel, code reviews, performance optimization"],
+    ["AI & Automation", "OpenAI API, Gemini, bulk PDF extraction, document intelligence, automation pipelines"],
+  ],
+
   education: [
     ["BS Software Engineering", "Virtual University of Pakistan", "Oct 2021 - Oct 2025"],
-    ["MERN Stack Development", "Jawan Pakistan", "Jan - Jun 2023"],
-    ["Frontend Development", "Jawan Pakistan", "Jun - Dec 2022"],
+    ["MERN Stack & Frontend Development", "Jawan Pakistan", "Jun 2022 - Jun 2023"],
   ],
 };
 
-const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+
+/** **bold** -> <b>bold</b>, applied after escaping so markup can't be injected. */
+const rich = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
 
 /**
  * Turns the pipe-separated contact line into links. Chrome's print-to-PDF
- * carries anchors through as real link annotations, so a recruiter can click
- * the portfolio or the repo straight out of the document. The visible text is
- * unchanged, so nothing about extraction changes.
+ * carries anchors through as real link annotations, so the portfolio and the
+ * repo are clickable. The visible text is unchanged.
  */
 const linkify = (line) =>
   line
@@ -110,137 +127,129 @@ const linkify = (line) =>
     })
     .join(" | ");
 
-/* Each theme supplies only its own look; the markup below is shared. */
-const THEMES = {
-  a: {
-    label: "Classic navy",
-    css: `
-  body { font: 9.3pt/1.36 Calibri, Carlito, Arial, sans-serif; color: #22282e; }
-  .name { font-family: Georgia, "Times New Roman", serif; font-size: 23pt; font-weight: 700;
-          color: #1f3a5f; line-height: 1.05; }
-  .role { font-family: Georgia, serif; font-size: 11.5pt; color: #4a5a6b; margin-top: 1pt; }
-  .contact { font-size: 8.7pt; color: #4a5a6b; margin-top: 4pt; }
-  .hdr { border-bottom: 1.8pt solid #1f3a5f; padding-bottom: 6pt; }
-  h2 { font-family: Georgia, serif; font-size: 10.5pt; font-weight: 700; color: #1f3a5f;
-       margin: 9pt 0 4pt; border-bottom: 0.6pt solid #c3cedb; padding-bottom: 2pt; }
-  .org { font-weight: 700; color: #22282e; }
-  .dates { color: #6b7a89; font-size: 8.7pt; }
-  .stack, .sub, .url { color: #52657a; font-weight: 400; }
-  li::before { color: #1f3a5f; }
-  .lbl { font-weight: 700; color: #1f3a5f; }`,
-  },
-  b: {
-    label: "Modern blue",
-    css: `
-  body { font: 10.0pt/1.36 "Segoe UI", Calibri, Arial, sans-serif; color: #1d242b; }
-  .name { font-size: 25pt; font-weight: 600; color: #11324d; line-height: 1.02; }
-  .role { font-size: 12.5pt; font-weight: 600; color: #0f6fc6; margin-top: 1pt; }
-  .contact { font-size: 9.6pt; color: #56646f; margin-top: 4pt; }
-  .hdr { padding-bottom: 6pt; }
-  h2 { font-size: 10.8pt; font-weight: 700; text-transform: uppercase; color: #11324d;
-       margin: 9pt 0 4pt; padding-left: 6pt; border-left: 3pt solid #0f6fc6; }
-  .org { font-weight: 600; color: #11324d; }
-  .dates { color: #6b7883; font-size: 9.6pt; }
-  .stack, .sub, .url { color: #0f6fc6; font-weight: 400; }
-  li::before { color: #0f6fc6; }
-  .lbl { font-weight: 600; color: #11324d; }`,
-  },
-  c: {
-    label: "Editorial mono",
-    css: `
-  body { font: 8.9pt/1.3 Cambria, Georgia, serif; color: #1a1a1a; }
-  .name { font-family: "Segoe UI", Calibri, sans-serif; font-size: 23pt; font-weight: 600;
-          color: #111; line-height: 1.04; }
-  .role { font-family: "Segoe UI", Calibri, sans-serif; font-size: 11pt; color: #55595d;
-          margin-top: 2pt; }
-  .contact { font-family: "Segoe UI", Calibri, sans-serif; font-size: 8.6pt; color: #55595d;
-             margin-top: 4pt; }
-  .hdr { border-bottom: 0.8pt solid #1a1a1a; padding-bottom: 7pt; }
-  h2 { font-family: "Segoe UI", Calibri, sans-serif; font-size: 9pt; font-weight: 700;
-       text-transform: uppercase; color: #111; margin: 8.5pt 0 3.5pt;
-       border-bottom: 0.6pt solid #cfcfcf; padding-bottom: 2pt; }
-  .org { font-weight: 700; }
-  .dates { color: #6d7276; font-size: 8.6pt; font-family: "Segoe UI", Calibri, sans-serif; }
-  .stack, .sub, .url { color: #5c6166; font-weight: 400; font-style: italic; }
-  li::before { color: #8a8f94; }
-  .lbl { font-weight: 700; }`,
-  },
-};
+const bullets = (list) =>
+  `<ul>\n${list.map((b) => `  <li>${rich(b)}</li>`).join("\n")}\n</ul>`;
 
-const BASE = `
-  @page { size: letter; margin: 0.45in 0.52in; }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  /* kerning and ligatures off: both fragment words when a parser reads the PDF */
-  body { letter-spacing: normal; font-kerning: none; font-variant-ligatures: none; }
-  .row { display: flex; justify-content: space-between; align-items: baseline; gap: 10pt; }
-  .head { margin-top: 5pt; }
-  .head.first { margin-top: 0; }
-  ul { list-style: none; margin-top: 1.5pt; }
-  li { position: relative; padding-left: 10pt; }
-  li::before { content: "\\2022"; position: absolute; left: 1.5pt; }
-  .skills div, .edu div { margin-bottom: 1.5pt; }
-  a { color: inherit; text-decoration: none; }
-`;
+const projectBlock = (p, cls) => `
+<div class="${cls}">
+  <span class="pname">${esc(p.name)}</span>
+  <span class="psub">${esc(p.sub)}</span>
+  <span class="pstack">| ${esc(p.stack)}</span>${
+    p.url ? ` <a class="plink" href="https://${esc(p.url)}" title="${esc(p.url)}">↗</a>` : ""
+  }
+</div>
+${bullets(p.bullets)}`;
 
-function build(theme) {
-  const t = THEMES[theme];
+function build() {
   const roles = C.roles
     .map(
-      (r, i) => `
-<div class="head${i === 0 ? " first" : ""} row">
-  <span><span class="org">${esc(r.org)}</span> | ${esc(r.title)}</span>
+      (r) => `
+<div class="head row">
+  <span><span class="org">${esc(r.org)}</span> <span class="title">${esc(r.title)}</span></span>
   <span class="dates">${esc(r.dates)}</span>
 </div>
-<ul>
-${r.bullets.map((b) => `  <li>${esc(b)}</li>`).join("\n")}
-</ul>`,
-    )
-    .join("\n");
-
-  const projects = C.projects
-    .map(
-      (p, i) => `
-<div class="head${i === 0 ? " first" : ""}">
-  <span class="org">${esc(p.name)}</span> <span class="sub">${esc(p.sub)}</span>${
-    p.url
-      ? ` <a class="url" href="https://${esc(p.url)}" title="${esc(p.url)}">↗</a>`
-      : ""
-  }
-  <span class="stack">| ${esc(p.stack)}</span>
-</div>
-<ul>
-${p.bullets.map((b) => `  <li>${esc(b)}</li>`).join("\n")}
-</ul>`,
+${bullets(r.bullets)}
+${(r.projects || []).map((p) => projectBlock(p, "proj")).join("\n")}`,
     )
     .join("\n");
 
   return `<!doctype html>
 <meta charset="utf-8">
 <title>${esc(C.name)} - ${esc(C.role)}</title>
-<style>${BASE}${t.css}</style>
+<style>
+  @page { size: letter; margin: 0.4in 0.5in; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-<div class="hdr">
-  <div class="name">${esc(C.name)}</div>
-  <div class="role">${esc(C.role)}</div>
-  <div class="contact">${linkify(C.contact1)}<br>${linkify(C.contact2)}</div>
-</div>
+  body {
+    font: 9.6pt/1.3 "Segoe UI", Calibri, Arial, sans-serif;
+    color: #1d242b;
+    letter-spacing: normal;
+    font-kerning: none;
+    /* a broken fi/fl mapping turns "workflows" into "workows" when parsed */
+    font-variant-ligatures: none;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  b { font-weight: 600; color: #11324d; }
+
+  .name { font-size: 25pt; font-weight: 600; color: #11324d; line-height: 1.02; }
+  .role { font-size: 12.5pt; font-weight: 600; color: #0f6fc6; margin-top: 1pt; }
+
+  /* the stack at a glance, before anyone reads a word of prose */
+  .badges { margin: 4pt 0 3pt; }
+  .badges span {
+    display: inline-block;
+    margin: 0 4pt 3pt 0;
+    padding: 1.5pt 6pt;
+    border: 0.75pt solid rgba(15, 111, 198, 0.4);
+    border-radius: 9pt;
+    font-size: 8.4pt;
+    font-weight: 600;
+    color: #0f6fc6;
+  }
+
+  .contact { font-size: 9.3pt; color: #56646f; }
+
+  h2 {
+    font-size: 10.4pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #11324d;
+    margin: 7.5pt 0 3.5pt;
+    padding-bottom: 1.5pt;
+    border-bottom: 1pt solid rgba(17, 50, 77, 0.3);
+  }
+
+  .row { display: flex; justify-content: space-between; align-items: baseline; gap: 10pt; }
+
+  .head { margin-top: 2pt; }
+  .org { font-weight: 700; color: #11324d; font-size: 10.6pt; }
+  .title { font-weight: 600; }
+  .dates { color: #6b7883; font-size: 9.3pt; white-space: nowrap; }
+
+  /* projects sit inside the job they were built in, indented to show it */
+  .proj { margin: 4pt 0 0 11pt; }
+  .proj + ul { margin-left: 11pt; }
+  .pname { font-weight: 700; color: #11324d; }
+  .psub, .pstack { color: #0f6fc6; font-weight: 400; }
+  .pstack { font-size: 9.2pt; }
+  .plink { color: #0f6fc6; }
+
+  .own { margin-top: 2pt; }
+
+  ul { list-style: none; margin-top: 1.5pt; }
+  li { position: relative; padding-left: 10pt; }
+  li::before { content: "\\2022"; position: absolute; left: 1.5pt; color: #0f6fc6; }
+
+  .skills div, .edu div { margin-bottom: 1pt; }
+  .lbl { font-weight: 700; color: #11324d; }
+</style>
+
+<div class="name">${esc(C.name)}</div>
+<div class="role">${esc(C.role)}</div>
+<div class="badges">${C.badges.map((b) => `<span>${esc(b)}</span>`).join("")}</div>
+<div class="contact">${linkify(C.contact1)}<br>${linkify(C.contact2)}</div>
 
 <h2>Professional Summary</h2>
-<p>${esc(C.summary)}</p>
+<p>${rich(C.summary)}</p>
+
+<h2>Experience</h2>${roles}
+
+<h2>Personal Projects</h2>
+${C.projects.map((p) => projectBlock(p, "proj own")).join("\n")}
 
 <h2>Technical Skills</h2>
 <div class="skills">
 ${C.skills.map(([k, v]) => `  <div><span class="lbl">${esc(k)}:</span> ${esc(v)}</div>`).join("\n")}
 </div>
 
-<h2>Professional Experience</h2>${roles}
-
-<h2>Key Projects</h2>${projects}
-
 <h2>Education &amp; Certifications</h2>
 <div class="edu">
 ${C.education
-  .map(([a, b, c]) => `  <div class="row"><span><span class="lbl">${esc(a)}</span> - ${esc(b)}</span><span class="dates">${esc(c)}</span></div>`)
+  .map(
+    ([a, b, c]) =>
+      `  <div class="row"><span><span class="lbl">${esc(a)}</span> - ${esc(b)}</span><span class="dates">${esc(c)}</span></div>`,
+  )
   .join("\n")}
 </div>
 `;
@@ -248,13 +257,10 @@ ${C.education
 
 /* The .docx builder reads the same content object, so the two outputs
    cannot drift apart. */
-module.exports = { CONTENT: C, THEMES, build };
+module.exports = { CONTENT: C, build };
 
 if (require.main === module) {
-  const outDir = process.argv[2] || ".";
-  for (const k of Object.keys(THEMES)) {
-    const file = path.join(outDir, `resume-${k}.html`);
-    fs.writeFileSync(file, build(k));
-    console.log(`${file}  (${THEMES[k].label})`);
-  }
+  const file = path.join(process.argv[2] || ".", "resume.html");
+  fs.writeFileSync(file, build());
+  console.log(file);
 }

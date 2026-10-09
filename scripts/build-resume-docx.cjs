@@ -63,13 +63,21 @@ const linkifyRuns = (line, opts) =>
  * One paragraph. `tab` puts a right-aligned tab stop at the text margin so
  * dates sit on the right edge the way they do in the PDF.
  */
-function para(runs, { before = 0, after = 0, tab = false, rule = false, indent = 0 } = {}) {
+function para(
+  runs,
+  { before = 0, after = 0, tab = false, rule = false, indent = 0, left = 0 } = {},
+) {
   const spacing = `<w:spacing w:before="${before}" w:after="${after}" w:line="276" w:lineRule="auto"/>`;
   const tabs = tab ? `<w:tabs><w:tab w:val="right" w:pos="10080"/></w:tabs>` : "";
   const border = rule
     ? `<w:pBdr><w:bottom w:val="single" w:sz="6" w:space="2" w:color="C8D4DE"/></w:pBdr>`
     : "";
-  const ind = indent ? `<w:ind w:left="${indent}" w:hanging="${indent}"/>` : "";
+  // a bullet hangs its mark; a heading just shifts right, so they differ
+  const ind = indent
+    ? `<w:ind w:left="${indent}" w:hanging="${indent}"/>`
+    : left
+      ? `<w:ind w:left="${left}"/>`
+      : "";
   return `<w:p><w:pPr>${spacing}${tabs}${border}${ind}</w:pPr>${runs}</w:p>`;
 }
 
@@ -77,7 +85,11 @@ const body = [];
 
 /* header */
 body.push(para(run(C.name, { b: true, color: NAVY, size: 50 }), { after: 0 }));
-body.push(para(run(C.role, { b: true, color: BLUE, size: 25 }), { after: 60 }));
+body.push(para(run(C.role, { b: true, color: BLUE, size: 25 }), { after: 40 }));
+// the PDF draws these as pills; Word gets the same words on one separated line
+body.push(
+  para(run(C.badges.join("  ·  "), { b: true, color: BLUE, size: 17 }), { after: 60 }),
+);
 body.push(para(linkifyRuns(C.contact1, { color: GREY, size: 19 }), { after: 0 }));
 body.push(para(linkifyRuns(C.contact2, { color: GREY, size: 19 }), { after: 120 }));
 
@@ -90,47 +102,66 @@ const heading = (text) =>
     }),
   );
 
+/**
+ * **double asterisks** become bold runs, matching the HTML renderer. Splitting
+ * on the delimiter keeps the visible text identical either way.
+ */
+const richRuns = (text, opts = {}) =>
+  String(text)
+    .split(/\*\*(.+?)\*\*/g)
+    .map((part, i) => (i % 2 ? run(part, { ...opts, b: true, color: NAVY }) : run(part, opts)))
+    .join("");
+
 /* a bullet is a literal mark plus a hanging indent, which survives a text
    extraction better than Word's numbering definitions do */
-const bullet = (text) =>
+const bullet = (text, indent = 284) =>
   body.push(
-    para(run("•   ", { color: BLUE }) + run(text), { after: 40, indent: 284 }),
+    para(run("•   ", { color: BLUE }) + richRuns(text), { after: 40, indent }),
   );
 
 heading("Professional Summary");
-body.push(para(run(C.summary), { after: 60 }));
+body.push(para(richRuns(C.summary), { after: 60 }));
 
 heading("Technical Skills");
 for (const [k, v] of C.skills) {
   body.push(para(run(`${k}: `, { b: true, color: NAVY }) + run(v), { after: 40 }));
 }
 
-heading("Professional Experience");
-for (const r of C.roles) {
-  body.push(
-    para(
-      run(r.org, { b: true, color: NAVY }) +
-        run(` | ${r.title}`) +
-        tabRun() +
-        run(r.dates, { color: GREY, size: 19 }),
-      { before: 120, after: 40, tab: true },
-    ),
-  );
-  r.bullets.forEach(bullet);
-}
-
-heading("Key Projects");
-for (const p of C.projects) {
+/** A project heading, optionally indented to sit inside the job it belongs to. */
+const projectHead = (p, indent) =>
   body.push(
     para(
       run(p.name, { b: true, color: NAVY }) +
         run(` ${p.sub}`, { color: BLUE }) +
         (p.url ? run(" ") + link(`https://${p.url}`, run("↗", { color: BLUE })) : "") +
         run(` | ${p.stack}`, { color: BLUE }),
-      { before: 120, after: 40 },
+      { before: 110, after: 30, indent: 0, left: indent },
     ),
   );
-  p.bullets.forEach(bullet);
+
+heading("Experience");
+for (const r of C.roles) {
+  body.push(
+    para(
+      run(r.org, { b: true, color: NAVY }) +
+        run(` ${r.title}`) +
+        tabRun() +
+        run(r.dates, { color: GREY, size: 19 }),
+      { before: 120, after: 40, tab: true },
+    ),
+  );
+  r.bullets.forEach((b) => bullet(b));
+  // projects sit inside the job they were built in
+  for (const p of r.projects || []) {
+    projectHead(p, 170);
+    p.bullets.forEach((b) => bullet(b, 454));
+  }
+}
+
+heading("Personal Projects");
+for (const p of C.projects) {
+  projectHead(p, 0);
+  p.bullets.forEach((b) => bullet(b));
 }
 
 heading("Education & Certifications");
