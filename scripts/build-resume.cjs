@@ -84,6 +84,7 @@ const C = {
           stack: "React, .NET Core Web API, SQL Server, PDF Automation",
           bullets: [
             "Replaced emailed supplier PDFs with direct uploads, automated extraction and validation before commit: **10,000+ documents a year** and **70% less manual effort**.",
+            "Automated the path from extraction through to logistics invoice and debit note generation, with human verification before any document is issued.",
           ],
         },
       ],
@@ -93,7 +94,8 @@ const C = {
       title: "Full Stack Developer (Remote)",
       dates: "Jun 2025 - Feb 2026",
       bullets: [
-        "Built client websites, portals and a live subscription platform in React, Next.js and Express, working remotely from requirements through to deployment.",
+        "Built client websites and web portals in React and Next.js, working remotely from requirements through to deployment.",
+        "Delivered full-stack client work end to end, pairing React and Next.js front ends with Express APIs over PostgreSQL.",
       ],
       projects: [
         {
