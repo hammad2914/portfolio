@@ -12,10 +12,10 @@ const fs = require("fs");
 const zlib = require("zlib");
 const { CONTENT: C } = require("./build-resume.cjs");
 
-const NAVY = "11324D";
-const BLUE = "0F6FC6";
-const GREY = "56646F";
-const BODY = "1D242B";
+const NAVY = "1F497D";
+const BLUE = "1F497D";
+const GREY = "444444";
+const BODY = "000000";
 
 const esc = (s) =>
   String(s)
@@ -106,7 +106,7 @@ const heading = (text) =>
 const richRuns = (text, opts = {}) =>
   String(text)
     .split(/\*\*(.+?)\*\*/g)
-    .map((part, i) => (i % 2 ? run(part, { ...opts, b: true, color: NAVY }) : run(part, opts)))
+    .map((part, i) => (i % 2 ? run(part, { ...opts, b: true }) : run(part, opts)))
     .join("");
 
 /* a bullet is a literal mark plus a hanging indent, which survives a text
@@ -146,7 +146,7 @@ for (const r of C.roles) {
       { before: 120, after: 0, tab: true },
     ),
   );
-  body.push(para(run(r.org, { b: true, color: BLUE }), { after: 40 }));
+  body.push(para(run(r.org, { b: true }), { after: 40 }));
   r.bullets.forEach((b) => bullet(b));
   // projects sit inside the job they were built in
   for (const p of r.projects || []) {

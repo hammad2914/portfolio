@@ -195,7 +195,7 @@ ${(r.projects || []).map((p) => projectBlock(p, "proj")).join("\n")}`,
 
   body {
     font: 9.7pt/1.33 "Segoe UI", Calibri, Arial, sans-serif;
-    color: #1d242b;
+    color: #000000;
     letter-spacing: normal;
     font-kerning: none;
     /* a broken fi/fl mapping turns "workflows" into "workows" when parsed */
@@ -203,17 +203,17 @@ ${(r.projects || []).map((p) => projectBlock(p, "proj")).join("\n")}`,
   }
 
   a { color: inherit; text-decoration: none; }
-  b { font-weight: 600; color: #11324d; }
+  b { font-weight: 700; color: inherit; }
 
   header { text-align: center; }
   .name {
     font-size: 23pt;
     font-weight: 700;
-    color: #11324d;
+    color: #1f497d;
     line-height: 1.05;
     text-transform: uppercase;
   }
-  .role { font-size: 12pt; font-weight: 600; color: #0f6fc6; margin-top: 1pt; }
+  .role { font-size: 12pt; font-weight: 600; color: #1f497d; margin-top: 1pt; }
 
   /* the stack at a glance, before anyone reads a word of prose */
   .badges { margin: 5pt 0 4pt; }
@@ -221,11 +221,12 @@ ${(r.projects || []).map((p) => projectBlock(p, "proj")).join("\n")}`,
     display: inline-block;
     margin: 0 4pt 3pt 0;
     padding: 1.5pt 6pt;
-    border: 0.75pt solid rgba(15, 111, 198, 0.4);
+    border: 0.7pt solid rgba(31, 73, 125, 0.5);
     border-radius: 9pt;
+    background: #fff;
     font-size: 8.4pt;
     font-weight: 600;
-    color: #0f6fc6;
+    color: #1f497d;
   }
 
   /* one centred row; icons are SVG so they add no text to the extraction */
@@ -235,7 +236,7 @@ ${(r.projects || []).map((p) => projectBlock(p, "proj")).join("\n")}`,
     justify-content: center;
     gap: 2pt 11pt;
     font-size: 9pt;
-    color: #56646f;
+    color: #444444;
   }
 
   .contact a,
@@ -249,43 +250,43 @@ ${(r.projects || []).map((p) => projectBlock(p, "proj")).join("\n")}`,
     width: 8.6pt;
     height: 8.6pt;
     flex: 0 0 auto;
-    color: #0f6fc6;
+    color: #1f497d;
   }
 
   h2 {
     font-size: 10.4pt;
     font-weight: 700;
     text-transform: uppercase;
-    color: #11324d;
+    color: #1f497d;
     margin: 8pt 0 3.5pt;
     padding-bottom: 1.5pt;
-    border-bottom: 1pt solid rgba(17, 50, 77, 0.3);
+    border-bottom: 1pt solid rgba(31, 73, 125, 0.45);
   }
 
   .row { display: flex; justify-content: space-between; align-items: baseline; gap: 10pt; }
 
   .head { margin-top: 3pt; }
-  .title { font-weight: 700; color: #11324d; font-size: 10.8pt; }
-  .org { font-weight: 600; color: #0f6fc6; font-size: 9.9pt; margin-bottom: 0.5pt; }
-  .dates { color: #6b7883; font-size: 9.3pt; white-space: nowrap; }
+  .title { font-weight: 700; color: #1f497d; font-size: 10.8pt; }
+  .org { font-weight: 600; color: #000; font-size: 9.9pt; margin-bottom: 0.5pt; }
+  .dates { color: #444444; font-size: 9.3pt; white-space: nowrap; }
 
   /* projects sit inside the job they were built in, indented to show it */
   .proj { margin: 3.5pt 0 0 11pt; }
   .proj + ul { margin-left: 11pt; }
-  .pname { font-weight: 700; color: #11324d; }
-  .psub, .pstack { color: #0f6fc6; font-weight: 400; }
+  .pname { font-weight: 700; color: #1f497d; }
+  .psub, .pstack { color: #444444; font-weight: 400; }
   .pstack { font-size: 9.2pt; }
-  .plink { display: inline-flex; align-items: center; gap: 2.5pt; color: #0f6fc6; font-size: 9pt; }
+  .plink { display: inline-flex; align-items: center; gap: 2.5pt; color: #444444; font-size: 9pt; }
   .plink svg { width: 8pt; height: 8pt; }
 
   .own { margin-top: 2pt; }
 
   ul { list-style: none; margin-top: 1pt; }
   li { position: relative; padding-left: 10pt; }
-  li::before { content: "\\2022"; position: absolute; left: 1.5pt; color: #0f6fc6; }
+  li::before { content: "\\2022"; position: absolute; left: 1.5pt; color: #1f497d; }
 
   .skills div, .edu div { margin-bottom: 1pt; }
-  .lbl { font-weight: 700; color: #11324d; }
+  .lbl { font-weight: 700; color: #1f497d; }
 </style>
 
 <header>
