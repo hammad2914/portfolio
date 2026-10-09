@@ -116,7 +116,7 @@ const C = {
       name: "Okulium",
       sub: "Multi-Tenant School Management SaaS",
       stack: "React, Vite, NestJS, Prisma, PostgreSQL, PWA",
-      url: "okulium-web.onrender.com",
+      url: "okulium.pk",
       bullets: [
         "Shipped a live multi-tenant platform for school groups: attendance, exams and results, fees, timetabling, staff and reporting, as an **installable PWA**.",
         "Attendance edits write to an **edit-history table** and result disputes are a separate model, so corrections stay auditable.",
