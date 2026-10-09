@@ -77,6 +77,22 @@
         "3700"
       ],
       "port": 3700
+    },
+    {
+      "name": "okulium-ads-api",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "C:/Users/Dell/AppData/Local/Temp/claude/E--Data-Dont-delete-Hammad-PortFolio-portfolio/cad9173a-cad4-47b3-8218-d66c7b7fc50f/scratchpad/okulium/run-api.mjs"
+      ],
+      "port": 4100
+    },
+    {
+      "name": "okulium-ads-web",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "C:/Users/Dell/AppData/Local/Temp/claude/E--Data-Dont-delete-Hammad-PortFolio-portfolio/cad9173a-cad4-47b3-8218-d66c7b7fc50f/scratchpad/okulium/run-web.mjs"
+      ],
+      "port": 5380
     }
   ]
 }
