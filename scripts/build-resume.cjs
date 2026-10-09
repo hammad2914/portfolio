@@ -75,16 +75,6 @@ const C = {
           ],
         },
         {
-          name: "Law in Action",
-          sub: "Global Regulations Platform",
-          stack: "React, Express, Prisma, PostgreSQL",
-          url: "lawintoaction.com",
-          bullets: [
-            "Built a live subscription compliance platform with regulation tracking, **HS-code classification** over the **10,300-entry UN Comtrade set** held in memory, and a metered external API clients pull into their own ERPs.",
-            "Put translation behind a **provider abstraction** over DeepL, Azure, Google and MyMemory with automatic fallback, so one provider's outage never stalls compliance work.",
-          ],
-        },
-        {
           name: "HotelKey",
           sub: "Hotel & Guest Services App",
           stack: "React Native, React Navigation, Google & Apple Sign-In",
@@ -105,11 +95,22 @@ const C = {
     },
     {
       org: "Consulting Service International Ltd",
-      title: "Frontend Developer (Remote)",
-      dates: "Jun 2024 - Present",
+      title: "Full Stack Developer (Remote)",
+      dates: "Jun 2025 - Feb 2026",
       bullets: [
-        "Build client websites and web portals in **React** and **Next.js**, working remotely from design handoff through to deployment.",
-        "Deliver **responsive, cross-browser** interfaces and integrate REST APIs against client requirements.",
+        "Built client websites, portals and a live subscription platform in **React**, **Next.js** and **Express**, working remotely from requirements through to deployment.",
+      ],
+      projects: [
+        {
+          name: "Law in Action",
+          sub: "Global Regulations Platform",
+          stack: "React, Express, Prisma, PostgreSQL",
+          url: "lawintoaction.com",
+          bullets: [
+            "Built a live subscription compliance platform with regulation tracking, **HS-code classification** over the **10,300-entry UN Comtrade set** held in memory, and a metered external API clients pull into their own ERPs.",
+            "Put translation behind a **provider abstraction** over DeepL, Azure, Google and MyMemory with automatic fallback, so one provider's outage never stalls compliance work.",
+          ],
+        },
       ],
     },
   ],
