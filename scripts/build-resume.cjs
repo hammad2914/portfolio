@@ -161,6 +161,7 @@ const bullets = (list) =>
   `<ul>\n${list.map((b) => `  <li>${rich(b)}</li>`).join("\n")}\n</ul>`;
 
 const projectBlock = (p, cls) => `
+<div class="pblock">
 <div class="${cls}">
   <span class="pname">${esc(p.name)}</span>
   <span class="psub">${esc(p.sub)}</span>
@@ -170,7 +171,8 @@ const projectBlock = (p, cls) => `
       : ""
   }
 </div>
-${bullets(p.bullets)}`;
+${bullets(p.bullets)}
+</div>`;
 
 function build() {
   const roles = C.roles
@@ -216,15 +218,9 @@ ${(r.projects || []).map((p) => projectBlock(p, "proj")).join("\n")}`,
   .role { font-size: 12pt; font-weight: 600; color: #1f497d; margin-top: 1pt; }
 
   /* the stack at a glance, before anyone reads a word of prose */
-  .badges { margin: 5pt 0 4pt; }
-  .badges span {
-    display: inline-block;
-    margin: 0 4pt 3pt 0;
-    padding: 1.5pt 6pt;
-    border: 0.7pt solid rgba(31, 73, 125, 0.5);
-    border-radius: 9pt;
-    background: #fff;
-    font-size: 8.4pt;
+  .badges {
+    margin: 4pt 0 4pt;
+    font-size: 9.5pt;
     font-weight: 600;
     color: #1f497d;
   }
@@ -265,12 +261,14 @@ ${(r.projects || []).map((p) => projectBlock(p, "proj")).join("\n")}`,
 
   .row { display: flex; justify-content: space-between; align-items: baseline; gap: 10pt; }
 
-  .head { margin-top: 3pt; }
+  .head { margin-top: 3pt; break-after: avoid; }
+  .org { break-after: avoid; }
   .title { font-weight: 700; color: #1f497d; font-size: 10.8pt; }
   .org { font-weight: 600; color: #000; font-size: 9.9pt; margin-bottom: 0.5pt; }
   .dates { color: #444444; font-size: 9.3pt; white-space: nowrap; }
 
   /* projects sit inside the job they were built in, indented to show it */
+  .pblock { break-inside: avoid; }
   .proj { margin: 3.5pt 0 0 11pt; }
   .proj + ul { margin-left: 11pt; }
   .pname { font-weight: 700; color: #1f497d; }
@@ -292,7 +290,7 @@ ${(r.projects || []).map((p) => projectBlock(p, "proj")).join("\n")}`,
 <header>
   <div class="name">${esc(C.name)}</div>
   <div class="role">${esc(C.role)}</div>
-  <div class="badges">${C.badges.map((b) => `<span>${esc(b)}</span>`).join("")}</div>
+  <div class="badges">${C.badges.map(esc).join("  ·  ")}</div>
   <div class="contact">${C.contacts
     .map((c) => {
       const inner = `${icon(c.icon)}<span>${esc(c.label)}</span>`;
