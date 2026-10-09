@@ -56,7 +56,7 @@ const C = {
         "Ship production endpoints and Docker-based services independently through CI/CD pipelines.",
         "Write unit and integration tests with Vitest, and run code reviews across the team before work is merged.",
         "Own requirements analysis, estimation and planning for assigned modules, working directly with business stakeholders.",
-        "Mentor **3-5 junior developers** in application architecture, debugging and code quality.",
+        "Mentor **4 junior developers** in application architecture, debugging and code quality.",
         "Investigate and resolve production issues across frontend, API, database and deployment layers.",
       ],
       projects: [
