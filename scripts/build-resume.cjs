@@ -103,6 +103,15 @@ const C = {
         },
       ],
     },
+    {
+      org: "Consulting Service International Ltd",
+      title: "Frontend Developer (Remote)",
+      dates: "Jun 2024 - Present",
+      bullets: [
+        "Build client websites and web portals in **React** and **Next.js**, working remotely from design handoff through to deployment.",
+        "Deliver **responsive, cross-browser** interfaces and integrate REST APIs against client requirements.",
+      ],
+    },
   ],
 
   projects: [
