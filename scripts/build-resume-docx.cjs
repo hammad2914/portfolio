@@ -47,18 +47,6 @@ function link(url, runs) {
   return `<w:hyperlink r:id="${id}">${runs}</w:hyperlink>`;
 }
 
-/** Makes the pipe-separated contact line clickable, as the PDF version is. */
-const linkifyRuns = (line, opts) =>
-  line
-    .split(" | ")
-    .map((part) => {
-      const t = part.trim();
-      if (t.includes("@")) return link(`mailto:${t}`, run(t, opts));
-      if (/^[a-z0-9.-]+\.[a-z]{2,}(\/|$)/i.test(t)) return link(`https://${t}`, run(t, opts));
-      return run(t, opts);
-    })
-    .join(run(" | ", opts));
-
 /**
  * One paragraph. `tab` puts a right-aligned tab stop at the text margin so
  * dates sit on the right edge the way they do in the PDF.

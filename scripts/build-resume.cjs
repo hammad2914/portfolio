@@ -157,22 +157,6 @@ const icon = (name) =>
 /** **bold** -> <b>bold</b>, applied after escaping so markup can't be injected. */
 const rich = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
 
-/**
- * Turns the pipe-separated contact line into links. Chrome's print-to-PDF
- * carries anchors through as real link annotations, so the portfolio and the
- * repo are clickable. The visible text is unchanged.
- */
-const linkify = (line) =>
-  line
-    .split(" | ")
-    .map((part) => {
-      const t = esc(part.trim());
-      if (t.includes("@")) return `<a href="mailto:${t}">${t}</a>`;
-      if (/^[a-z0-9.-]+\.[a-z]{2,}(\/|$)/i.test(t)) return `<a href="https://${t}">${t}</a>`;
-      return t;
-    })
-    .join(" | ");
-
 const bullets = (list) =>
   `<ul>\n${list.map((b) => `  <li>${rich(b)}</li>`).join("\n")}\n</ul>`;
 
