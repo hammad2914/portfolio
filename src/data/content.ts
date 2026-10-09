@@ -188,7 +188,7 @@ const allProjects: ProjectItem[] = [
     confidential: true,
     privacyNote:
       "Commercial SaaS — the source is private, but the product is live.",
-    liveUrl: "https://okulium-web.onrender.com",
+    liveUrl: "https://okulium.pk",
     details: {
       title: "Okulium – School Management SaaS",
       challenge:
