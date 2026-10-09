@@ -119,8 +119,10 @@ const C = {
       stack: "React, Vite, NestJS, Prisma, PostgreSQL, PWA",
       url: "okulium.pk",
       bullets: [
-        "Shipped a live multi-tenant platform for school groups covering attendance, exams and results, fees, timetabling, staff and reporting, as an installable PWA.",
-        "Attendance edits and exam result disputes keep a full audit trail, so corrections stay reviewable instead of overwriting the record.",
+        "Shipped a live, multi-tenant school platform spanning **9 modules** - attendance, exams and results, fees and payments, students, parents, staff, timetabling, announcements and reporting.",
+        "Modelled tenancy as school groups containing branches, so records scope to a single branch while a group administrator still sees across all of them.",
+        "Attendance edits and exam result disputes keep a full audit trail, so a corrected register or a challenged grade stays reviewable instead of overwriting the record.",
+        "Built the dashboard as an installable PWA with its own service worker, on a NestJS and Prisma API over PostgreSQL, with a separate public landing site alongside it.",
       ],
     },
   ],
