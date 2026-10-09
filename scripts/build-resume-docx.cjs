@@ -90,8 +90,17 @@ body.push(para(run(C.role, { b: true, color: BLUE, size: 25 }), { after: 40 }));
 body.push(
   para(run(C.badges.join("  ·  "), { b: true, color: BLUE, size: 17 }), { after: 60 }),
 );
-body.push(para(linkifyRuns(C.contact1, { color: GREY, size: 19 }), { after: 0 }));
-body.push(para(linkifyRuns(C.contact2, { color: GREY, size: 19 }), { after: 120 }));
+body.push(
+  para(
+    C.contacts
+      .map((c) => {
+        const r = run(c.label, { color: c.href ? BLUE : GREY, size: 19 });
+        return c.href ? link(c.href, r) : r;
+      })
+      .join(run("  |  ", { color: GREY, size: 19 })),
+    { after: 120 },
+  ),
+);
 
 const heading = (text) =>
   body.push(
@@ -133,7 +142,7 @@ const projectHead = (p, indent) =>
     para(
       run(p.name, { b: true, color: NAVY }) +
         run(` ${p.sub}`, { color: BLUE }) +
-        (p.url ? run(" ") + link(`https://${p.url}`, run("↗", { color: BLUE })) : "") +
+        (p.url ? run(" ") + link(`https://${p.url}`, run(p.url, { color: BLUE })) : "") +
         run(` | ${p.stack}`, { color: BLUE }),
       { before: 110, after: 30, indent: 0, left: indent },
     ),
@@ -143,13 +152,13 @@ heading("Experience");
 for (const r of C.roles) {
   body.push(
     para(
-      run(r.org, { b: true, color: NAVY }) +
-        run(` ${r.title}`) +
+      run(r.title, { b: true, color: NAVY, size: 22 }) +
         tabRun() +
         run(r.dates, { color: GREY, size: 19 }),
-      { before: 120, after: 40, tab: true },
+      { before: 120, after: 0, tab: true },
     ),
   );
+  body.push(para(run(r.org, { b: true, color: BLUE }), { after: 40 }));
   r.bullets.forEach((b) => bullet(b));
   // projects sit inside the job they were built in
   for (const p of r.projects || []) {

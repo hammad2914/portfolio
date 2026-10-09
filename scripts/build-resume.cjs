@@ -24,9 +24,14 @@ const C = {
   name: "Hammad Ali",
   role: "Full Stack Software Engineer",
   badges: ["React", "Next.js", "TypeScript", "NestJS", ".NET Core", "PostgreSQL"],
-  contact1: "ch.hammad2914@gmail.com | +92 349 187 2526 | Karachi, Pakistan",
-  contact2:
-    "hammad-ali-dev.vercel.app | linkedin.com/in/hammad-ali-1a4631255 | github.com/hammad2914",
+  contacts: [
+    { icon: "pin", label: "Karachi, Pakistan" },
+    { icon: "phone", label: "+92 349 187 2526", href: "tel:+923491872526" },
+    { icon: "mail", label: "ch.hammad2914@gmail.com", href: "mailto:ch.hammad2914@gmail.com" },
+    { icon: "linkedin", label: "LinkedIn", href: "https://linkedin.com/in/hammad-ali-1a4631255" },
+    { icon: "github", label: "GitHub", href: "https://github.com/hammad2914" },
+    { icon: "globe", label: "Portfolio", href: "https://hammad-ali-dev.vercel.app" },
+  ],
 
   summary:
     "Full Stack Software Engineer specializing in **React**, **Next.js**, **TypeScript** and " +
@@ -72,15 +77,6 @@ const C = {
           bullets: [
             "Built **7 end-to-end inspection workflows** with approvals modelled as an explicit **state machine**, real-time status updates, server-side PDF reports and live KPI dashboards.",
             "Modelled the full reporting hierarchy for **50+ inspectors** through their managers and department head, including finance sign-off on **conveyance claims**.",
-          ],
-        },
-        {
-          name: "HotelKey",
-          sub: "Hotel & Guest Services App",
-          stack: "React Native, React Navigation, Google & Apple Sign-In",
-          bullets: [
-            "Built a **30-screen iOS and Android app** from a single codebase covering hotel browsing, reservations and booking history, service categories and full auth, taken to a signed release build.",
-            "Connectivity is checked explicitly with a dedicated **offline screen** rather than letting requests fail silently, since the users are travellers on unreliable networks.",
           ],
         },
         {
@@ -145,6 +141,19 @@ const C = {
 
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
 
+const ICONS = {
+  pin: '<path d="M8 1.6a4.4 4.4 0 0 0-4.4 4.4c0 3.3 4.4 8.4 4.4 8.4s4.4-5.1 4.4-8.4A4.4 4.4 0 0 0 8 1.6z"/><circle cx="8" cy="6" r="1.6" fill="#fff"/>',
+  phone: '<path d="M3.2 2.2h2.4l1 2.6-1.4 1a8.4 8.4 0 0 0 4 4l1-1.4 2.6 1v2.4a1 1 0 0 1-1.1 1A11.6 11.6 0 0 1 2.2 3.3a1 1 0 0 1 1-1.1z"/>',
+  mail: '<path d="M1.6 3.4h12.8v9.2H1.6z" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M1.9 3.9 8 8.8l6.1-4.9" fill="none" stroke="currentColor" stroke-width="1.4"/>',
+  linkedin: '<path d="M3.4 6.1h2.2v7.4H3.4zM4.5 2.4a1.3 1.3 0 1 1 0 2.6 1.3 1.3 0 0 1 0-2.6zM7.2 6.1h2.1v1c.3-.6 1.1-1.2 2.2-1.2 2.1 0 2.6 1.3 2.6 3.1v4.5h-2.2V9.5c0-.9-.2-1.6-1.2-1.6s-1.3.7-1.3 1.6v4H7.2z"/>',
+  github: '<path d="M8 1.3a6.7 6.7 0 0 0-2.1 13c.3.1.5-.1.5-.3v-1.2c-1.9.4-2.3-.8-2.3-.8-.3-.8-.8-1-.8-1-.6-.4 0-.4 0-.4.7 0 1 .7 1 .7.6 1 1.6.7 2 .6 0-.5.2-.8.4-1-1.5-.2-3.1-.8-3.1-3.4 0-.8.3-1.4.7-1.9 0-.2-.3-.9.1-1.8 0 0 .6-.2 1.9.7a6.4 6.4 0 0 1 3.4 0c1.3-.9 1.9-.7 1.9-.7.4.9.1 1.6.1 1.8.4.5.7 1.1.7 1.9 0 2.6-1.6 3.2-3.1 3.4.2.2.5.7.5 1.4V14c0 .2.1.4.5.3A6.7 6.7 0 0 0 8 1.3z"/>',
+  globe: '<circle cx="8" cy="8" r="6.3" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M1.7 8h12.6M8 1.7c3.4 3.6 3.4 9 0 12.6M8 1.7c-3.4 3.6-3.4 9 0 12.6" fill="none" stroke="currentColor" stroke-width="1.4"/>',
+  link: '<path d="M6.6 9.4a2.6 2.6 0 0 0 3.7 0l2.2-2.2a2.6 2.6 0 0 0-3.7-3.7l-1 1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M9.4 6.6a2.6 2.6 0 0 0-3.7 0L3.5 8.8a2.6 2.6 0 0 0 3.7 3.7l1-1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>',
+};
+
+const icon = (name) =>
+  `<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">${ICONS[name]}</svg>`;
+
 /** **bold** -> <b>bold</b>, applied after escaping so markup can't be injected. */
 const rich = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
 
@@ -172,7 +181,9 @@ const projectBlock = (p, cls) => `
   <span class="pname">${esc(p.name)}</span>
   <span class="psub">${esc(p.sub)}</span>
   <span class="pstack">| ${esc(p.stack)}</span>${
-    p.url ? ` <a class="plink" href="https://${esc(p.url)}" title="${esc(p.url)}">↗</a>` : ""
+    p.url
+      ? ` <a class="plink" href="https://${esc(p.url)}" title="${esc(p.url)}">${icon("link")}${esc(p.url)}</a>`
+      : ""
   }
 </div>
 ${bullets(p.bullets)}`;
@@ -182,9 +193,10 @@ function build() {
     .map(
       (r) => `
 <div class="head row">
-  <span><span class="org">${esc(r.org)}</span> <span class="title">${esc(r.title)}</span></span>
+  <span class="title">${esc(r.title)}</span>
   <span class="dates">${esc(r.dates)}</span>
 </div>
+<div class="org">${esc(r.org)}</div>
 ${bullets(r.bullets)}
 ${(r.projects || []).map((p) => projectBlock(p, "proj")).join("\n")}`,
     )
@@ -209,11 +221,18 @@ ${(r.projects || []).map((p) => projectBlock(p, "proj")).join("\n")}`,
   a { color: inherit; text-decoration: none; }
   b { font-weight: 600; color: #11324d; }
 
-  .name { font-size: 25pt; font-weight: 600; color: #11324d; line-height: 1.02; }
-  .role { font-size: 12.5pt; font-weight: 600; color: #0f6fc6; margin-top: 1pt; }
+  header { text-align: center; }
+  .name {
+    font-size: 23pt;
+    font-weight: 700;
+    color: #11324d;
+    line-height: 1.05;
+    text-transform: uppercase;
+  }
+  .role { font-size: 12pt; font-weight: 600; color: #0f6fc6; margin-top: 1pt; }
 
   /* the stack at a glance, before anyone reads a word of prose */
-  .badges { margin: 4pt 0 3pt; }
+  .badges { margin: 5pt 0 4pt; }
   .badges span {
     display: inline-block;
     margin: 0 4pt 3pt 0;
@@ -225,7 +244,29 @@ ${(r.projects || []).map((p) => projectBlock(p, "proj")).join("\n")}`,
     color: #0f6fc6;
   }
 
-  .contact { font-size: 9.3pt; color: #56646f; }
+  /* one centred row; icons are SVG so they add no text to the extraction */
+  .contact {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2pt 11pt;
+    font-size: 9pt;
+    color: #56646f;
+  }
+
+  .contact a,
+  .contact .ci {
+    display: inline-flex;
+    align-items: center;
+    gap: 3.5pt;
+  }
+
+  .contact svg {
+    width: 8.6pt;
+    height: 8.6pt;
+    flex: 0 0 auto;
+    color: #0f6fc6;
+  }
 
   h2 {
     font-size: 10.4pt;
@@ -239,9 +280,9 @@ ${(r.projects || []).map((p) => projectBlock(p, "proj")).join("\n")}`,
 
   .row { display: flex; justify-content: space-between; align-items: baseline; gap: 10pt; }
 
-  .head { margin-top: 2pt; }
-  .org { font-weight: 700; color: #11324d; font-size: 10.6pt; }
-  .title { font-weight: 600; }
+  .head { margin-top: 3pt; }
+  .title { font-weight: 700; color: #11324d; font-size: 10.8pt; }
+  .org { font-weight: 600; color: #0f6fc6; font-size: 9.9pt; margin-bottom: 0.5pt; }
   .dates { color: #6b7883; font-size: 9.3pt; white-space: nowrap; }
 
   /* projects sit inside the job they were built in, indented to show it */
@@ -250,7 +291,8 @@ ${(r.projects || []).map((p) => projectBlock(p, "proj")).join("\n")}`,
   .pname { font-weight: 700; color: #11324d; }
   .psub, .pstack { color: #0f6fc6; font-weight: 400; }
   .pstack { font-size: 9.2pt; }
-  .plink { color: #0f6fc6; }
+  .plink { display: inline-flex; align-items: center; gap: 2.5pt; color: #0f6fc6; font-size: 9pt; }
+  .plink svg { width: 8pt; height: 8pt; }
 
   .own { margin-top: 2pt; }
 
@@ -262,10 +304,17 @@ ${(r.projects || []).map((p) => projectBlock(p, "proj")).join("\n")}`,
   .lbl { font-weight: 700; color: #11324d; }
 </style>
 
-<div class="name">${esc(C.name)}</div>
-<div class="role">${esc(C.role)}</div>
-<div class="badges">${C.badges.map((b) => `<span>${esc(b)}</span>`).join("")}</div>
-<div class="contact">${linkify(C.contact1)}<br>${linkify(C.contact2)}</div>
+<header>
+  <div class="name">${esc(C.name)}</div>
+  <div class="role">${esc(C.role)}</div>
+  <div class="badges">${C.badges.map((b) => `<span>${esc(b)}</span>`).join("")}</div>
+  <div class="contact">${C.contacts
+    .map((c) => {
+      const inner = `${icon(c.icon)}<span>${esc(c.label)}</span>`;
+      return c.href ? `<a href="${esc(c.href)}">${inner}</a>` : `<span class="ci">${inner}</span>`;
+    })
+    .join("")}</div>
+</header>
 
 <h2>Professional Summary</h2>
 <p>${rich(C.summary)}</p>
