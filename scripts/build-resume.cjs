@@ -34,12 +34,12 @@ const C = {
   ],
 
   summary:
-    "Full Stack Software Engineer specializing in **React**, **Next.js**, **TypeScript** and " +
-    "**NestJS**, with 3+ years delivering enterprise ERP, SaaS and supply-chain platforms across " +
-    "the full development lifecycle. Owned end-to-end delivery across **7+ production systems**, " +
-    "migrated **3 legacy VB.NET systems** to a modern stack, and built a document extraction " +
-    "pipeline on the **OpenAI API** that cut processing time by **70%**. Experienced in requirements " +
-    "analysis, testing, code review, production support and mentoring junior developers.",
+    "Full Stack Software Engineer with **3+ years** delivering enterprise ERP, SaaS and " +
+    "supply-chain platforms across the full development lifecycle, working in React, Next.js, " +
+    "TypeScript and NestJS. Owned end-to-end delivery across **7+ production systems**, migrated " +
+    "3 legacy systems to a modern stack, and built a document extraction pipeline that cut " +
+    "processing time by **70%**. Experienced in requirements analysis, testing, code review, " +
+    "production support and mentoring junior developers.",
 
   roles: [
     {
@@ -48,16 +48,16 @@ const C = {
       dates: "May 2023 - Present",
       bullets: [
         "Own end-to-end delivery across **7+ enterprise systems** for supply-chain and quality-inspection clients, from React/Next.js frontends to Node.js/NestJS APIs.",
-        "Design backend APIs in **NestJS** and **Prisma ORM** covering authentication, **RBAC**, and multi-module business logic for ERP platforms.",
-        "Migrated **3 legacy VB.NET systems** to React + Node.js + PostgreSQL, cutting **UI load times by 40%** and retiring an unmaintainable codebase.",
-        "Built **Excel Genie**, a reporting engine reused across **10+ ERP modules** in place of per-module reporting code.",
-        "Engineered **AG Grid** interfaces over **50,000+ row datasets** with real-time **WebSocket** synchronization and zero UI lag.",
-        "Created reusable **React component libraries** and NestJS service patterns, cutting **per-module development time by 30%**.",
-        "Ship production endpoints and **Docker**-based services independently through **CI/CD** pipelines.",
-        "Write **unit and integration tests** with **Vitest**, and run **code reviews** across the team before work is merged.",
-        "Own **requirements analysis, estimation and planning** for assigned modules, working directly with business stakeholders.",
+        "Design backend APIs in NestJS and Prisma ORM covering authentication, role-based access control and multi-module business logic for ERP platforms.",
+        "Migrated **3 legacy VB.NET systems** to React + Node.js + PostgreSQL, cutting UI load times by **40%**.",
+        "Built Excel Genie, a reporting engine reused across **10+ ERP modules** in place of per-module reporting code.",
+        "Engineered AG Grid interfaces over **50,000+ row datasets** with real-time WebSocket synchronization and no UI lag.",
+        "Created reusable React component libraries and NestJS service patterns, cutting per-module development time by **30%**.",
+        "Ship production endpoints and Docker-based services independently through CI/CD pipelines.",
+        "Write unit and integration tests with Vitest, and run code reviews across the team before work is merged.",
+        "Own requirements analysis, estimation and planning for assigned modules, working directly with business stakeholders.",
         "Mentor **3-5 junior developers** in application architecture, debugging and code quality.",
-        "Investigate and resolve **production issues** across frontend, API, database and deployment layers, from logs and traces to root cause.",
+        "Investigate and resolve production issues across frontend, API, database and deployment layers.",
       ],
       projects: [
         {
@@ -65,9 +65,8 @@ const C = {
           sub: "AI-Powered ERP System",
           stack: "React.js, NestJS, PostgreSQL, WebSockets, OpenAI, AG Grid",
           bullets: [
-            "Led full-stack delivery across **8 interconnected modules** serving **100+ users across 7+ permission roles**, with admin panels, permission flows and real-time 50,000+ row data grids.",
-            "Built a bulk **PDF extraction pipeline on the OpenAI API** with a per-client template covering **8-12 document formats**, routed through human review before commit: **~70% less processing time**.",
-            "Moved the pipeline off **Azure Document Intelligence** after custom-model training per document type failed to reach usable accuracy.",
+            "Led full-stack delivery across **8 interconnected modules** serving **100+ users** across 7+ permission roles, with admin panels, permission flows and real-time data grids.",
+            "Built a bulk document extraction pipeline on the OpenAI API covering 8-12 client document formats, with human review before anything is committed, cutting processing time by **~70%**.",
           ],
         },
         {
@@ -75,8 +74,8 @@ const C = {
           sub: "Quality Inspection Platform",
           stack: "React.js, Node.js, PostgreSQL, WebSockets, PDF Generation",
           bullets: [
-            "Built **7 end-to-end inspection workflows** with approvals modelled as an explicit **state machine**, real-time status updates, server-side PDF reports and live KPI dashboards.",
-            "Modelled the full reporting hierarchy for **50+ inspectors** through their managers and department head, including finance sign-off on **conveyance claims**.",
+            "Built **7 end-to-end inspection workflows** with multi-stage approvals, real-time status updates, automated PDF reports and live KPI dashboards.",
+            "Modelled the full reporting hierarchy for **50+ inspectors** through their managers and department head, including finance sign-off on conveyance claims.",
           ],
         },
         {
@@ -84,7 +83,7 @@ const C = {
           sub: "Supplier Invoicing",
           stack: "React, .NET Core Web API, SQL Server, PDF Automation",
           bullets: [
-            "Replaced emailed supplier PDFs with direct uploads, automated extraction and a validation step before commit: **10,000+ documents a year**, **70% less manual effort**.",
+            "Replaced emailed supplier PDFs with direct uploads, automated extraction and validation before commit: **10,000+ documents a year** and **70% less manual effort**.",
           ],
         },
       ],
@@ -94,7 +93,7 @@ const C = {
       title: "Full Stack Developer (Remote)",
       dates: "Jun 2025 - Feb 2026",
       bullets: [
-        "Built client websites, portals and a live subscription platform in **React**, **Next.js** and **Express**, working remotely from requirements through to deployment.",
+        "Built client websites, portals and a live subscription platform in React, Next.js and Express, working remotely from requirements through to deployment.",
       ],
       projects: [
         {
@@ -103,8 +102,8 @@ const C = {
           stack: "React, Express, Prisma, PostgreSQL",
           url: "lawintoaction.com",
           bullets: [
-            "Built a live subscription compliance platform with regulation tracking, **HS-code classification** over the **10,300-entry UN Comtrade set** held in memory, and a metered external API clients pull into their own ERPs.",
-            "Put translation behind a **provider abstraction** over DeepL, Azure, Google and MyMemory with automatic fallback, so one provider's outage never stalls compliance work.",
+            "Built a live subscription platform where member businesses see the regulations that apply to them, the penalties attached and the recommended next steps.",
+            "Added HS-code classification across the **10,300-entry** UN Comtrade dataset, and a metered API that lets client businesses pull regulation data into their own ERP systems.",
           ],
         },
       ],
@@ -118,8 +117,8 @@ const C = {
       stack: "React, Vite, NestJS, Prisma, PostgreSQL, PWA",
       url: "okulium.pk",
       bullets: [
-        "Shipped a live multi-tenant platform for school groups: attendance, exams and results, fees, timetabling, staff and reporting, as an **installable PWA**.",
-        "Attendance edits write to an **edit-history table** and result disputes are a separate model, so corrections stay auditable.",
+        "Shipped a live multi-tenant platform for school groups covering attendance, exams and results, fees, timetabling, staff and reporting, as an installable PWA.",
+        "Attendance edits and exam result disputes keep a full audit trail, so corrections stay reviewable instead of overwriting the record.",
       ],
     },
   ],
@@ -172,12 +171,10 @@ const bullets = (list) =>
 
 const projectBlock = (p, cls) => `
 <div class="pblock">
-<div class="${cls}">
-  <span class="pname">${esc(p.name)}</span>
-  <span class="psub">${esc(p.sub)}</span>
-  <span class="pstack">| ${esc(p.stack)}</span>${
+<div class="${cls} row">
+  <span class="pmeta"><span class="pname">${esc(p.name)}</span> <span class="psub">${esc(p.sub)}</span> <span class="pstack">| ${esc(p.stack)}</span></span>${
     p.url
-      ? ` <a class="plink" href="https://${esc(p.url)}" title="${esc(p.url)}">${icon("link")}${esc(p.url)}</a>`
+      ? `<a class="plink" href="https://${esc(p.url)}" title="${esc(p.url)}">${icon("link")}${esc(p.url)}</a>`
       : ""
   }
 </div>
@@ -285,7 +282,15 @@ ${(r.projects || []).map((p) => projectBlock(p, "proj")).join("\n")}`,
   .pname { font-weight: 700; color: #1f497d; }
   .psub, .pstack { color: #444444; font-weight: 400; }
   .pstack { font-size: 9.2pt; }
-  .plink { display: inline-flex; align-items: center; gap: 2.5pt; color: #444444; font-size: 9pt; }
+  .plink {
+    display: inline-flex;
+    align-items: center;
+    gap: 2.5pt;
+    flex: 0 0 auto;
+    white-space: nowrap;
+    color: #444444;
+    font-size: 9pt;
+  }
   .plink svg { width: 8pt; height: 8pt; }
 
   .own { margin-top: 2pt; }
