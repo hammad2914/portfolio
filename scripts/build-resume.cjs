@@ -139,6 +139,14 @@ const C = {
   ],
 };
 
+/**
+ * Each version differs only in its location line, so they can never
+ * disagree about anything else.
+ */
+const VARIANTS = {
+  karachi: { suffix: "", location: "Karachi, Pakistan" },
+};
+
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
 
 const ICONS = {
@@ -174,7 +182,8 @@ const projectBlock = (p, cls) => `
 ${bullets(p.bullets)}
 </div>`;
 
-function build() {
+function build(variant = "karachi") {
+  const { location } = VARIANTS[variant] || VARIANTS.karachi;
   const roles = C.roles
     .map(
       (r) => `
@@ -293,7 +302,8 @@ ${(r.projects || []).map((p) => projectBlock(p, "proj")).join("\n")}`,
   <div class="badges">${C.badges.map(esc).join("  ·  ")}</div>
   <div class="contact">${C.contacts
     .map((c) => {
-      const inner = `${icon(c.icon)}<span>${esc(c.label)}</span>`;
+      const label = c.icon === "pin" ? location : c.label;
+      const inner = `${icon(c.icon)}<span>${esc(label)}</span>`;
       return c.href ? `<a href="${esc(c.href)}">${inner}</a>` : `<span class="ci">${inner}</span>`;
     })
     .join("")}</div>
@@ -326,10 +336,13 @@ ${C.education
 
 /* The .docx builder reads the same content object, so the two outputs
    cannot drift apart. */
-module.exports = { CONTENT: C, build };
+module.exports = { CONTENT: C, VARIANTS, build };
 
 if (require.main === module) {
-  const file = path.join(process.argv[2] || ".", "resume.html");
-  fs.writeFileSync(file, build());
-  console.log(file);
+  const dir = process.argv[2] || ".";
+  for (const [key, v] of Object.entries(VARIANTS)) {
+    const file = path.join(dir, `resume${v.suffix}.html`);
+    fs.writeFileSync(file, build(key));
+    console.log(`${file}  (${v.location})`);
+  }
 }

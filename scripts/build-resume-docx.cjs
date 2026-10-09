@@ -10,7 +10,11 @@
  */
 const fs = require("fs");
 const zlib = require("zlib");
-const { CONTENT: C } = require("./build-resume.cjs");
+const { CONTENT: C, VARIANTS } = require("./build-resume.cjs");
+
+// matches the PDF: same document, one different location line
+const variant = VARIANTS[process.argv[3]] ? process.argv[3] : "karachi";
+const location = VARIANTS[variant].location;
 
 const NAVY = "1F497D";
 const BLUE = "1F497D";
@@ -82,7 +86,10 @@ body.push(
   para(
     C.contacts
       .map((c) => {
-        const r = run(c.label, { color: c.href ? BLUE : GREY, size: 19 });
+        const r = run(c.icon === "pin" ? location : c.label, {
+          color: c.href ? BLUE : GREY,
+          size: 19,
+        });
         return c.href ? link(c.href, r) : r;
       })
       .join(run("  |  ", { color: GREY, size: 19 })),
