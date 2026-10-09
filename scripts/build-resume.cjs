@@ -33,7 +33,8 @@ const C = {
     "**NestJS**, with 3+ years delivering enterprise ERP, SaaS and supply-chain platforms across " +
     "the full development lifecycle. Owned end-to-end delivery across **7+ production systems**, " +
     "migrated **3 legacy VB.NET systems** to a modern stack, and built a document extraction " +
-    "pipeline on the **OpenAI API** that cut processing time by **70%**.",
+    "pipeline on the **OpenAI API** that cut processing time by **70%**. Experienced in requirements " +
+    "analysis, testing, code review, production support and mentoring junior developers.",
 
   roles: [
     {
@@ -41,13 +42,17 @@ const C = {
       title: "Software Engineer",
       dates: "May 2023 - Present",
       bullets: [
-        "Own end-to-end delivery across **7+ enterprise systems** for international clients in supply-chain and quality inspection, from React/Next.js frontends through to Node.js/NestJS APIs.",
+        "Own end-to-end delivery across **7+ enterprise systems** for supply-chain and quality-inspection clients, from React/Next.js frontends to Node.js/NestJS APIs.",
         "Design backend APIs in **NestJS** and **Prisma ORM** covering authentication, **RBAC**, and multi-module business logic for ERP platforms.",
         "Migrated **3 legacy VB.NET systems** to React + Node.js + PostgreSQL, cutting **UI load times by 40%** and retiring an unmaintainable codebase.",
         "Built **Excel Genie**, a reporting engine reused across **10+ ERP modules** in place of per-module reporting code.",
         "Engineered **AG Grid** interfaces over **50,000+ row datasets** with real-time **WebSocket** synchronization and zero UI lag.",
-        "Created reusable **React component libraries** and NestJS service patterns adopted across products, cutting **per-module development time by 30%**.",
+        "Created reusable **React component libraries** and NestJS service patterns, cutting **per-module development time by 30%**.",
         "Ship production endpoints and **Docker**-based services independently through **CI/CD** pipelines.",
+        "Write **unit and integration tests**, and run **code reviews** across the team before work is merged.",
+        "Own **requirements analysis, estimation and planning** for assigned modules, working directly with business stakeholders.",
+        "Mentor **3-5 junior developers** in application architecture, debugging and code quality.",
+        "Investigate and resolve **production issues** across frontend, API, database and deployment layers, from logs and traces to root cause.",
       ],
       projects: [
         {
@@ -57,6 +62,7 @@ const C = {
           bullets: [
             "Led full-stack delivery across **8 interconnected modules** with admin panels, permission flows, and real-time 50,000+ row data grids.",
             "Built a bulk **PDF extraction pipeline on the OpenAI API** with a per-client template covering **8-12 document formats**, routed through human review before commit: **~70% less processing time**.",
+            "Moved the pipeline off **Azure Document Intelligence** after custom-model training per document type failed to reach usable accuracy.",
           ],
         },
         {
@@ -65,6 +71,25 @@ const C = {
           stack: "React.js, Node.js, PostgreSQL, WebSockets, PDF Generation",
           bullets: [
             "Built **7 end-to-end inspection workflows** with approvals modelled as an explicit **state machine**, real-time status updates, server-side PDF reports and live KPI dashboards.",
+          ],
+        },
+        {
+          name: "Law in Action",
+          sub: "Global Regulations Platform",
+          stack: "React, Express, Prisma, PostgreSQL",
+          url: "lawintoaction.com",
+          bullets: [
+            "Built a live subscription compliance platform with regulation tracking, **HS-code classification** over the **10,300-entry UN Comtrade set** held in memory, and a metered external API clients pull into their own ERPs.",
+            "Put translation behind a **provider abstraction** over DeepL, Azure, Google and MyMemory with automatic fallback, so one provider's outage never stalls compliance work.",
+          ],
+        },
+        {
+          name: "HotelKey",
+          sub: "Hotel & Guest Services App",
+          stack: "React Native, React Navigation, Google & Apple Sign-In",
+          bullets: [
+            "Built a **30-screen iOS and Android app** from a single codebase covering hotel browsing, reservations and booking history, service categories and full auth, taken to a signed release build.",
+            "Connectivity is checked explicitly with a dedicated **offline screen** rather than letting requests fail silently, since the users are travellers on unreliable networks.",
           ],
         },
         {
@@ -86,7 +111,7 @@ const C = {
       stack: "React, Vite, NestJS, Prisma, PostgreSQL, PWA",
       url: "okulium-web.onrender.com",
       bullets: [
-        "Shipped a live multi-tenant platform for multi-branch school groups covering attendance, exams and results, fees, timetabling, staff and reporting, as an **installable PWA**.",
+        "Shipped a live multi-tenant platform for school groups: attendance, exams and results, fees, timetabling, staff and reporting, as an **installable PWA**.",
         "Attendance edits write to an **edit-history table** and result disputes are a separate model, so corrections stay auditable.",
       ],
     },
@@ -96,7 +121,8 @@ const C = {
     ["Frontend", "React.js, Next.js, React Native, TypeScript, JavaScript (ES6+), Redux, Zustand, Tailwind CSS, AG Grid"],
     ["Backend & APIs", "Node.js, NestJS, Express.js, .NET Core Web API, Prisma ORM, REST APIs, WebSockets, JWT, RBAC"],
     ["Databases & Caching", "PostgreSQL, Microsoft SQL Server, MongoDB, Redis"],
-    ["DevOps & Tools", "Docker, CI/CD, Git, GitHub, Vercel, code reviews, performance optimization"],
+    ["Testing & DevOps", "Unit & integration testing, Docker, CI/CD, Git, GitHub, Vercel"],
+    ["Engineering Practices", "Requirements analysis, estimation, code reviews, debugging, production support, mentoring"],
     ["AI & Automation", "OpenAI API, Gemini, bulk PDF extraction, document intelligence, automation pipelines"],
   ],
 
@@ -157,11 +183,11 @@ ${(r.projects || []).map((p) => projectBlock(p, "proj")).join("\n")}`,
 <meta charset="utf-8">
 <title>${esc(C.name)} - ${esc(C.role)}</title>
 <style>
-  @page { size: letter; margin: 0.4in 0.5in; }
+  @page { size: letter; margin: 0.45in 0.5in; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    font: 9.6pt/1.3 "Segoe UI", Calibri, Arial, sans-serif;
+    font: 9.7pt/1.33 "Segoe UI", Calibri, Arial, sans-serif;
     color: #1d242b;
     letter-spacing: normal;
     font-kerning: none;
@@ -195,7 +221,7 @@ ${(r.projects || []).map((p) => projectBlock(p, "proj")).join("\n")}`,
     font-weight: 700;
     text-transform: uppercase;
     color: #11324d;
-    margin: 7.5pt 0 3.5pt;
+    margin: 8pt 0 3.5pt;
     padding-bottom: 1.5pt;
     border-bottom: 1pt solid rgba(17, 50, 77, 0.3);
   }
@@ -208,7 +234,7 @@ ${(r.projects || []).map((p) => projectBlock(p, "proj")).join("\n")}`,
   .dates { color: #6b7883; font-size: 9.3pt; white-space: nowrap; }
 
   /* projects sit inside the job they were built in, indented to show it */
-  .proj { margin: 4pt 0 0 11pt; }
+  .proj { margin: 3.5pt 0 0 11pt; }
   .proj + ul { margin-left: 11pt; }
   .pname { font-weight: 700; color: #11324d; }
   .psub, .pstack { color: #0f6fc6; font-weight: 400; }
@@ -217,7 +243,7 @@ ${(r.projects || []).map((p) => projectBlock(p, "proj")).join("\n")}`,
 
   .own { margin-top: 2pt; }
 
-  ul { list-style: none; margin-top: 1.5pt; }
+  ul { list-style: none; margin-top: 1pt; }
   li { position: relative; padding-left: 10pt; }
   li::before { content: "\\2022"; position: absolute; left: 1.5pt; color: #0f6fc6; }
 
