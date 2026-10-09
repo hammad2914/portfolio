@@ -49,7 +49,7 @@ const C = {
         "Engineered **AG Grid** interfaces over **50,000+ row datasets** with real-time **WebSocket** synchronization and zero UI lag.",
         "Created reusable **React component libraries** and NestJS service patterns, cutting **per-module development time by 30%**.",
         "Ship production endpoints and **Docker**-based services independently through **CI/CD** pipelines.",
-        "Write **unit and integration tests**, and run **code reviews** across the team before work is merged.",
+        "Write **unit and integration tests** with **Vitest**, and run **code reviews** across the team before work is merged.",
         "Own **requirements analysis, estimation and planning** for assigned modules, working directly with business stakeholders.",
         "Mentor **3-5 junior developers** in application architecture, debugging and code quality.",
         "Investigate and resolve **production issues** across frontend, API, database and deployment layers, from logs and traces to root cause.",
@@ -60,7 +60,7 @@ const C = {
           sub: "AI-Powered ERP System",
           stack: "React.js, NestJS, PostgreSQL, WebSockets, OpenAI, AG Grid",
           bullets: [
-            "Led full-stack delivery across **8 interconnected modules** with admin panels, permission flows, and real-time 50,000+ row data grids.",
+            "Led full-stack delivery across **8 interconnected modules** serving **100+ users across 7+ permission roles**, with admin panels, permission flows and real-time 50,000+ row data grids.",
             "Built a bulk **PDF extraction pipeline on the OpenAI API** with a per-client template covering **8-12 document formats**, routed through human review before commit: **~70% less processing time**.",
             "Moved the pipeline off **Azure Document Intelligence** after custom-model training per document type failed to reach usable accuracy.",
           ],
@@ -71,6 +71,7 @@ const C = {
           stack: "React.js, Node.js, PostgreSQL, WebSockets, PDF Generation",
           bullets: [
             "Built **7 end-to-end inspection workflows** with approvals modelled as an explicit **state machine**, real-time status updates, server-side PDF reports and live KPI dashboards.",
+            "Modelled the full reporting hierarchy for **50+ inspectors** through their managers and department head, including finance sign-off on **conveyance claims**.",
           ],
         },
         {
@@ -121,7 +122,7 @@ const C = {
     ["Frontend", "React.js, Next.js, React Native, TypeScript, JavaScript (ES6+), Redux, Zustand, Tailwind CSS, AG Grid"],
     ["Backend & APIs", "Node.js, NestJS, Express.js, .NET Core Web API, Prisma ORM, REST APIs, WebSockets, JWT, RBAC"],
     ["Databases & Caching", "PostgreSQL, Microsoft SQL Server, MongoDB, Redis"],
-    ["Testing & DevOps", "Unit & integration testing, Docker, CI/CD, Git, GitHub, Vercel"],
+    ["Testing & DevOps", "Vitest, unit & integration testing, Docker, CI/CD, Git, GitHub, Vercel"],
     ["Engineering Practices", "Requirements analysis, estimation, code reviews, debugging, production support, mentoring"],
     ["AI & Automation", "OpenAI API, Gemini, bulk PDF extraction, document intelligence, automation pipelines"],
   ],
