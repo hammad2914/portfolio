@@ -425,12 +425,12 @@ export const experience = {
     },
     {
       designation: "Full Stack Developer",
-      company: "Freelance · Upwork",
-      duration: "MAR 2023 – PRESENT",
-      jobType: "Part time · Remote",
+      company: "Consulting Service International Ltd",
+      duration: "JUN 2025 – FEB 2026",
+      jobType: "Remote",
       companyTitle: "My Role & Responsibilities",
       companyDescription:
-        "Deliver full-stack freelance projects with React.js, Next.js, and Node.js — responsive web apps, REST APIs, and client features from requirements through to deployment.<br><br>Work directly with clients on scope, performance, and maintainable production-ready solutions.",
+        "Built client websites and web portals in React.js and Next.js, working remotely from requirements through to deployment.<br><br>Delivered Law in Action, a live subscription platform where member businesses see the regulations that apply to them, with HS-code classification across the UN Comtrade dataset and a metered API clients pull into their own ERP systems.",
     },
   ],
 };
