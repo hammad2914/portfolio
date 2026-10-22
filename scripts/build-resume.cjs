@@ -57,7 +57,8 @@ const C = {
         "Migrated **3 legacy VB.NET systems** to React, Node.js and PostgreSQL, cutting UI load times by **40%**.",
         "Built Excel Genie, a reporting engine reused across **10+ ERP modules** in place of per-module reporting code.",
         "Created reusable React component libraries and NestJS service patterns, cutting per-module development time by **30%**.",
-        "Write unit and integration tests with Vitest, run code reviews, and ship Docker-based services through CI/CD.",
+        "Write unit and integration tests with Vitest and run code reviews across the team before work is merged.",
+        "Ship Docker-based services through CI/CD and resolve production issues across frontend, API and database layers.",
         "Mentor **4 junior developers** and own requirements analysis, estimation and planning with business stakeholders.",
       ],
     },
@@ -85,7 +86,7 @@ const C = {
     },
     {
       name: "Okulium",
-      sub: "Multi-Tenant School Management SaaS",
+      sub: "Multi-Tenant School Management SaaS (Own Product)",
       stack: "React, Vite, NestJS, Prisma, PostgreSQL, PWA",
       url: "okulium.pk",
       bullets: [
