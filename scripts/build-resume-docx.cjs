@@ -57,7 +57,7 @@ function link(url, runs) {
  */
 function para(
   runs,
-  { before = 0, after = 0, tab = false, rule = false, indent = 0, left = 0 } = {},
+  { before = 0, after = 0, tab = false, rule = false, indent = 0, left = 0, center = false } = {},
 ) {
   const spacing = `<w:spacing w:before="${before}" w:after="${after}" w:line="276" w:lineRule="auto"/>`;
   const tabs = tab ? `<w:tabs><w:tab w:val="right" w:pos="10080"/></w:tabs>` : "";
@@ -70,37 +70,31 @@ function para(
     : left
       ? `<w:ind w:left="${left}"/>`
       : "";
-  return `<w:p><w:pPr>${spacing}${tabs}${border}${ind}</w:pPr>${runs}</w:p>`;
+  const jc = center ? `<w:jc w:val="center"/>` : "";
+  return `<w:p><w:pPr>${spacing}${tabs}${border}${ind}${jc}</w:pPr>${runs}</w:p>`;
 }
 
 const body = [];
 
-/* header */
-body.push(para(run(C.name, { b: true, color: NAVY, size: 50 }), { after: 0 }));
-body.push(para(run(C.role, { b: true, color: BLUE, size: 25 }), { after: 40 }));
-// the PDF draws these as pills; Word gets the same words on one separated line
-body.push(
-  para(run(C.badges.join("  ·  "), { b: true, color: BLUE, size: 17 }), { after: 60 }),
-);
+/* header - centred, as in the PDF */
+body.push(para(run(C.name.toUpperCase(), { b: true, size: 44 }), { after: 0, center: true }));
+body.push(para(run(C.role, { b: true, size: 28 }), { after: 60, center: true }));
 body.push(
   para(
     C.contacts
       .map((c) => {
-        const r = run(c.icon === "pin" ? location : c.label, {
-          color: c.href ? BLUE : GREY,
-          size: 19,
-        });
+        const r = run(c.icon === "pin" ? location : c.label, { size: 19 });
         return c.href ? link(c.href, r) : r;
       })
-      .join(run("  |  ", { color: GREY, size: 19 })),
-    { after: 120 },
+      .join(run("  |  ", { size: 19 })),
+    { after: 120, center: true },
   ),
 );
 
 const heading = (text) =>
   body.push(
-    para(run(text.toUpperCase(), { b: true, color: NAVY, size: 22 }), {
-      before: 200,
+    para(run(text.toUpperCase(), { b: true, color: NAVY, size: 24 }), {
+      before: 220,
       after: 80,
       rule: true,
     }),
@@ -118,66 +112,55 @@ const richRuns = (text, opts = {}) =>
 
 /* a bullet is a literal mark plus a hanging indent, which survives a text
    extraction better than Word's numbering definitions do */
-const bullet = (text, indent = 284) =>
-  body.push(
-    para(run("•   ", { color: BLUE }) + richRuns(text), { after: 40, indent }),
-  );
+const bullet = (text) =>
+  body.push(para(run("•   ") + richRuns(text), { after: 40, indent: 284, left: 0 }));
 
-heading("Professional Summary");
+/* a title line with the dates on the right margin */
+const titled = (left, dates) =>
+  body.push(para(left + tabRun() + run(dates), { before: 120, after: 0, tab: true }));
+
+// summary sits straight under the contact line, with no heading
 body.push(para(richRuns(C.summary), { after: 60 }));
-
-heading("Technical Skills");
-for (const [k, v] of C.skills) {
-  body.push(para(run(`${k}: `, { b: true, color: NAVY }) + run(v), { after: 40 }));
-}
-
-/** A project heading, optionally indented to sit inside the job it belongs to. */
-const projectHead = (p, indent) =>
-  body.push(
-    para(
-      run(p.name, { b: true, color: NAVY }) +
-        run(` ${p.sub}`, { color: BLUE }) +
-        (p.url ? run(" ") + link(`https://${p.url}`, run(p.url, { color: BLUE })) : "") +
-        run(` | ${p.stack}`, { color: BLUE }),
-      { before: 110, after: 30, indent: 0, left: indent },
-    ),
-  );
 
 heading("Experience");
 for (const r of C.roles) {
+  titled(run(r.title, { b: true }), r.dates);
+  body.push(para(run(r.org), { after: 40 }));
+  r.bullets.forEach(bullet);
+}
+
+heading("Projects");
+for (const p of C.projects) {
   body.push(
     para(
-      run(r.title, { b: true, color: NAVY, size: 22 }) +
-        tabRun() +
-        run(r.dates, { color: GREY, size: 19 }),
-      { before: 120, after: 0, tab: true },
+      run(p.name, { b: true }) +
+        run(` - ${p.sub} `) +
+        run(`| ${p.stack}`, { i: true, color: NAVY }) +
+        (p.url ? tabRun() + link(`https://${p.url}`, run(p.url, { color: NAVY })) : ""),
+      { before: 110, after: 30, tab: Boolean(p.url) },
     ),
   );
-  body.push(para(run(r.org, { b: true }), { after: 40 }));
-  r.bullets.forEach((b) => bullet(b));
-  // projects sit inside the job they were built in
-  for (const p of r.projects || []) {
-    projectHead(p, 170);
-    p.bullets.forEach((b) => bullet(b, 454));
-  }
+  p.bullets.forEach(bullet);
 }
 
-heading("Personal Projects");
-for (const p of C.projects) {
-  projectHead(p, 0);
-  p.bullets.forEach((b) => bullet(b));
+heading("Technical Skills");
+for (const [k, v] of C.skills) {
+  body.push(para(run(`${k} : `, { b: true }) + run(v), { after: 40 }));
 }
 
-heading("Education & Certifications");
-for (const [title, place, dates] of C.education) {
+heading("Education");
+for (const e of C.education) {
+  titled(run(e.school, { b: true }), e.dates);
+  body.push(para(run(e.degree), { after: 40 }));
+}
+
+heading("Certifications");
+for (const c of C.certifications) {
   body.push(
-    para(
-      run(title, { b: true, color: NAVY }) +
-        run(` - ${place}`) +
-        tabRun() +
-        run(dates, { color: GREY, size: 19 }),
-      { after: 40, tab: true },
-    ),
+    para(run(c.name, { b: true }) + run(` : ${c.detail}`) + tabRun() + run(c.dates), {
+      after: 40,
+      tab: true,
+    }),
   );
 }
 
