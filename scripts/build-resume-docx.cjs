@@ -17,8 +17,6 @@ const variant = VARIANTS[process.argv[3]] ? process.argv[3] : "karachi";
 const location = VARIANTS[variant].location;
 
 const NAVY = "1F497D";
-const BLUE = "1F497D";
-const GREY = "444444";
 const BODY = "000000";
 
 const esc = (s) =>
