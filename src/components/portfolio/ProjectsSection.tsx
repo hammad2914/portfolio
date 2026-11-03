@@ -33,6 +33,9 @@ function Badges({ project }: { project: ProjectItem }) {
       {project.confidential ? (
         <span className="pj-badge pj-badge--nda">Private source</span>
       ) : null}
+      {project.openSource ? (
+        <span className="pj-badge pj-badge--oss">Open source</span>
+      ) : null}
     </span>
   );
 }
@@ -93,6 +96,47 @@ export function ProjectsSection() {
   const featured = projects.allProjects.filter((p) => p.featured);
   const rest = projects.allProjects.filter((p) => !p.featured);
   const num = (i: number) => String(i + 1).padStart(2, "0");
+
+  const tile = (project: ProjectItem, delay: number, index: number) => (
+    <button
+      key={project.title}
+      type="button"
+      className="pj-tile"
+      onClick={() => openModal(project)}
+      aria-label={`Case study: ${project.title} — ${project.subTitle}`}
+      data-aos="fade-up"
+      data-aos-duration="900"
+      data-aos-delay={delay * 80}
+    >
+      <span className="pj-tile__ghost" aria-hidden="true">
+        {num(index)}
+      </span>
+      <strong className="pj-tile__name">{project.title}</strong>
+      <span className="pj-tile__sub">{project.subTitle}</span>
+      {project.oneLiner ? (
+        <span className="pj-tile__line">{project.oneLiner}</span>
+      ) : null}
+      <Badges project={project} />
+      <span className="pj-cta pj-tile__cta">
+        Read the case study
+        <span className="pj-cta__rule" aria-hidden="true" />
+      </span>
+      <span className="pj-tile__thumb" aria-hidden="true">
+        <span className="pj-bar">
+          <i />
+          <i />
+          <i />
+        </span>
+        <Image
+          src={project.thumbUrl}
+          alt=""
+          width={700}
+          height={514}
+          sizes="320px"
+        />
+      </span>
+    </button>
+  );
 
   return (
     <>
@@ -164,42 +208,7 @@ export function ProjectsSection() {
           ))}
 
           <div className="pj-tiles">
-            {rest.map((project, i) => (
-              <button
-                key={project.title}
-                type="button"
-                className="pj-tile"
-                onClick={() => openModal(project)}
-                aria-label={`Case study: ${project.title} — ${project.subTitle}`}
-                data-aos="fade-up"
-                data-aos-duration="900"
-                data-aos-delay={i * 80}
-              >
-                <span className="pj-tile__ghost" aria-hidden="true">
-                  {num(i + featured.length)}
-                </span>
-                <span className="pj-tile__head">
-                  <strong>{project.title}</strong>
-                  <Badges project={project} />
-                </span>
-                <span className="pj-tile__sub">{project.subTitle}</span>
-                {project.oneLiner ? (
-                  <span className="pj-tile__line">{project.oneLiner}</span>
-                ) : null}
-                <span className="pj-tile__meta">
-                  {project.details.technologies}
-                </span>
-                <span className="pj-tile__thumb" aria-hidden="true">
-                  <Image
-                    src={project.thumbUrl}
-                    alt=""
-                    width={700}
-                    height={514}
-                    sizes="320px"
-                  />
-                </span>
-              </button>
-            ))}
+            {rest.map((project, i) => tile(project, i, i + featured.length))}
           </div>
         </div>
       </section>
@@ -330,9 +339,11 @@ export function ProjectsSection() {
                     </div>
                   ) : null}
 
-                  <p className="pj-modal__privacy">
-                    {active.privacyNote ?? "Source is private."}
-                  </p>
+                  {active.openSource ? null : (
+                    <p className="pj-modal__privacy">
+                      {active.privacyNote ?? "Source is private."}
+                    </p>
+                  )}
                 </footer>
               </div>
             </div>

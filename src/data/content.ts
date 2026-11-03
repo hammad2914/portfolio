@@ -67,7 +67,7 @@ export const about = {
   miniTitle: "About Me",
   title:
     "BUILDING <span>SCALABLE &</span><br /><span>EFFICIENT</span> FULL-STACK APPS",
-  description: `I'm a Full Stack Software Engineer based in Karachi, Pakistan with ${yearsOfExperience}+ years delivering production ERP, SaaS, and supply-chain platforms for international clients. I work across React.js, Next.js, NestJS, .NET Core, Prisma, and PostgreSQL — from reusable frontend architecture and high-performance AG Grid interfaces to backend APIs, WebSocket synchronization, Docker deployments, and AI-powered document extraction.<br><br>Most of my work is proprietary client software, so the detail lives in the case studies below rather than in public repos. I'm always happy to walk through the architecture and trade-offs on a call.`,
+  description: `I'm a Full Stack Software Engineer based in Karachi, Pakistan with ${yearsOfExperience}+ years delivering production ERP, SaaS, and supply-chain platforms for international clients. I work across React.js, Next.js, NestJS, .NET Core, Prisma, and PostgreSQL — from reusable frontend architecture and high-performance AG Grid interfaces to backend APIs, WebSocket synchronization, Docker deployments, and AI-powered document extraction.<br><br>Most of my work is proprietary client software, so the detail lives in the case studies below, and a few of my own projects are open source. I'm always happy to walk through the architecture and trade-offs on a call.`,
   btnText: "Get in touch",
   btnUrl: "contactus",
 };
@@ -103,7 +103,7 @@ export type ProjectItem = {
   title: string;
   subTitle: string;
   collageSize: ProjectCollageSize;
-  /** The two headline builds, shown large; everything else is a compact row. */
+  /** The headline builds, shown large; everything else is a compact row. */
   featured?: boolean;
   /** The single decision worth knowing — carries the card on its own. */
   oneLiner?: string;
@@ -115,6 +115,8 @@ export type ProjectItem = {
   privacyNote?: string;
   /** Set while the project is still being built, so impact reads as expected, not delivered. */
   inProgress?: boolean;
+  /** My own public project: listed in its own group, with no private-source note. */
+  openSource?: boolean;
   /** Public source, when it exists. */
   links?: ProjectLink[];
   /** Live product URL — a working SaaS beats a repo as proof. */
@@ -208,6 +210,35 @@ const allProjects: ProjectItem[] = [
     },
   },
   {
+    thumbUrl: "/images/vista.png",
+    title: "Vista",
+    oneLiner:
+      "Every air reading says how many sensors are behind it and how old they are.",
+    marks: ["logos:nextjs-icon", "logos:postgresql", "logos:github-actions"],
+    subTitle: "Lahore Smog Map",
+    collageSize: "featured",
+    confidential: true,
+    privacyNote: "My own project. The source is private for now, but the site is public.",
+    liveUrl: "https://vista-air.vercel.app",
+    details: {
+      title: "Vista – Lahore Smog Map",
+      challenge:
+        "Lahore's smog can change the right decision for a family within hours: whether to go outside, wear a mask or keep the windows shut. The readings exist, but they're scattered across sensor networks of mixed quality, and a single city number hides how much is known and how old it is.",
+      approach:
+        "A 3D map of Lahore with a smog layer I wrote in WebGL, drawn from real sensor readings collected through OpenAQ and WAQI. It shows the AQI for the city or your area, a forecast timeline, health advice in English and Urdu, the hours the air is usually cleanest, and phone alerts when your area turns dangerous.",
+      decisions:
+        "I tested my assumptions and changed course when they failed. A leave-one-out test showed that filling gaps between sensors barely beats the city median, so the map is presented as a guide, and each number shows its sensor count and age. GitHub's scheduled runs fired only about 5 of 20 times a day, so an external job now triggers the collector. A replay showed the forecast-based \"best time to go out\" lost to simply picking 2 to 4 pm, so that line now uses the last 7 days of real readings. Correcting the forecast with the last 6 hours of measurements roughly halved errors 1 to 12 hours ahead in a backtest.",
+      impact: [
+        "Over 156 hours, its city PM2.5 tracked Punjab EPA's closely (r = 0.98), reading about 15% lower",
+        "Phone alerts for your area, tested end to end on Android",
+        "Readings run 2 to 3 hours behind, and the site says so beside each number",
+      ],
+      type: "Public Web App",
+      technologies: "Next.js, WebGL, MapLibre, Neon, Drizzle, GitHub Actions, Web Push",
+      platform: "Web",
+    },
+  },
+  {
     thumbUrl: "/images/lawintoaction.png",
     title: "Law in Action",
     oneLiner: "Translation fails over across four providers so compliance work never stalls.",
@@ -237,55 +268,84 @@ const allProjects: ProjectItem[] = [
     },
   },
   {
-    thumbUrl: "/images/vp.png",
-    title: "Vendor Portal",
-    oneLiner: "Nothing reaches the ledger until extraction has passed validation.",
-    subTitle: "B2B Supply Chain Management",
+    thumbUrl: "/images/inked.png",
+    title: "Inked",
+    openSource: true,
+    oneLiner: "Task dates stay in pencil until the assignee agrees. Then nobody can move them.",
+    subTitle: "Project Planner",
     collageSize: "featured",
-    confidential: true,
+    liveUrl: "https://inked-seven.vercel.app",
+    links: [{ label: "View the code", url: "https://github.com/hammad2914/Inked" }],
     details: {
-      title: "Vendor Portal – Supplier Invoicing",
+      title: "Inked – Project Planner",
       challenge:
-        "Suppliers submitted invoices and delivery documents as PDFs by email. Someone on the finance side re-keyed each one, reconciled it by hand, and filed it — roughly 10,000 documents a year, with transcription errors surfacing weeks later as payment disputes.",
+        "In most task tools, anyone with edit rights can quietly move a deadline. When work runs late, nobody can tell whether a date was ever agreed, and the conversation turns into who said what.",
       approach:
-        "Built a vendor portal where suppliers upload documents directly, with automated PDF extraction, validation, and invoice/debit note generation on top of a centralized document management system.",
+        "A multi-company project planner where a manager pencils in a task's dates and the assignee either agrees, which locks them, or asks for different ones. It covers roles, email invitations, a planner view across every project, live notifications, an activity log, and project reports written by Gemini with PDF export. The demo login rebuilds a fresh company each time.",
       decisions:
-        "Extraction results go through a validation step before they're committed rather than being written straight to the ledger — automation that silently writes wrong financial records is worse than manual entry. Vendors upload to the portal instead of emailing, which turns an unstructured inbox into an auditable pipeline with a status each document can actually be in.",
+        "Agreed dates stay locked even for admins, and changing them takes a revision request, because a rule with an admin bypass wouldn't mean much. The web app reaches the API through a Vercel rewrite rather than directly, which keeps the refresh cookie first-party, so reloading the page doesn't sign you out. Chrome for report PDFs is installed inside the project folder, because Render reuses node_modules and doesn't carry the default browser cache over to the running server. Reports fall back to a plain template when no Gemini key is set.",
       impact: [
-        "Manual effort cut by 70% and processing time by 50%",
-        "10,000+ documents per year handled through automated workflows",
-        "Data accuracy improved by 60%",
+        "Live demo with one-click sign-in, so you can try it without an account",
+        "Dates are proposed, agreed and locked, with every change recorded",
+        "Open source, with setup and deployment notes in the README",
       ],
-      type: "Enterprise Web Platform",
-      technologies: "React, .NET Core, SQL Server, PDF Automation",
+      type: "Full-Stack Web App",
+      technologies: "React, Express, Prisma, PostgreSQL, Socket.io, Gemini, Puppeteer",
       platform: "Web",
     },
   },
   {
-    thumbUrl: "/images/hotelkey.png",
-    title: "HotelKey",
-    oneLiner: "Offline is an explicit screen, not a silently failed request.",
-    subTitle: "Hotel & Guest Services App",
+    thumbUrl: "/images/wayn.png",
+    title: "Wayn",
+    openSource: true,
+    oneLiner: "Turns \"behind the mosque\" into a place on the map, then plans a shorter run.",
+    subTitle: "Last-Mile Dispatch for the Gulf",
     collageSize: "featured",
-    confidential: true,
-    privacyNote: "Client demo build — the source is not public.",
+    liveUrl: "https://wayn-app.vercel.app",
+    links: [{ label: "View the code", url: "https://github.com/hammad2914/wayn" }],
     details: {
-      title: "HotelKey – Hotel & Guest Services App",
+      title: "Wayn – Last-Mile Dispatch for the Gulf",
       challenge:
-        "A client wanted to see a guest-services app before committing to building one: hotels, reservations and the services around a stay, all in one place rather than scattered across separate booking sites.",
+        "Delivery addresses in the Gulf often arrive as messages in Arabic or English that describe a landmark, not a street number. Drivers lose time finding the door, and vans get run in whatever order the orders came in.",
       approach:
-        "A 30-screen React Native app for iOS and Android covering hotel browsing and detail pages, reservations with current and past booking history, and service categories around the stay — cars, activities, pharmacy and supermarkets. Full auth flow with email signup, login, forgot and change password, plus Google and Apple sign-in, and profile, settings and notification screens. Built as a client demo against sample data, and taken as far as a signed release build.",
+        "An address cleaner and route planner with a dispatch dashboard. It reads messy Arabic and English addresses, places them on the map, splits the stops between vans and orders each run. Drivers get their own page showing the clean address beside the customer's original words.",
       decisions:
-        "Navigation is split across a bottom tab bar with nested stacks, so each service category keeps its own history and a guest can move between hotels and reservations without losing their place. Connectivity is checked explicitly with a dedicated offline screen rather than letting requests fail silently — the app is aimed at travellers, who are the users most likely to be on bad hotel wifi or roaming.",
+        "Built on free map services, Nominatim and OSRM, so it runs without a paid mapping bill. Their search misses many district names, so OSM districts for 12 Gulf cities are saved into the app and matched fuzzily, which handles spellings like Malqa and Malga. Stop order comes from sweep, nearest-neighbour and 2-opt, so it finds a good route without promising the mathematically shortest one. OSM's Arabic coverage is patchy, so results are approximate, and each one is labelled by how precise it is.",
       impact: [
-        "30 screens covering the full guest journey, from signup to booking history",
-        "Single React Native codebase targeting both iOS and Android",
-        "Demo build only — it was never deployed to production",
+        "On one real Riyadh day of 12 orders, with one van: 117 km, against 207 km in arrival order",
+        "11 of those 12 messy addresses placed on the map",
+        "1,633 saved districts across 12 Gulf cities, in Arabic and English",
       ],
-      type: "Mobile Application",
-      technologies:
-        "React Native, React Navigation, Google & Apple Sign-In, Axios",
-      platform: "Android & iOS",
+      type: "Full-Stack Web App",
+      technologies: "React, Vite, Express, Prisma, PostgreSQL, OSRM, Nominatim",
+      platform: "Web",
+    },
+  },
+  {
+    thumbUrl: "/images/saraya.png",
+    title: "Saraya",
+    openSource: true,
+    oneLiner: "A Dubai property site where every section is something you use, not something you read.",
+    subTitle: "Real-Estate Design Concept",
+    collageSize: "featured",
+    liveUrl: "https://saraya-lac.vercel.app",
+    links: [{ label: "View the code", url: "https://github.com/hammad2914/saraya" }],
+    details: {
+      title: "Saraya – Real-Estate Design Concept",
+      challenge:
+        "A concept, not a client project: could a luxury property site take a buyer from a first look at the city to booking a viewing using working tools rather than brochure text? The listings, agents and prices are examples, and nothing you submit is sent anywhere.",
+      approach:
+        "A scroll-driven opening through a window towards the Burj Khalifa, then a live map of Dubai's areas with price pins, an area finder ranked by commute, a buying-cost calculator, a sale estimate from comparable listings, viewing booking in the buyer's own time zone, and a filterable marketplace with a page for each home. There is no backend: all the maths runs in the browser.",
+      decisions:
+        "The opening sequence follows a video of the LUXHABITAT site, rebuilt in my own code with a redesigned room. The scroll animation was heavy on weak graphics cards, so the image effects are baked into the files, and the browser's compositing hint is only switched on while scrolling, because leaving it on made the headline blurry. Overlapping map pins merge into a single count so they don't pile up, and marketplace filters live in the URL so any search can be shared. Commute times are estimates, and the page says so.",
+      impact: [
+        "Full concept from opening animation to marketplace and home pages",
+        "Works on desktop and phone, with a custom phone menu and filter sheets",
+        "Photos from Unsplash, map tiles from OpenFreeMap, hero view generated with Gemini",
+      ],
+      type: "Front-End Design Concept",
+      technologies: "Next.js, React, TypeScript, Tailwind CSS, GSAP, MapLibre",
+      platform: "Web",
     },
   },
 ];
@@ -296,7 +356,7 @@ export const projects = {
     title: "Selected <span>projects</span>",
   },
   /** Shown under the section heading to pre-empt "where's the code?". */
-  note: "Client systems, so the source stays private. The decisions behind them don't.",
+  note: "Mostly client systems, so the source stays private. The decisions behind them don't.",
   allProjects,
 };
 
