@@ -103,7 +103,7 @@ export function ProjectsSection() {
       type="button"
       className="pj-tile"
       onClick={() => openModal(project)}
-      aria-label={`Case study: ${project.title} — ${project.subTitle}`}
+      aria-label={`View project: ${project.title} — ${project.subTitle}`}
       data-aos="fade-up"
       data-aos-duration="900"
       data-aos-delay={delay * 80}
@@ -118,7 +118,7 @@ export function ProjectsSection() {
       ) : null}
       <Badges project={project} />
       <span className="pj-cta pj-tile__cta">
-        Read the case study
+        View project
         <span className="pj-cta__rule" aria-hidden="true" />
       </span>
       <span className="pj-tile__thumb" aria-hidden="true">
@@ -159,7 +159,7 @@ export function ProjectsSection() {
               type="button"
               className={`pj-row${i % 2 ? " pj-row--flip" : ""}`}
               onClick={() => openModal(project)}
-              aria-label={`Case study: ${project.title} — ${project.subTitle}`}
+              aria-label={`View project: ${project.title} — ${project.subTitle}`}
               data-aos="fade-up"
               data-aos-duration="1000"
             >
@@ -176,7 +176,7 @@ export function ProjectsSection() {
                 ) : null}
                 <span className="pj-meta">{project.details.technologies}</span>
                 <span className="pj-cta">
-                  Read the case study
+                  View project
                   <span className="pj-cta__rule" aria-hidden="true" />
                 </span>
               </span>
@@ -226,7 +226,7 @@ export function ProjectsSection() {
                 type="button"
                 className="mfp-close pj-modal__x"
                 onClick={closeModal}
-                aria-label="Close case study"
+                aria-label="Close project details"
               >
                 ×
               </button>
@@ -271,24 +271,18 @@ export function ProjectsSection() {
                   )}
                 </div>
 
-                <ul className="pj-modal__impact">
-                  {active.details.impact.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-
                 <div className="pj-modal__prose">
                   <section>
-                    <h6>The problem</h6>
-                    <p>{active.details.challenge}</p>
+                    <h6>Overview</h6>
+                    <p>{active.details.overview}</p>
                   </section>
                   <section>
-                    <h6>What I built</h6>
-                    <p>{active.details.approach}</p>
-                  </section>
-                  <section className="pj-modal__why">
-                    <h6>Why these calls</h6>
-                    <p>{active.details.decisions}</p>
+                    <h6>Impact</h6>
+                    <ul className="pj-modal__impact">
+                      {active.details.impact.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
                   </section>
                 </div>
 

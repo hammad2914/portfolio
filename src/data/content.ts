@@ -67,7 +67,7 @@ export const about = {
   miniTitle: "About Me",
   title:
     "BUILDING <span>SCALABLE &</span><br /><span>EFFICIENT</span> FULL-STACK APPS",
-  description: `I'm a Full Stack Software Engineer based in Karachi, Pakistan with ${yearsOfExperience}+ years delivering production ERP, SaaS, and supply-chain platforms for international clients. I work across React.js, Next.js, NestJS, .NET Core, Prisma, and PostgreSQL — from reusable frontend architecture and high-performance AG Grid interfaces to backend APIs, WebSocket synchronization, Docker deployments, and AI-powered document extraction.<br><br>Most of my work is proprietary client software, so the detail lives in the case studies below, and a few of my own projects are open source. I'm always happy to walk through the architecture and trade-offs on a call.`,
+  description: `I'm a Full Stack Software Engineer based in Karachi, Pakistan with ${yearsOfExperience}+ years delivering production ERP, SaaS, and supply-chain platforms for international clients. I work across React.js, Next.js, NestJS, .NET Core, Prisma, and PostgreSQL — from reusable frontend architecture and high-performance AG Grid interfaces to backend APIs, WebSocket synchronization, Docker deployments, and AI-powered document extraction.<br><br>Most of my work is proprietary client software, so the source code is private, and a few of my own projects are open source. I'm always happy to walk through the architecture and trade-offs on a call.`,
   btnText: "Get in touch",
   btnUrl: "contactus",
 };
@@ -81,13 +81,9 @@ export type ProjectLink = {
 
 export type ProjectDetails = {
   title: string;
-  /** The problem the system had to solve. */
-  challenge: string;
-  /** What was actually built. */
-  approach: string;
-  /** Why these technical choices — the part that can't be faked. */
-  decisions: string;
-  /** Measurable outcomes. */
+  /** What the project is and what it does. */
+  overview: string;
+  /** Outcomes. */
   impact: string[];
   type: string;
   technologies: string;
@@ -105,7 +101,7 @@ export type ProjectItem = {
   collageSize: ProjectCollageSize;
   /** The headline builds, shown large; everything else is a compact row. */
   featured?: boolean;
-  /** The single decision worth knowing — carries the card on its own. */
+  /** One line on what the project is, shown on its card. */
   oneLiner?: string;
   /** Iconify names for the logos that float over the panel, as in the hero. */
   marks?: string[];
@@ -128,25 +124,25 @@ const allProjects: ProjectItem[] = [
   {
     thumbUrl: "/images/integra.png",
     title: "Integra",
-    oneLiner: "Approvals modelled as a state machine, because inspections bounce backwards on rejection.",
-    subTitle: "Quality Inspection Platform",
+    oneLiner:
+      "Factory inspections from booking to signed report, with offline working, KPI dashboards and third-party lab reports.",
+    subTitle: "Apparel Quality Inspection Platform",
     collageSize: "featured",
     confidential: true,
     details: {
-      title: "Integra – Quality Inspection Platform",
-      challenge:
-        "QA teams ran inspections on paper. Reports were typed up after the fact, multi-stage sign-offs moved by email, and nobody had visibility into defect trends until the monthly review — by which point the escapes had already shipped.",
-      approach:
-        "Built 7 end-to-end inspection workflows with multi-stage approval chains, real-time WebSocket status updates, automated PDF report generation, and live KPI dashboards covering defect trends and team productivity.",
-      decisions:
-        "Approvals are modelled as an explicit state machine rather than a boolean flag per stage — inspections routinely bounce backwards on rejection, and a flag-based design can't represent that without ambiguity. Reports are generated server-side so the PDF is identical regardless of the inspector's device, which matters when the document is the audit record. WebSockets over polling because a supervisor watching the approval queue needs the state change immediately, not up to 30 seconds later.",
+      title: "Integra – Apparel Quality Inspection Platform",
+      overview:
+        "A quality management platform for apparel inspections, from booking and assigning inspectors through to the final report. It covers pre-production meetings, initial line and product checks, mid-production checks and final random inspections, along with measurements, a defects dictionary and pictorial reviews, with on-screen signatures from the factory and QA and automatic PDF reports. Inspectors can work with no network and send everything when the connection returns. It also has customer, supplier and internal KPI dashboards, storage for reports from outside labs such as SGS and Intertek, conveyance claims with approvals, and email notifications.",
       impact: [
-        "Inspection reports generated in seconds instead of being typed up manually",
-        "Real-time visibility into defect trends and inspector productivity",
-        "Measurable reduction in quality escapes reaching customers",
+        "Lets inspectors finish inspections on weak factory networks, with work sent automatically when the connection returns and no duplicate records",
+        "Replaced typed-up reports with signed PDF reports generated automatically",
+        "Saves inspections step by step, so work isn't lost halfway through",
+        "Gives managers live quality KPIs by customer, supplier and inspector, instead of waiting for periodic reviews",
+        "Keeps third-party lab reports in one place, instead of scattered across email",
+        "Moved conveyance claims from paper to a tracked approval process",
       ],
       type: "Enterprise Web Platform",
-      technologies: "React.js, Node.js, WebSockets, PDF Generation, PostgreSQL",
+      technologies: "React, Material UI, ApexCharts, React PDF",
       platform: "Web",
     },
   },
@@ -155,23 +151,22 @@ const allProjects: ProjectItem[] = [
     title: "Cortex",
     featured: true,
     oneLiner:
-      "Extraction goes to human review before commit, so a wrong read never becomes a wrong record.",
+      "One system for apparel orders, from booking and purchase order to shipment, invoicing and payment, with AI extraction of purchase orders, invoices and other business documents.",
     marks: ["logos:react", "logos:nestjs", "logos:postgresql"],
-    subTitle: "AI-Powered ERP System",
+    subTitle: "AI-Powered Apparel Sourcing & Export ERP",
     collageSize: "featured",
     confidential: true,
     details: {
-      title: "Cortex – AI-Powered ERP System",
-      challenge:
-        "An ERP spanning 8 interconnected modules where every invoice and purchase order was keyed in by hand from supplier PDFs — each client sending a different layout. Data entry was the bottleneck, and the grids were large enough that naive rendering locked up the browser.",
-      approach:
-        "Led full-stack development across 8 modules with complex admin panels and permission flows. Built a bulk PDF extraction pipeline on OpenAI with a per-client template covering 8–12 document formats, feeding a review step before anything is committed, plus AG Grid interfaces over 50,000+ row datasets with live WebSocket synchronization.",
-      decisions:
-        "This started on Azure Document Intelligence and moved off it — training custom models per document type did not reach accuracy we could rely on. OpenAI with a template per client beat a single generalized prompt, because any one client's layout is stable even though layouts vary widely between clients; a per-client template encodes that structure instead of asking the model to rediscover it every time. Extraction is still imperfect, so the pipeline is designed around correction rather than trust: extracted values are surfaced for a person to fix before they are committed, which keeps a wrong read from silently becoming a wrong record. AG Grid's server-side row model over a custom table, because at 50k rows the work is virtualization and that is a solved problem. WebSockets because 8 modules share state — a purchase order updated in one module has to be correct everywhere without a refresh.",
+      title: "Cortex – AI-Powered Apparel Sourcing & Export ERP",
+      overview:
+        "An ERP for apparel sourcing and export, where I worked as a full-stack developer. It takes an order from booking and purchase order through time-and-action planning, sales contract approvals, shipment and payment documents (LC, DA, DP, TT), along with claims. Its vendor portal adds a document hub organised by customer and folder, commercial invoice and packing list creation in different formats, debit notes, and vendor onboarding. Staff and vendors use one login, and each role sees its own portal. It also includes AI extraction for bulk document uploads with a review step before saving, around 35 business reports, and an AI assistant that answers questions in plain English with tables and charts.",
       impact: [
-        "Removed the long manual entry form merchants previously filled in for every document — around 70% less processing time",
-        "Invoice and purchase-order data now extracted then reviewed, instead of keyed in from scratch",
-        "Zero UI lag on 50,000+ row grids with live data consistency",
+        "Replaced manual entry of purchase orders with bulk AI extraction from PDF and Excel files, cutting processing time by around 70%",
+        "Improved overall order processing time by at least 40%",
+        "Catches extraction errors in review, before they become wrong records",
+        "Gave vendors one login and a single hub for documents, invoices, packing lists and debit notes, in place of scattered files",
+        "Handles 50,000+ row grids with no UI lag, with dashboards updating live over WebSockets",
+        "Lets staff get answers and reports from business data by asking in plain English",
       ],
       type: "AI-Powered ERP",
       technologies: "React.js, NestJS, PostgreSQL, WebSockets, OpenAI, AG Grid",
@@ -183,29 +178,28 @@ const allProjects: ProjectItem[] = [
     title: "Okulium",
     featured: true,
     oneLiner:
-      "Attendance edits write to a history table instead of overwriting the register.",
+      "One platform for running a school: attendance, exams, fees, payroll and a parent app, with AI built in.",
     marks: ["logos:react", "logos:nestjs", "logos:prisma"],
-    subTitle: "School Management SaaS",
+    subTitle: "AI-Powered School Management SaaS",
     collageSize: "featured",
     confidential: true,
     privacyNote:
       "Commercial SaaS — the source is private, but the product is live.",
     liveUrl: "https://okulium.pk",
     details: {
-      title: "Okulium – School Management SaaS",
-      challenge:
-        "Pakistani schools run attendance registers, exam results, and fee ledgers on paper and spreadsheets. Multi-branch school groups have the same problem multiplied — no shared view across branches, and no reliable record of who changed a mark or an attendance entry after the fact.",
-      approach:
-        "Multi-tenant school platform covering attendance, exams and results, fees and payments, students, parents, staff, timetabling, announcements and reporting. Built as a Turborepo monorepo: a NestJS API, a React PWA dashboard, a separate landing site, and shared type and UI packages. Built with one other engineer, split roughly half the system each.",
-      decisions:
-        "Tenancy is a school group containing branches, so records scope to a branch while a group administrator can still see across them. Attendance changes are written to a separate edit-history table rather than overwriting the record, so a corrected register keeps who changed what and when. Result disputes are their own model with their own states rather than an in-place mark correction, which keeps a challenged grade reviewable. The dashboard ships as an installable PWA with its own service worker and manifest.",
+      title: "Okulium – AI-Powered School Management SaaS",
+      overview:
+        "A multi-tenant school management SaaS built for Pakistan, serving single schools and multi-branch groups, where I was lead developer in a team of 4. It covers QR attendance, a digital class diary, exams and report cards, fee collection with bank challans, timetables, announcements, student ID cards, and staff HR with leave, salaries and payslips. Parents sign in with their mobile number to see only their own children, through an app that installs from the browser. Staff can ask questions about their school in plain words, and AI helps import existing student and staff records.",
       impact: [
-        "Deployed and live — landing site and web app both public",
-        "Attendance, exams and results, fees, timetabling and reporting in one system",
-        "Attendance edits and result disputes each keep a reviewable trail",
+        "Replaces paper registers and spreadsheets with one set of records for the office, teachers, owner and parents",
+        "Gives multi-branch school groups a single view across every branch",
+        "Turns mark entry into finished report cards automatically",
+        "Feeds staff attendance and leave directly into monthly payroll and payslips",
+        "Keeps parents informed automatically, with no app store download",
+        "Records who changed an attendance entry and when, and handles result disputes with a reviewable trail",
       ],
       type: "Multi-Tenant SaaS",
-      technologies: "React, Vite, NestJS, Prisma, PostgreSQL, Turborepo, PWA",
+      technologies: "React, NestJS, Prisma, PostgreSQL, Turborepo, PWA, Gemini",
       platform: "Web (installable PWA)",
     },
   },
@@ -213,25 +207,24 @@ const allProjects: ProjectItem[] = [
     thumbUrl: "/images/vista.png",
     title: "Vista",
     oneLiner:
-      "Every air reading says how many sensors are behind it and how old they are.",
+      "A 3D smog map of Lahore built on real sensor readings, with AQI by area, forecasts, health advice and phone alerts.",
     marks: ["logos:nextjs-icon", "logos:postgresql", "logos:github-actions"],
-    subTitle: "Lahore Smog Map",
+    subTitle: "3D Air Quality Map for Lahore",
     collageSize: "featured",
     confidential: true,
     privacyNote: "My own project. The source is private for now, but the site is public.",
     liveUrl: "https://vista-air.vercel.app",
     details: {
-      title: "Vista – Lahore Smog Map",
-      challenge:
-        "Lahore's smog can change the right decision for a family within hours: whether to go outside, wear a mask or keep the windows shut. The readings exist, but they're scattered across sensor networks of mixed quality, and a single city number hides how much is known and how old it is.",
-      approach:
-        "A 3D map of Lahore with a smog layer I wrote in WebGL, drawn from real sensor readings collected through OpenAQ and WAQI. It shows the AQI for the city or your area, a forecast timeline, health advice in English and Urdu, the hours the air is usually cleanest, and phone alerts when your area turns dangerous.",
-      decisions:
-        "I tested my assumptions and changed course when they failed. A leave-one-out test showed that filling gaps between sensors barely beats the city median, so the map is presented as a guide, and each number shows its sensor count and age. GitHub's scheduled runs fired only about 5 of 20 times a day, so an external job now triggers the collector. A replay showed the forecast-based \"best time to go out\" lost to simply picking 2 to 4 pm, so that line now uses the last 7 days of real readings. Correcting the forecast with the last 6 hours of measurements roughly halved errors 1 to 12 hours ahead in a backtest.",
+      title: "Vista – 3D Air Quality Map for Lahore",
+      overview:
+        "A public air quality app for Lahore. Through the day it collects readings from about 50 low-cost sensors and the government's monitors, removes readings it can't trust, and estimates the air between sensors. The result is drawn as 3D smog over satellite photos of the city, with the AQI for Lahore or any of its 19 areas, a timeline that goes back 7 days and forward into the forecast, and health advice in English and Urdu.",
       impact: [
-        "Over 156 hours, its city PM2.5 tracked Punjab EPA's closely (r = 0.98), reading about 15% lower",
-        "Phone alerts for your area, tested end to end on Android",
-        "Readings run 2 to 3 hours behind, and the site says so beside each number",
+        "Turns scattered sensor networks into one clear AQI for the city or your own area, instead of a single citywide figure",
+        "Alerts people by phone when their area's air turns unhealthy, so they don't have to keep checking; tested end to end on Android",
+        "Roughly halved forecast errors 1 to 12 hours ahead in a backtest, by correcting a broad city-wide forecast with real readings",
+        "Shows when the air is usually cleanest, based on the last 7 days of readings, so people can plan time outdoors",
+        "Shows how many sensors are behind each number and how old the readings are, so people know how far to trust it",
+        "City PM2.5 tracked Punjab EPA's readings closely over 156 hours (r = 0.98), reading about 15% lower",
       ],
       type: "Public Web App",
       technologies: "Next.js, WebGL, MapLibre, Neon, Drizzle, GitHub Actions, Web Push",
@@ -240,30 +233,30 @@ const allProjects: ProjectItem[] = [
   },
   {
     thumbUrl: "/images/lawintoaction.png",
-    title: "Law in Action",
-    oneLiner: "Translation fails over across four providers so compliance work never stalls.",
-    subTitle: "Global Regulations Platform",
+    title: "Law into Action",
+    oneLiner:
+      "A subscription platform showing businesses which regulations apply to them, what they require and what to do next.",
+    subTitle: "Global Regulations Compliance Platform",
     collageSize: "featured",
     confidential: true,
     privacyNote:
       "Client product — the source is private, but the platform is public.",
     liveUrl: "https://lawintoaction.com",
     details: {
-      title: "Law in Action – Global Regulations Platform",
-      challenge:
-        "A business has no single place to find out which regulations actually apply to it, what the penalties are, and what to do next. That knowledge is scattered across government sites, trade bodies and consultants, in several languages, and it changes constantly — so most companies find out they are non-compliant late and expensively.",
-      approach:
-        "A centralized regulations platform businesses subscribe to. Members see the regulations that apply to them, the penalties attached, and recommended next steps, with consultation and an AI agent alongside. Regulation tracking with source documents, HS code classification over the full UN Comtrade dataset, German/English translation, weekly newsletters, and a metered external API so businesses can pull the regulation data straight into their own ERPs.",
-      decisions:
-        "Translation sits behind a provider abstraction over DeepL, Azure, Google and MyMemory with automatic fallback, so one provider's quota or outage doesn't stall compliance work. The ~10,300-entry UN Comtrade HS classification is fetched once at startup and held in memory rather than queried per request — it's a reference set that changes rarely, so the round trip buys nothing. External API access is keyed per organization with usage metered, because the data itself is a product businesses license into their own systems, and that has to be rate-limited and billed separately from the app.",
+      title: "Law into Action – Global Regulations Compliance Platform",
+      overview:
+        "A subscription platform that helps companies understand the regulations affecting their business, built full stack including its AI features. A four-step check asks about location, product type, business role and company size, then lists the laws that apply. Each regulation sets out its obligations, thresholds, key dates, penalties, exemptions and source documents, in English and German. The platform also includes an HS code lookup covering the full UN Comtrade classification, a CBAM carbon cost calculator, an AI assistant, expert consultations, and weekly newsletters with PDF editions branded for partner associations. Companies subscribe through Stripe plans, and an API connects regulation data to other systems.",
       impact: [
-        "Live subscription platform — businesses sign up and see the regulations that apply to them",
-        "Weekly compliance newsletters, AI-drafted and consultant-reviewed before publishing — the AI pipeline was another developer's work",
-        "Regulation data licensed through a metered API for businesses to pull into their own ERP systems",
+        "Gives businesses one place for regulations that were scattered across government sites, trade bodies and consultants",
+        "Shows a company which laws apply to it in four steps, instead of it having to work that out law by law",
+        "Sets out obligations, key dates and penalties for each law, so companies can find compliance gaps before deadlines",
+        "Lets companies look up HS codes and estimate CBAM carbon costs in the same place as the regulations",
+        "Lets businesses pull regulation data into their own systems through an API, with each client's access and fields controlled by key",
+        "Controls AI costs with a token allowance on each plan, so heavy use can't run up an open-ended bill",
+        "Keeps members up to date with weekly newsletters, drafted by AI and reviewed before publishing, with source links checked automatically",
       ],
       type: "Regulatory Intelligence SaaS",
-      technologies:
-        "React, Express, Prisma, PostgreSQL, DeepL/Azure Translate, React PDF",
+      technologies: "React, TypeScript, Tailwind CSS, Express, Prisma, PostgreSQL, Stripe, DeepL, React PDF",
       platform: "Web",
     },
   },
@@ -271,26 +264,26 @@ const allProjects: ProjectItem[] = [
     thumbUrl: "/images/inked.png",
     title: "Inked",
     openSource: true,
-    oneLiner: "Task dates stay in pencil until the assignee agrees. Then nobody can move them.",
-    subTitle: "Project Planner",
+    oneLiner:
+      "A project planner where a task's dates lock once the person doing the work agrees to them.",
+    subTitle: "Project Planner with Locked Deadlines",
     collageSize: "featured",
     liveUrl: "https://inked-seven.vercel.app",
     links: [{ label: "View the code", url: "https://github.com/hammad2914/Inked" }],
     details: {
-      title: "Inked – Project Planner",
-      challenge:
-        "In most task tools, anyone with edit rights can quietly move a deadline. When work runs late, nobody can tell whether a date was ever agreed, and the conversation turns into who said what.",
-      approach:
-        "A multi-company project planner where a manager pencils in a task's dates and the assignee either agrees, which locks them, or asks for different ones. It covers roles, email invitations, a planner view across every project, live notifications, an activity log, and project reports written by Gemini with PDF export. The demo login rebuilds a fresh company each time.",
-      decisions:
-        "Agreed dates stay locked even for admins, and changing them takes a revision request, because a rule with an admin bypass wouldn't mean much. The web app reaches the API through a Vercel rewrite rather than directly, which keeps the refresh cookie first-party, so reloading the page doesn't sign you out. Chrome for report PDFs is installed inside the project folder, because Render reuses node_modules and doesn't carry the default browser cache over to the running server. Reports fall back to a plain template when no Gemini key is set.",
+      title: "Inked – Project Planner with Locked Deadlines",
+      overview:
+        "A multi-company project planner built around agreed deadlines. A manager proposes a task's start date and deadline, and the assignee either agrees, which locks the dates, or requests a change. It includes company, project and member roles, email invitations, employee import from an HR system, a planner view across all projects, live notifications, an activity log, automatic overdue tracking, and AI-written project reports with PDF export. A one-click demo company lets anyone try it without signing up.",
       impact: [
-        "Live demo with one-click sign-in, so you can try it without an account",
-        "Dates are proposed, agreed and locked, with every change recorded",
-        "Open source, with setup and deployment notes in the README",
+        "Stops deadlines being moved quietly: once agreed, dates are locked on the server, even for admins",
+        "Means people commit to their own dates, instead of having deadlines handed down without their input",
+        "Ends \"who said what\" arguments, because every change is recorded in an activity log",
+        "Saves managers writing status reports by hand, with AI-written reports and PDF export, and a plain template if AI isn't available",
+        "Marks late tasks automatically, so nobody has to chase them by hand",
+        "Saves setting up a team one person at a time, by inviting everyone from the company's HR employee list",
       ],
       type: "Full-Stack Web App",
-      technologies: "React, Express, Prisma, PostgreSQL, Socket.io, Gemini, Puppeteer",
+      technologies: "React, TypeScript, Tailwind CSS, Express, Prisma, PostgreSQL, Socket.io, Gemini, Puppeteer",
       platform: "Web",
     },
   },
@@ -298,23 +291,21 @@ const allProjects: ProjectItem[] = [
     thumbUrl: "/images/wayn.png",
     title: "Wayn",
     openSource: true,
-    oneLiner: "Turns \"behind the mosque\" into a place on the map, then plans a shorter run.",
+    oneLiner:
+      "Turns free-text Arabic and English delivery addresses into map locations and shorter routes.",
     subTitle: "Last-Mile Dispatch for the Gulf",
     collageSize: "featured",
     liveUrl: "https://wayn-app.vercel.app",
     links: [{ label: "View the code", url: "https://github.com/hammad2914/wayn" }],
     details: {
       title: "Wayn – Last-Mile Dispatch for the Gulf",
-      challenge:
-        "Delivery addresses in the Gulf often arrive as messages in Arabic or English that describe a landmark, not a street number. Drivers lose time finding the door, and vans get run in whatever order the orders came in.",
-      approach:
-        "An address cleaner and route planner with a dispatch dashboard. It reads messy Arabic and English addresses, places them on the map, splits the stops between vans and orders each run. Drivers get their own page showing the clean address beside the customer's original words.",
-      decisions:
-        "Built on free map services, Nominatim and OSRM, so it runs without a paid mapping bill. Their search misses many district names, so OSM districts for 12 Gulf cities are saved into the app and matched fuzzily, which handles spellings like Malqa and Malga. Stop order comes from sweep, nearest-neighbour and 2-opt, so it finds a good route without promising the mathematically shortest one. OSM's Arabic coverage is patchy, so results are approximate, and each one is labelled by how precise it is.",
+      overview:
+        "An address cleaning and route planning app for last-mile delivery in the Gulf. It reads free-text Arabic and English addresses, places them on the map, assigns stops to vans and orders each route. Drivers get their own page showing the clean address beside the customer's original words. Locations are approximate, and each one is labelled by how precise it is.",
       impact: [
-        "On one real Riyadh day of 12 orders, with one van: 117 km, against 207 km in arrival order",
-        "11 of those 12 messy addresses placed on the map",
-        "1,633 saved districts across 12 Gulf cities, in Arabic and English",
+        "Cut one real Riyadh day from 207 km to 117 km with one van, saving 73 minutes against driving in arrival order",
+        "Placed 11 of 12 messy addresses on the map and flagged the unclear one for a customer pin",
+        "Solves district names that map search misses: 1,633 districts across 12 Gulf cities, in Arabic and English",
+        "Helps drivers find the door by showing the clean address beside the customer's own words",
       ],
       type: "Full-Stack Web App",
       technologies: "React, Vite, Express, Prisma, PostgreSQL, OSRM, Nominatim",
@@ -325,23 +316,20 @@ const allProjects: ProjectItem[] = [
     thumbUrl: "/images/saraya.png",
     title: "Saraya",
     openSource: true,
-    oneLiner: "A Dubai property site where every section is something you use, not something you read.",
+    oneLiner:
+      "A luxury Dubai real-estate concept with an interactive map, calculators and a property marketplace.",
     subTitle: "Real-Estate Design Concept",
     collageSize: "featured",
     liveUrl: "https://saraya-lac.vercel.app",
     links: [{ label: "View the code", url: "https://github.com/hammad2914/saraya" }],
     details: {
       title: "Saraya – Real-Estate Design Concept",
-      challenge:
-        "A concept, not a client project: could a luxury property site take a buyer from a first look at the city to booking a viewing using working tools rather than brochure text? The listings, agents and prices are examples, and nothing you submit is sent anywhere.",
-      approach:
-        "A scroll-driven opening through a window towards the Burj Khalifa, then a live map of Dubai's areas with price pins, an area finder ranked by commute, a buying-cost calculator, a sale estimate from comparable listings, viewing booking in the buyer's own time zone, and a filterable marketplace with a page for each home. There is no backend: all the maths runs in the browser.",
-      decisions:
-        "The opening sequence follows a video of the LUXHABITAT site, rebuilt in my own code with a redesigned room. The scroll animation was heavy on weak graphics cards, so the image effects are baked into the files, and the browser's compositing hint is only switched on while scrolling, because leaving it on made the headline blurry. Overlapping map pins merge into a single count so they don't pile up, and marketplace filters live in the URL so any search can be shared. Commute times are estimates, and the page says so.",
+      overview:
+        "A front-end design concept, not a client project. It takes a buyer from a scroll-driven view of Dubai through to booking a viewing, with a live price map, an area finder ranked by commute, a buying-cost calculator, a sale estimate from comparable listings, and a filterable marketplace with a page for each home. Listings, agents and prices are examples. The opening sequence is modelled on the LUXHABITAT site and rebuilt in my own code; photos are from Unsplash and the hero view was generated with Gemini.",
       impact: [
-        "Full concept from opening animation to marketplace and home pages",
-        "Works on desktop and phone, with a custom phone menu and filter sheets",
-        "Photos from Unsplash, map tiles from OpenFreeMap, hero view generated with Gemini",
+        "Replaces brochure text with working tools: a price map, an area finder and a buying-cost calculator",
+        "Lets a buyer compare areas and costs and book a viewing in one place",
+        "Makes any property search shareable by link, on desktop and phone",
       ],
       type: "Front-End Design Concept",
       technologies: "Next.js, React, TypeScript, Tailwind CSS, GSAP, MapLibre",
@@ -356,7 +344,7 @@ export const projects = {
     title: "Selected <span>projects</span>",
   },
   /** Shown under the section heading to pre-empt "where's the code?". */
-  note: "Mostly client systems, so the source stays private. The decisions behind them don't.",
+  note: "Most of this work is client software, so the source code is private.",
   allProjects,
 };
 
@@ -490,7 +478,7 @@ export const experience = {
       jobType: "Remote",
       companyTitle: "My Role & Responsibilities",
       companyDescription:
-        "Built client websites and web portals in React.js and Next.js, working remotely from requirements through to deployment.<br><br>Delivered Law in Action, a live subscription platform where member businesses see the regulations that apply to them, with HS-code classification across the UN Comtrade dataset and a metered API clients pull into their own ERP systems.",
+        "Built client websites and web portals in React.js and Next.js, working remotely from requirements through to deployment.<br><br>Delivered Law into Action, a live subscription platform where member businesses see the regulations that apply to them, with HS-code classification across the UN Comtrade dataset and an API clients pull into their own systems.",
     },
   ],
 };
