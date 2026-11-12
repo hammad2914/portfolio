@@ -492,7 +492,7 @@ export const education = {
     {
       title: "BS Software Engineering",
       institution: "Virtual University of Pakistan",
-      duration: "OCT 2021 – OCT 2025",
+      duration: "OCT 2023 – PRESENT (EXPECTED OCT 2027)",
       type: "Degree",
       icon: "mdi:school-outline",
     },

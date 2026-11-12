@@ -43,8 +43,7 @@ const C = {
     "Full Stack Software Engineer with 3+ years of experience building enterprise ERP, SaaS and " +
     "supply-chain platforms. Proficient in **React**, **Next.js**, **TypeScript**, **Node.js** and " +
     "**NestJS**, with PostgreSQL and SQL Server on the backend. Delivered 7+ production systems end " +
-    "to end, built an AI document extraction pipeline that cut processing time by 70%, and mentor " +
-    "junior developers. Currently deepening agentic AI skills through a year-long program at SMIT.",
+    "to end, built AI document extraction that cut processing time by 70%, and mentor junior developers.",
 
   roles: [
     {
@@ -57,7 +56,7 @@ const C = {
         "Migrated **3 legacy VB.NET systems** to React, Node.js and PostgreSQL, cutting UI load times by **40%**.",
         "Built Excel Genie, a reporting engine reused across **10+ ERP modules** in place of per-module reporting code.",
         "Created reusable React component libraries and NestJS service patterns, cutting per-module development time by **30%**.",
-        "Write unit and integration tests with Vitest and run code reviews across the team before work is merged.",
+        "Run code reviews across the team before work is merged.",
         "Ship Docker-based services through CI/CD and resolve production issues across frontend, API and database layers.",
         "Mentor **4 junior developers** and own requirements analysis, estimation and planning with business stakeholders.",
       ],
@@ -68,7 +67,7 @@ const C = {
       dates: "Jun 2025 - Feb 2026",
       bullets: [
         "Built client websites and web portals in React and Next.js, working remotely from requirements through to deployment.",
-        "Delivered Law in Action, a live subscription regulations platform, across the full stack (see Projects).",
+        "Delivered Law into Action, a live subscription regulations platform, across the full stack (see Projects).",
       ],
     },
   ],
@@ -76,52 +75,47 @@ const C = {
   projects: [
     {
       name: "Cortex",
-      sub: "AI-Powered ERP System",
+      sub: "AI-Powered Apparel Sourcing & Export ERP",
       stack: "React, NestJS, PostgreSQL, WebSockets, OpenAI, AG Grid",
       bullets: [
-        "Led full-stack delivery of an ERP across **8 interconnected modules** serving **100+ users** across 7+ permission roles.",
-        "Built a bulk document extraction pipeline on the OpenAI API covering 8-12 client document formats, with human review before commit, cutting processing time by **~70%**.",
-        "Engineered AG Grid interfaces over **50,000+ row datasets** with real-time WebSocket synchronization and no UI lag.",
+        "Built an ERP that takes apparel orders from booking and purchase order through planning, approvals, shipment, invoicing and payment, across **8 modules**, **100+ users** and 7+ permission roles.",
+        "Built bulk AI extraction of purchase orders from PDF and Excel files, with review before commit, cutting processing time by **~70%** and overall order processing time by **at least 40%**.",
+        "Added a vendor portal with a document hub, invoice and packing list creation in multiple formats, and debit notes, replacing scattered emailed files.",
+        "Engineered AG Grid interfaces over **50,000+ row datasets** with no UI lag, and dashboards that update live over WebSockets.",
       ],
     },
     {
       name: "Okulium",
-      sub: "Multi-Tenant School Management SaaS (Own Product)",
-      stack: "React, Vite, NestJS, Prisma, PostgreSQL, PWA",
+      sub: "AI-Powered School Management SaaS (Own Product)",
+      stack: "React, NestJS, Prisma, PostgreSQL, Turborepo, PWA, Gemini",
       url: "okulium.pk",
       bullets: [
-        "Shipped a live multi-tenant platform spanning **9 modules**: attendance, exams and results, fees and payments, students, parents, staff, timetabling, announcements and reporting.",
-        "Modelled tenancy as school groups containing branches, so records scope to a branch while a group administrator still sees across all of them.",
-        "Attendance edits and exam result disputes keep a full audit trail, so corrections stay reviewable instead of overwriting the record.",
-        "Built the dashboard as an installable PWA with a separate public landing site alongside it.",
+        "Lead developer in a team of 4 on a multi-tenant SaaS for single schools and multi-branch groups, covering QR attendance, exams and report cards, fees, timetables, staff HR and payroll.",
+        "Modeled tenancy as school groups containing branches, so records scope to a branch while group administrators see across every branch.",
+        "Fed staff attendance and leave directly into monthly payroll, and kept a full audit trail for attendance edits and exam result disputes.",
+        "Built the parent app as an installable PWA, so parents get updates with no app store download.",
       ],
     },
     {
       name: "Integra",
-      sub: "Quality Inspection Platform",
-      stack: "React, Node.js, PostgreSQL, WebSockets, PDF Generation",
+      sub: "Apparel Quality Inspection Platform",
+      stack: "React, Material UI, ApexCharts, React PDF",
       bullets: [
-        "Built **7 end-to-end inspection workflows** with multi-stage approvals, real-time status updates, automated PDF reports and live KPI dashboards.",
-        "Modelled the full reporting hierarchy for **50+ inspectors** through their managers and department head, including finance sign-off on conveyance claims.",
+        "Built inspection workflows from booking to signed report: pre-production meetings, line and product checks, mid-production checks and final random inspections.",
+        "Enabled inspections on weak factory networks: work is saved step by step and sent automatically when the connection returns, with no duplicate records.",
+        "Replaced typed-up reports with automatically generated, signed PDF reports, and built customer, supplier and internal KPI dashboards.",
+        "Modeled the reporting hierarchy for **50+ inspectors** through their managers and department head, including finance sign-off on conveyance claims.",
       ],
     },
     {
-      name: "Vendor Portal",
-      sub: "Supplier Invoicing",
-      stack: "React, .NET Core Web API, SQL Server",
-      bullets: [
-        "Replaced emailed supplier PDFs with direct uploads, automated extraction and validation before commit: **10,000+ documents a year** and **70% less manual effort**.",
-        "Automated the path from extraction through to logistics invoice and debit note generation, with human verification before any document is issued.",
-      ],
-    },
-    {
-      name: "Law in Action",
-      sub: "Global Regulations Platform",
-      stack: "React, Express, Prisma, PostgreSQL",
+      name: "Law into Action",
+      sub: "Global Regulations Compliance Platform",
+      stack: "React, TypeScript, Express, Prisma, PostgreSQL",
       url: "lawintoaction.com",
       bullets: [
-        "Built a live subscription platform where member businesses see the regulations that apply to them, the penalties attached and the recommended next steps.",
-        "Added HS-code classification across the **10,300-entry** UN Comtrade dataset, and a metered API that lets clients pull regulation data into their own ERP systems.",
+        "Built a live subscription platform showing businesses which regulations apply to them, with obligations, key dates, penalties and source documents in English and German.",
+        "Added HS code lookup across the **10,300-entry** UN Comtrade classification, a CBAM carbon cost calculator, and an API that lets clients pull regulation data into their own systems.",
+        "Built Stripe subscription plans with per-plan AI token allowances, an AI assistant, and weekly newsletters drafted by AI and reviewed before publishing.",
       ],
     },
   ],
@@ -132,22 +126,22 @@ const C = {
     ["Libraries", "Redux, Zustand, Prisma ORM, AG Grid, Socket.io"],
     ["Databases", "PostgreSQL, Microsoft SQL Server, MongoDB, Redis"],
     ["AI & Automation", "OpenAI API, Gemini, agentic AI, Claude Code, document extraction pipelines"],
-    ["Tools & Testing", "Vitest, Docker, CI/CD, Git, GitHub, Vercel"],
+    ["Tools", "Docker, CI/CD, Git, GitHub, Vercel"],
   ],
 
   education: [
     {
       school: "Virtual University of Pakistan",
       degree: "Bachelor of Science in Software Engineering",
-      dates: "Oct 2021 - Oct 2025",
+      dates: "Oct 2023 - Present (Expected Oct 2027)",
     },
   ],
 
   certifications: [
     {
       name: "Agentic AI & FDE",
-      detail: "Saylani Mass IT Training (SMIT) - year-long program, in progress",
-      dates: "Aug 2026 - Jul 2027",
+      detail: "Saylani Mass IT Training (SMIT) - 6-month program, in progress",
+      dates: "Aug 2026 - Jan 2027",
     },
     {
       name: "MERN Stack & Frontend Development",
@@ -158,8 +152,8 @@ const C = {
 };
 
 /**
- * Each version differs only in its location line, so they can never
- * disagree about anything else.
+ * Only the default version ships. Other variants can be added to this object
+ * at run time; they share every word except the location line.
  */
 const VARIANTS = {
   karachi: { suffix: "", location: "Karachi, Pakistan" },
